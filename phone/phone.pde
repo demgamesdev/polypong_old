@@ -5,7 +5,7 @@ import netP5.*;
 OscP5 oscP5;
 NetAddress myRemoteLocation;
 int port=12000;
-String remoteip="192.168.1.17";
+String remoteip="192.168.1.100";
 
 /********* VARIABLES *********/
 
