@@ -1,47 +1,54 @@
 package com.demgames.polypong;
 
+//importing processing libraries
 import processing.core.*;
 import oscP5.*;
 import netP5.*;
+import processing.event.MouseEvent;
+import processing.event.KeyEvent;
 
 
 public class Sketch extends PApplet {
 
+    //declare oscp5 object for sending and receiving messages
     OscP5 oscP5;
     NetAddress myRemoteLocation;
+    //listening port of application
     int port=12000;
     String remoteip;
+
     int numberofballs;
 
+    //constructor which is called in gamelaunch
     Sketch(String remoteip_,String ballnumber_) {
         remoteip=remoteip_;
         numberofballs=Integer.parseInt(ballnumber_);
     }
     /********* VARIABLES *********/
 
-    float frict=(float)0.01;
+    //declare game variables
+    float frict=(float)0.02;
     float batfrict=(float)0.05;
     float grav;
     float inelast=(float)0.6;
-    float spring=2;
+    float ballspring=3;
+    float batspring=6;
+    float mousevelocity=1;
     float mouseattraction;//200;
+    float amp=20;
 
-    boolean moveUp,moveDown,moveLeft,moveRight,setMovemouse=false;
-    int moveStep=1;
-    int gameScreen = 1;
+    int value=0;
+    int framecounter=0;
 
+    //define pvector of last touch event
+    PVector mouselast=new PVector(0,0);
+
+    Bat bat;
+    //declare array of balls and buttons
     Ball[] balls;
     Button gravbutton,attractbutton;
 
-    float amp=20;
-
-    PVector mouselast=new PVector(0,0);
-
-    int value=0;
-
-
-    int framecounter=0;
-
+    //set size of canvas
     public void settings() {
         fullScreen();
         //frameRate(60);
@@ -49,16 +56,26 @@ public class Sketch extends PApplet {
     }
 
     public void setup() {
+
+        //initialize oscp5 object for sending and receiving messages
         oscP5 = new OscP5(this,port);
+        //create object of remote location
         myRemoteLocation = new NetAddress(remoteip,port);
 
+        //set mode of rect drawings
         rectMode(CENTER);
+
+
+        //initialize bat and balls objects
+        bat=new Bat(width/2,height,width/4,height/25,true);
+
         balls=new Ball[numberofballs];
-        balls[0]=new Ball(width/2,height/2,-10,0,100,true,0,0);
-        for(int i=1;i<balls.length;i++){
-            balls[i]=new Ball(random((float)(width*0.1),(float)(width*0.9)),random((float)(height*0.1),(float)(height*0.9)),random(-amp,amp),random(-amp,amp),random(5,20),false,i,0);
+        balls[0]=new Ball(width/2,height/2,-10,0,50,false,0,0);
+        for(int i=1;i<balls.length;i++) {
+            balls[i] = new Ball(random((float) (width * 0.1), (float) (width * 0.9)), random((float) (height * 0.1), (float) (height * 0.5)), random(-amp, amp), random(-amp, amp), random(width/100, width/50), false, i, 0);
         }
 
+        //initialize buttons
         gravbutton = new Button("Gravity",width/3,height/8,width/3,height/15,false);
         attractbutton = new Button("Attract",2*width/3,height/8,width/3,height/15,false);
     }
@@ -79,24 +96,30 @@ public class Sketch extends PApplet {
             mouseattraction=0;
         }
 
-        //bat.move();
-        //bat.display();
-        for (int j=0;j<balls.length;j++) {
-            balls[j].checkBallCollision();
-            balls[j].checkBoundaryCollision();
+        bat.move();
+        bat.display();
+        for (Ball ball : balls) {
+            ball.checkBallCollision();
+            ball.checkExternalFroce();
+            ball.checkBatCollision(bat);
+            ball.checkBoundaryCollision();
         }
-        for (int j=0;j<balls.length;j++) {
-            balls[j].update();
-            balls[j].display();
+        for (Ball ball : balls) {
+            ball.update();
+            ball.display();
         }
 
         //value = (value + 1) % 255;
 
         if(framecounter%1==0) {
             sendSettings();
-            for(int i=0;i<balls.length;i++){
-                sendBall(balls[i]);
+            for (Ball ball : balls) {
+                sendBall(ball);
             }
+        }
+
+        if (mousePressed) {
+            mouselast=new PVector(mouseX,mouseY);
         }
 
         framecounter++;
@@ -112,15 +135,12 @@ public class Sketch extends PApplet {
         //println(" typetag: "+theOscMessage.typetag());
     }
 
-    /*void mousePressed() {
-        setMovemouse=true;
-    }
-
-    void mouseReleased() {
-        setMovemouse=false;
+    @Override
+    public void mouseReleased(MouseEvent mouseEvent) {
+        super.mouseReleased(mouseEvent);
         gravbutton.flip=true;
         attractbutton.flip=true;
-    }*/
+    }
 
     /********* OTHER FUNCTIONS *********/
 
@@ -147,8 +167,6 @@ public class Sketch extends PApplet {
     class Ball {
         PVector position;
         PVector velocity;
-        PVector correctvelocity;
-        PVector lastposition;
 
         int playerScreen;
 
@@ -173,35 +191,14 @@ public class Sketch extends PApplet {
 
         void update() {
 
-            PVector forces = new PVector(0,grav);
-            if (mousePressed) {
-                //println("pressed");
-                PVector mousepos=new PVector(mouseX,mouseY);
-                PVector distanceV=PVector.sub(mousepos,position);
-                float dist=distanceV.mag();
-                forces.add(PVector.mult(distanceV,mouseattraction/pow(dist,2)));
-            }
-            velocity=PVector.add(PVector.mult(velocity,(1-frict)),forces);
-            velocity.add(PVector.mult(correctvelocity,inelast));
-
             position.add(velocity);
 
             if (controlled) {
                 if (mousePressed) {
-                    position=new PVector(mouseX,mouseY);
-                    velocity=PVector.sub(position,mouselast);
-                    mouselast=new PVector(mouseX,mouseY);
+                    position = new PVector(mouseX, mouseY);
+                    velocity = PVector.sub(position, mouselast);
                 }
 
-      /*if (moveUp) {
-        velocity.y-=moveStep;
-      } if (moveDown) {
-        velocity.y+=moveStep;
-      } if (moveLeft){
-        velocity.x-=moveStep;
-      } if (moveRight){
-        velocity.x+=moveStep;
-      }*/
             }
         }
 
@@ -214,41 +211,203 @@ public class Sketch extends PApplet {
             if (position.x+radius+velocity.x>width) {
                 position.x=width-radius;
                 velocity.x*=-inelast;
-            } if (position.x-radius+velocity.x<0) {
+            } else if (position.x-radius+velocity.x<0) {
                 position.x=radius;
                 velocity.x*=-inelast;
             } if (position.y+radius+velocity.y>height) {
                 position.y=height-radius;
                 velocity.y*=-inelast;
-            } if (position.y-radius+velocity.y<0) {
+            } else if (position.y-radius+velocity.y<0) {
                 position.y=radius;
                 velocity.y*=-inelast;
             }
         }
 
         void checkBallCollision() {
-            correctvelocity=new PVector(0,0);
             PVector distanceV;
             float dist;
             float mindist;
-            float scalar;
             for (int i=0;i<balls.length;i++) {
-                if (i!=ballnumber) {
-                    distanceV=PVector.sub(balls[i].position,position);
-                    dist=distanceV.mag();
+                if (i != ballnumber) {
+                    distanceV = PVector.sub(balls[i].position, position);
+                    dist = distanceV.mag();
 
-                    mindist=radius+balls[i].radius;
+                    mindist = radius + balls[i].radius;
 
-                    if (dist<mindist) {
-                        PVector equil=PVector.add(position,PVector.mult(distanceV,mindist/dist));
-                        correctvelocity.add(PVector.mult(PVector.sub(balls[i].position,equil),spring/m));
-                        //correctvelocity.add(PVector.mult(distanceV,-spring/(m*dist*dist)));
-                        //newcollision[i]=false;
-
+                    if (dist < mindist) {
+                        PVector equil = PVector.add(position, PVector.mult(distanceV, mindist / dist));
+                        velocity.add(PVector.mult(PVector.sub(balls[i].position, equil), ballspring/m));
+                        velocity.mult(inelast);
                     }
                 }
             }
         }
+
+        void checkBatCollision(Bat thebat) {
+            PVector distanceV=PVector.sub(position,thebat.position);
+            float dist =distanceV.mag();
+            //distanceV.mult(1/dist);
+            float positionparallel=PVector.dot(thebat.orparallel,distanceV);
+            float positionnormal=PVector.dot(thebat.ornormal,distanceV);
+            //distanceV.mult(1/dist);
+
+            //print("projections:", positionparallel,positionnormal);
+            float velocityparallel=PVector.dot(thebat.orparallel,velocity);
+            float velocitynormal=PVector.dot(thebat.ornormal,velocity);
+
+            float factor=(float)2;
+            float part=(float)0.95;
+
+            print("------");
+            if(abs(positionparallel)<(thebat.wid/2+radius)*part) {
+                println("parallel fit");
+                if(positionnormal>=0 && positionnormal<thebat.hei/2+radius) {
+                    println("up");
+
+                    PVector normalforce = PVector.mult(thebat.ornormal, (thebat.hei / 2 + radius - positionnormal)*batspring/m);
+                    velocity.add(normalforce);
+                    velocity.add(PVector.mult(thebat.ornormal,PVector.dot(thebat.ornormal,thebat.velocity)));
+                    velocity.mult(inelast);
+
+                } else if(positionnormal<0 && positionnormal>-(thebat.hei/2+radius)) {
+
+                    println("down");
+                    PVector normalforce = PVector.mult(thebat.ornormal, -(thebat.hei / 2 + radius + positionnormal) * batspring/m);
+                    velocity.add(normalforce);
+                    velocity.add(PVector.mult(thebat.ornormal,PVector.dot(thebat.ornormal,thebat.velocity)));
+                    velocity.mult(inelast);
+                }
+            } else if(abs(positionnormal)<(thebat.hei/2+radius)*part) {
+                println("normal fit");
+                if(positionparallel>=0 && positionparallel<thebat.wid/2+radius) {
+                    println("right");
+                    PVector parallelforce = PVector.mult(thebat.orparallel, (thebat.wid/2+radius-positionparallel) *batspring/m);
+                    velocity.add(parallelforce);
+                    velocity.add(PVector.mult(thebat.orparallel,PVector.dot(thebat.orparallel,thebat.velocity)));
+                    velocity.mult(inelast);
+
+                } else if(positionparallel<0 && positionparallel>-(thebat.wid/2+radius)) {
+
+                    println("left");
+                    PVector parallelforce = PVector.mult(thebat.orparallel, -(thebat.wid/2+radius+positionparallel) *batspring/m);
+                    velocity.add(parallelforce);
+                    velocity.add(PVector.mult(thebat.orparallel,PVector.dot(thebat.orparallel,thebat.velocity)));
+                    velocity.mult(inelast);
+
+                }
+            } /*else if(dist<sqrt(thebat.wid*thebat.wid+thebat.hei*thebat.hei)/2){
+                println("diagonal");
+                velocity.add(PVector.mult(distanceV, (sqrt(thebat.wid*thebat.wid+thebat.hei*thebat.hei)/2-dist)*batspring/m/dist));
+                velocity.add(PVector.mult(distanceV,PVector.dot(distanceV,thebat.velocity)/dist));
+                velocity.mult(inelast);
+
+            }*/
+
+
+
+            print("------");
+
+
+
+
+
+        }
+
+        void checkExternalFroce() {
+            velocity.add(new PVector(0,grav));
+            if (mousePressed) {
+                //println("pressed");
+                PVector mousepos=new PVector(mouseX,mouseY);
+                PVector distanceV=PVector.sub(mousepos,position);
+                float dist=distanceV.mag();
+                velocity.add(PVector.mult(distanceV,mouseattraction/pow(dist,2)));
+            }
+
+            velocity.add(PVector.mult(velocity,-frict/m));
+        }
+    }
+
+    class Bat {
+        PVector origin,position,velocity,orparallel,ornormal;
+
+        float orientation,moveradius,wid,hei;
+
+        int[] batcolor=new int[3];
+        boolean controlled;
+
+        Bat(float x, float y, float wid_,float hei_, boolean controlled_) {
+            origin= new PVector(x,y);
+            position = PVector.add(origin,new PVector(0,-height/10));
+            velocity = new PVector(0,0);
+
+            orientation=getangle(position.x,position.y);
+            setOrvectors();
+
+            moveradius=width*(float)0.7;
+            wid=wid_;
+            hei=hei_;
+
+
+            batcolor[0]=(int)random(255);
+            batcolor[1]=(int)random(255);
+            batcolor[1]=(int)random(255);
+
+            controlled=controlled_;
+
+        }
+
+        void move() {
+            if(controlled) {
+                if (mousePressed) {
+                    if (PVector.sub(new PVector(mouseX,mouseY), origin).mag() <= moveradius) {
+                        position = new PVector(mouseX,mouseY);
+                    } else {
+                        float posangle=getangle(mouseX,mouseY);
+                        position=PVector.add(origin,PVector.mult(new PVector(cos(posangle),sin(posangle)),moveradius));
+                    }
+                    velocity = PVector.sub(position, mouselast);
+                    velocity.mult(mousevelocity);
+                }
+
+                orientation=getangle(position.x,position.y);
+                setOrvectors();
+            }
+        }
+
+
+        void display() {
+            fill(128,128,128);
+            ellipse(origin.x,origin.y,2*moveradius,2*moveradius);
+            fill(batcolor[0],batcolor[1],batcolor[2]);
+            pushMatrix();
+            translate(position.x,position.y);
+            rotate(orientation-PI/2);
+            rect(0,0,wid,hei,hei/2);
+            popMatrix();
+
+            /*fill(255);
+            ellipse(position.x+wid*ornormal.x,position.y+wid*ornormal.y,50,50);
+            fill(255,0,0);
+            ellipse(position.x+wid*orparallel.x,position.y+wid*orparallel.y,50,50);*/
+
+        }
+
+        float getangle(float x, float y) {
+            float angle=-atan((-y + origin.y) / (x - origin.x))+PI;
+            if (x>=origin.x) {
+                angle=-atan((-y + origin.y) / (x - origin.x));
+            }
+
+            return(angle);
+        }
+
+        void setOrvectors() {
+            ornormal=PVector.add(PVector.mult(new PVector(1,0),cos(orientation)),
+                    PVector.mult(new PVector(0,1),sin(orientation)));
+            orparallel=new PVector(-ornormal.y,ornormal.x);
+
+        }
+
     }
 
 

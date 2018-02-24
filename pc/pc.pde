@@ -22,7 +22,7 @@ int gameScreen = 1;
 
 Ball[] balls;
 
-int numberofballs=10;
+int numberofballs=20;
 
 float amp=20;
 
