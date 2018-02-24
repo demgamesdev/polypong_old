@@ -19,17 +19,15 @@ public class Sketch extends PApplet {
     //listening port of application
     int port=12000;
     String myipadress;
-    String hostipadress;
     String remoteipadress;
     String clientname="test";
     String mode;
     int numberofballs;
 
     //constructor which is called in gamelaunch
-    Sketch(String mode_, String myipadress_, String remoteipadress_,String ballnumber_) {
+    Sketch(String mode_, String myipadress_,String ballnumber_) {
         mode=mode_;
         myipadress=myipadress_;
-        remoteipadress=remoteipadress_;
         numberofballs=Integer.parseInt(ballnumber_);
     }
     /********* VARIABLES *********/

@@ -28,46 +28,72 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
-        final EditText hostIpEditText = (EditText) findViewById(R.id.hostIpEditText);
         final EditText ballnumberEditText = (EditText) findViewById(R.id.ballnumberEditText);
-        final EditText modeEditText = (EditText) findViewById(R.id.modeEditText);
 
         final TextView myIpTextView = (TextView) findViewById(R.id.myIpTextView);
 
-        final Button startGameButton = (Button) findViewById(R.id.startGameButton);
-        final Button updateIpButton = (Button) findViewById(R.id.updateIpButton);
+        final Button startHostButton = (Button) findViewById(R.id.startHostButton);
+        final Button startClientButton = (Button) findViewById(R.id.startClientButton);
 
-        final String myIpAdress=wifiIpAddress(getApplicationContext());
-        if(myIpAdress!=null) {
-            myIpTextView.setText(myIpAdress);
 
-        } else {
-            myIpTextView.setText("Unable to get Ip-Adress");
-        }
-
-        updateIpButton.setOnClickListener(new View.OnClickListener() {
+        //automatically detect ip if available, create new thread for searching ip
+        final Byte testByte=0;
+        Runnable myRunnable = new Runnable() {
             @Override
-            public void onClick(View view) {
-                String myIpAdress=wifiIpAddress(getApplicationContext());
-                if(myIpAdress!=null) {
-                    myIpTextView.setText(myIpAdress);
+            public void run() {
+                while (testByte == 0) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    final String myIpAdress=wifiIpAddress(getApplicationContext());
+                    myIpTextView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(myIpAdress!=null) {
+                                myIpTextView.setText(myIpAdress);
 
-                } else {
-                    myIpTextView.setText("Unable to get Ip-Adress");
+                            } else {
+                                myIpTextView.setText("Unable to get Ip-Adress");
+                            }
+
+                        }
+                    });
                 }
             }
-        });
 
-        startGameButton.setOnClickListener(new View.OnClickListener() {
+        };
+
+        final Thread myThread = new Thread(myRunnable);
+        myThread.start();
+
+        startHostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
-                startGame.putExtra("hostipadress", hostIpEditText.getText().toString());
-                startGame.putExtra("myipadress", myIpAdress);
-                startGame.putExtra("ballnumber", ballnumberEditText.getText().toString());
-                startGame.putExtra("mode", modeEditText.getText().toString());
-                startActivity(startGame);
+                if(checkIfIp(myIpTextView.getText().toString())) {
+                    Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
+                    startGame.putExtra("myipadress", myIpTextView.getText().toString());
+                    startGame.putExtra("ballnumber", ballnumberEditText.getText().toString());
+                    startGame.putExtra("mode", "host");
+                    startActivity(startGame);
+                    //myThread.stop();
+                }
+            }
+
+        });
+
+        startClientButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(checkIfIp(myIpTextView.getText().toString())) {
+                    Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
+                    startGame.putExtra("myipadress", myIpTextView.getText().toString());
+                    startGame.putExtra("ballnumber", ballnumberEditText.getText().toString());
+                    startGame.putExtra("mode", "client");
+                    startActivity(startGame);
+                    //myThread.stop();
+                }
             }
         });
     }
@@ -106,6 +132,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return ipAddressString;
+    }
+
+    boolean checkIfIp(String teststring) {
+        String[] parts=teststring.split("\\.");
+        if(parts.length==4) {
+            return(true);
+        }
+
+        return (false);
+
+
     }
 
 }
