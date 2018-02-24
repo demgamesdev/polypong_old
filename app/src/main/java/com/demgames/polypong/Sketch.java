@@ -22,13 +22,12 @@ public class Sketch extends PApplet {
     String remoteipadress;
     String clientname="test";
     String mode;
-    int numberofballs;
 
     //constructor which is called in gamelaunch
-    Sketch(String mode_, String myipadress_,String ballnumber_) {
+    Sketch(String mode_, String myipadress_,String numberofballs_) {
         mode=mode_;
         myipadress=myipadress_;
-        numberofballs=Integer.parseInt(ballnumber_);
+        numberofballs=Integer.parseInt(numberofballs_);
     }
     /********* VARIABLES *********/
 
@@ -46,6 +45,8 @@ public class Sketch extends PApplet {
     int value=255;
     int framecounter=0;
     int gameScreen=0;
+
+    int numberofballs;
 
     //define pvector of last touch event
     PVector mouselast=new PVector(0,0);
@@ -74,11 +75,11 @@ public class Sketch extends PApplet {
         //initialize bat and balls objects
         bat=new Bat(width/2,height,width/4,height/25,true);
 
-        balls=new Ball[numberofballs];
+        /*balls=new Ball[numberofballs];
         balls[0]=new Ball(width/2,height/2,-10,0,50,false,0,0);
         for(int i=1;i<balls.length;i++) {
             balls[i] = new Ball(random((float) (width * 0.1), (float) (width * 0.9)), random((float) (height * 0.1), (float) (height * 0.5)), random(-amp, amp), random(-amp, amp), random(width/100, width/50), false, i, 0);
-        }
+        }*/
 
         //initialize buttons
         gravbutton = new Button("Gravity",width/3,height/8,width/3,height/15,false);
@@ -146,8 +147,6 @@ public class Sketch extends PApplet {
                     sendSettings();
                     if(readystate) {
                         text(clientname+" ready", width/2, height*(float)0.8);
-                        delay(2000);
-                        gameScreen = 1;
                     }
                 }
 
@@ -162,8 +161,6 @@ public class Sketch extends PApplet {
 
                 } else {
                     text("Connected to "+remoteipadress, width/2, height*(float)0.6);
-                    delay(3500);
-                    gameScreen=1;
                 }
 
                 break;
@@ -173,6 +170,13 @@ public class Sketch extends PApplet {
 
     }
 
+    void createBalls() {
+        balls=new Ball[numberofballs];
+        balls[0]=new Ball(width/2,height/2,-10,0,50,false,0,0);
+        for(int i=1;i<balls.length;i++) {
+            balls[i] = new Ball(random((float) (width * 0.1), (float) (width * 0.9)), random((float) (height * 0.1), (float) (height * 0.5)), random(-amp, amp), random(-amp, amp), random(width/100, width/50), false, i, 0);
+        }
+    }
     void testScreen() {
         ellipse(width/2,height/2,width/2,width/2);
 
@@ -227,6 +231,9 @@ public class Sketch extends PApplet {
     }
 
     void showMirrorScreen() {
+        bat.move();
+        bat.display();
+
         for (int j=0;j<balls.length;j++) {
             balls[j].display();
         }
@@ -236,6 +243,8 @@ public class Sketch extends PApplet {
         for (int j=0;j<balls.length;j++) {
             balls[j].display();
         }
+        fill(0);
+        line(width/2,height,balls[0].position.x,balls[0].position.y);
     }
 
     /********* EVENTHANDLER *********/
@@ -245,10 +254,13 @@ public class Sketch extends PApplet {
         switch(theOscMessage.addrPattern()) {
             case "/settings":
                 value=theOscMessage.get(0).intValue();
-                print(value);
+                numberofballs=theOscMessage.get(1).intValue();
                 OscMessage readyMessage = new OscMessage("/clientready");
                 readyMessage.add("paty");
                 oscP5.send(readyMessage, myRemoteLocation);
+                createBalls();
+                gameScreen=1;
+
                 //println("background: ",value);
                 break;
 
@@ -261,6 +273,8 @@ public class Sketch extends PApplet {
 
             case "/clientready":
                 readystate=true;
+                createBalls();
+                gameScreen=1;
                 //clientname=theOscMessage.get(0).stringValue();
 
                 break;
@@ -280,8 +294,8 @@ public class Sketch extends PApplet {
             default:
                 for (int i=0;i<balls.length;i++) { //balls.length
                     if(theOscMessage.addrPattern().equals("/ball/"+str(i)+"/position")) {
-                        balls[i].position.x=theOscMessage.get(0).floatValue()*width;
-                        balls[i].position.y=theOscMessage.get(1).floatValue()*height;
+                        balls[i].position.x=width-theOscMessage.get(0).floatValue()*width;
+                        balls[i].position.y=-theOscMessage.get(1).floatValue()*height;
                         //println("position: ",balls[i].position.x,balls[i].position.y);
                     }
                     if(theOscMessage.addrPattern().equals("/ball/"+str(i)+"/attributes")) {
@@ -321,7 +335,18 @@ public class Sketch extends PApplet {
     void sendSettings() {
         OscMessage settingsMessage = new OscMessage("/settings");
         settingsMessage.add(value); /* add an int to the osc message */
+        settingsMessage.add(numberofballs);
         oscP5.send(settingsMessage, myRemoteLocation);
+    }
+
+    void sendBat() {
+        OscMessage batMessage = new OscMessage("/bat/position");
+        batMessage.add(bat.position.x/width);
+        batMessage.add(bat.position.y/height);
+        batMessage.add(bat.orientation);
+
+        oscP5.send(batMessage, myRemoteLocation);
+
     }
 
 
@@ -386,8 +411,12 @@ public class Sketch extends PApplet {
             } if (position.y+radius+velocity.y>height) {
                 position.y=height-radius;
                 velocity.y*=-inelast;
-            } else if (position.y-radius+velocity.y<0) {
+            } /*else if (position.y-radius+velocity.y<0) {
                 position.y=radius;
+                velocity.y*=-inelast;
+            }*/
+            else if (position.y-radius+velocity.y<-height) {
+                position.y=-height+radius;
                 velocity.y*=-inelast;
             }
         }

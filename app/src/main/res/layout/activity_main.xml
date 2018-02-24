@@ -17,7 +17,7 @@
         android:ems="10"
         android:hint="Number of Balls"
         android:inputType="textPersonName"
-        android:text="20"
+        android:text="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
