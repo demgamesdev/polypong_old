@@ -5,7 +5,7 @@ import netP5.*;
 OscP5 oscP5;
 NetAddress myRemoteLocation;
 int port=12000;
-String remoteip="192.168.1.116";
+String remoteipadress="192.168.1.116";
 
 /********* VARIABLES *********/
 
@@ -41,7 +41,6 @@ void setup() {
   }
   
   oscP5 = new OscP5(this,port);
-  myRemoteLocation = new NetAddress(remoteip,port);
 }
 
 
@@ -55,19 +54,31 @@ void draw() {
 /* incoming osc message are forwarded to the oscEvent method. */
 void oscEvent(OscMessage theOscMessage) {
   switch(theOscMessage.addrPattern()) {
-    case "/background":
+    case "/settings":
       value=theOscMessage.get(0).intValue();
+      print(value);
+      OscMessage readyMessage = new OscMessage("/clientready");
+      readyMessage.add("paty");
+      oscP5.send(readyMessage, myRemoteLocation);
       //println("background: ",value);
+      break;
+    case "/hostconnect":
+      remoteipadress=theOscMessage.get(0).stringValue();      
+      println("hostipadress: ",remoteipadress);
+      myRemoteLocation = new NetAddress(remoteipadress, port);
+      OscMessage connectMessage = new OscMessage("/clientconnect");
+      connectMessage.add("192.168.1.17");
+      oscP5.send(connectMessage, myRemoteLocation);
       break;
   }
   for (int i=0;i<balls.length;i++) { //balls.length
     if(theOscMessage.addrPattern().equals("/ball/"+str(i)+"/position")) {
-      balls[i].position.x=theOscMessage.get(0).floatValue()/2;
-      balls[i].position.y=theOscMessage.get(1).floatValue()/2;
+      balls[i].position.x=theOscMessage.get(0).floatValue()*width;
+      balls[i].position.y=theOscMessage.get(1).floatValue()*height;
       //println("position: ",balls[i].position.x,balls[i].position.y);
     }
     if(theOscMessage.addrPattern().equals("/ball/"+str(i)+"/attributes")) {
-      balls[i].radius=theOscMessage.get(0).floatValue()/2;
+      balls[i].radius=theOscMessage.get(0).floatValue()*width;
       //println("radius: ",balls[i].radius," m: ",balls[i].m);
     }
   }
