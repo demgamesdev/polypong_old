@@ -1,10 +1,26 @@
 {
     "logs": [
         {
-            "outputFile": "/home/paty/DEV/Android/Apps/polypong/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v25/values-v25.xml",
+            "outputFile": "C:\\home\\paty\\DEV\\Android\\Apps\\polypong\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v25\\values-v25.xml",
             "map": [
                 {
-                    "source": "/home/paty/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7a00dfecbb14092577dfb777f2ee8aed/res/values-v25/values-v25.xml",
+                    "source": "C:\\home\\paty\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\7a00dfecbb14092577dfb777f2ee8aed\\res\\values-v25\\values-v25.xml",
+                    "from": {
+                        "startLines": "2,3,4,6",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,126,209,308",
+                        "endLines": "2,3,5,7",
+                        "endColumns": "70,82,12,12",
+                        "endOffsets": "121,204,303,414"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v25\\values-v25.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Raphael\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\318149fa7b810fd1137e4d1c56a12d6b\\res\\values-v25\\values-v25.xml",
                     "from": {
                         "startLines": "2,3,4,6",
                         "startColumns": "4,4,4,4",

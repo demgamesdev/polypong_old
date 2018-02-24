@@ -19,6 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".gamelaunch" />
+        <activity android:name=".Client" />
+        <activity android:name=".Server"></activity>
     </application>
 
 </manifest>

@@ -2,15 +2,14 @@ package com.demgames.polypong;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.content.Intent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.EditText;
+
+import com.demgames.polypong.Client;
+import com.demgames.polypong.R;
+//import com.demgames.polypong.Server;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,18 +21,22 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         setContentView(R.layout.activity_main);
 
+        final Button joinServer_Button = (Button) findViewById(R.id.JoinServer_Button);
+        final Button startServer_Button = (Button) findViewById(R.id.StartServer_Button);
 
-        final Button startGame_Button = (Button) findViewById(R.id.startGame_Button);
-        final EditText ipEditText = (EditText) findViewById(R.id.ipEditText);
-        final EditText ballnumberEditText = (EditText) findViewById(R.id.ballnumberEditText);
-
-        startGame_Button.setOnClickListener(new View.OnClickListener() {
+        joinServer_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
-                startGame.putExtra("ipadress", ipEditText.getText().toString());
-                startGame.putExtra("ballnumber", ballnumberEditText.getText().toString());
-                startActivity(startGame);
+                Intent joinServer = new Intent(getApplicationContext(), Client.class);
+                startActivity(joinServer);
+            }
+        });
+
+        startServer_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent startServer = new Intent(getApplicationContext(), Server.class);
+                startActivity(startServer);
             }
         });
     }
@@ -53,4 +56,3 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
-

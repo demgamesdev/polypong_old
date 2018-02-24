@@ -27,6 +27,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.demgames.polypong.gamelaunch" />
+        <activity android:name="com.demgames.polypong.Client" />
+        <activity android:name="com.demgames.polypong.Server" />
 
         <meta-data
             android:name="android.support.VERSION"
