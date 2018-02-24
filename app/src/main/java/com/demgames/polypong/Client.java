@@ -65,7 +65,7 @@ public class Client extends AppCompatActivity {
     }
 
     public boolean checkIP(String IP) {
-        // ToDo Schaun ob der String positive Integer hat und Sonderzeichen
+        // ToDo Schaun ob der String positive Integer hat und keine Sonderzeichen
         String[] parts = IP.split("\\.");
         int[] numbers = new int[parts.length];
         if (parts.length == 4) {
