@@ -27,7 +27,10 @@ public class gamelaunch extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
 
-        sketch = new Sketch(getIntent().getExtras().getString("ipadress"),getIntent().getExtras().getString("ballnumber"));
+        sketch = new Sketch(getIntent().getExtras().getString("mode"),
+                getIntent().getExtras().getString("myipadress"),
+                getIntent().getExtras().getString("hostipadress"),
+                getIntent().getExtras().getString("ballnumber"));
         PFragment fragment = new PFragment(sketch);
         fragment.setView(frame, this);
 
