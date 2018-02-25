@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">PolyPong</string>
+    <string name="title_activity_client">Client</string>
+    <string name="title_activity_server">Server</string>
 </resources>

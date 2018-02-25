@@ -16,7 +16,6 @@ import processing.core.PApplet;
 
 public class gamelaunch extends AppCompatActivity {
     private PApplet sketch;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
