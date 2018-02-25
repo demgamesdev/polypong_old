@@ -1,4 +1,4 @@
-#Sun Feb 25 22:49:54 CET 2018
-base.0=/home/paty/DEV/Android/Apps/polypong/app/build/intermediates/transforms/dexMerger/debug/60
+#Sun Feb 25 20:24:27 CET 2018
+base.0=C\:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\22
 path.0=classes.dex
 renamed.0=classes.dex

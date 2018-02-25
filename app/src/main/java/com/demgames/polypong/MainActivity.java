@@ -22,63 +22,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //ToDo Splash screen mit Pixellook integrieren?
 
         /*requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         setContentView(R.layout.activity_main);
 
 
-        final EditText ballnumberEditText = (EditText) findViewById(R.id.ballnumberEditText);
-
-        final TextView myIpTextView = (TextView) findViewById(R.id.myIpTextView);
-
         final Button startHostButton = (Button) findViewById(R.id.startHostButton);
         final Button startClientButton = (Button) findViewById(R.id.startClientButton);
 
 
-        //automatically detect ip if available, create new thread for searching ip
-        final Byte testByte=0;
-        Runnable myRunnable = new Runnable() {
-            @Override
-            public void run() {
-                while (testByte == 0) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    final String myIpAdress=wifiIpAddress(getApplicationContext());
-                    myIpTextView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(myIpAdress!=null) {
-                                myIpTextView.setText(myIpAdress);
-
-                            } else {
-                                myIpTextView.setText("Unable to get Ip-Adress");
-                            }
-
-                        }
-                    });
-                }
-            }
-
-        };
-
-        final Thread myThread = new Thread(myRunnable);
-        myThread.start();
-
         startHostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkIfIp(myIpTextView.getText().toString())) {
-                    Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
-                    startGame.putExtra("myipadress", myIpTextView.getText().toString());
-                    startGame.putExtra("ballnumber", ballnumberEditText.getText().toString());
-                    startGame.putExtra("mode", "host");
-                    startActivity(startGame);
-                    //myThread.stop();
-                }
+                Intent startHost = new Intent(getApplicationContext(), Options.class);
+                startActivity(startHost);
+
             }
 
         });
@@ -86,18 +46,13 @@ public class MainActivity extends AppCompatActivity {
         startClientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkIfIp(myIpTextView.getText().toString())) {
-                    Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
-                    startGame.putExtra("myipadress", myIpTextView.getText().toString());
-                    startGame.putExtra("ballnumber", ballnumberEditText.getText().toString());
-                    startGame.putExtra("mode", "client");
-                    startActivity(startGame);
-                    //myThread.stop();
-                }
+                Intent startClient = new Intent(getApplicationContext(), Client.class);
+                startActivity(startClient);
+                //myThread.stop();
+
             }
         });
     }
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -112,38 +67,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    protected String wifiIpAddress(Context context) {
-        WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
-        int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
-
-        // Convert little-endian to big-endian if needed
-        if (ByteOrder.nativeOrder().equals(ByteOrder.LITTLE_ENDIAN)) {
-            ipAddress = Integer.reverseBytes(ipAddress);
-        }
-
-        byte[] ipByteArray = BigInteger.valueOf(ipAddress).toByteArray();
-
-        String ipAddressString;
-        try {
-            ipAddressString = InetAddress.getByAddress(ipByteArray).getHostAddress();
-        } catch (UnknownHostException ex) {
-            Log.e("WIFIIP", "Unable to get host address.");
-            ipAddressString = null;
-        }
-
-        return ipAddressString;
-    }
-
-    boolean checkIfIp(String teststring) {
-        String[] parts=teststring.split("\\.");
-        if(parts.length==4) {
-            return(true);
-        }
-
-        return (false);
-
-
-    }
 
 }
-

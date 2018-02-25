@@ -34,6 +34,9 @@
             android:name="com.demgames.polypong.gamelaunch"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+        <activity android:name="com.demgames.polypong.Client" />
+        <activity android:name="com.demgames.polypong.Server" />
+        <activity android:name="com.demgames.polypong.Options" />
 
         <meta-data
             android:name="android.support.VERSION"
