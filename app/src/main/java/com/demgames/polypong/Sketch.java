@@ -4,6 +4,7 @@ package com.demgames.polypong;
 import processing.core.*;
 import oscP5.*;
 import netP5.*;
+import processing.data.IntList;
 import processing.event.MouseEvent;
 import processing.event.KeyEvent;
 
@@ -22,12 +23,18 @@ public class Sketch extends PApplet {
     String remoteipadress;
     String clientname="test";
     String mode;
+    float zoom=1;
+    int myplayerscreen=0;
 
     //constructor which is called in gamelaunch
     Sketch(String mode_, String myipadress_,String numberofballs_) {
         mode=mode_;
         myipadress=myipadress_;
         numberofballs=Integer.parseInt(numberofballs_);
+        if(mode.equals("client")) {
+            myplayerscreen=1;
+        }
+
     }
     /********* VARIABLES *********/
 
@@ -41,6 +48,7 @@ public class Sketch extends PApplet {
     float mousevelocity=1;
     float mouseattraction;//200;
     float amp=20;
+    float width0,height0;
 
     int value=255;
     int framecounter=0;
@@ -48,23 +56,29 @@ public class Sketch extends PApplet {
 
     int numberofballs;
 
+    IntList ballstocompute;
+
     //define pvector of last touch event
     PVector mouselast=new PVector(0,0);
-
-    Bat bat;
+    PVector zoompoint;
+    PVector zoomoffset=new PVector(0,0);
+    Bat mybat;
+    Bat otherbat;
     //declare array of balls and buttons
     Ball[] balls;
-    Button gravbutton,attractbutton;
+    Button gravbutton,attractbutton,zoombutton;
 
     //set size of canvas
     public void settings() {
         fullScreen();
+        //smooth();
         //frameRate(60);
 
     }
 
     public void setup() {
 
+        frameRate(60);
         //initialize oscp5 object for sending and receiving messages
         oscP5 = new OscP5(this,port);
 
@@ -73,22 +87,23 @@ public class Sketch extends PApplet {
 
 
         //initialize bat and balls objects
-        bat=new Bat(width/2,height,width/4,height/25,true);
-
-        /*balls=new Ball[numberofballs];
-        balls[0]=new Ball(width/2,height/2,-10,0,50,false,0,0);
-        for(int i=1;i<balls.length;i++) {
-            balls[i] = new Ball(random((float) (width * 0.1), (float) (width * 0.9)), random((float) (height * 0.1), (float) (height * 0.5)), random(-amp, amp), random(-amp, amp), random(width/100, width/50), false, i, 0);
-        }*/
+        mybat=new Bat(width/2,height,width/4,height/25,true,myplayerscreen);
+        otherbat=new Bat(width/2,-height,width/4,height/25,true,(myplayerscreen+1)%2);
 
         //initialize buttons
         gravbutton = new Button("Gravity",width/3,height/8,width/3,height/15,false);
         attractbutton = new Button("Attract",2*width/3,height/8,width/3,height/15,false);
+        zoombutton=new Button("Zoom",width/2,height/4,width/3,height/15,false);
+
+        zoompoint=new PVector(width/2,height);
+
+        width0=width;
+        height0=height;
     }
 
     //loop for drawing
     public void draw() {
-        background(value);
+        background(0);
 
         //show different screens
         switch(gameScreen) {
@@ -97,12 +112,7 @@ public class Sketch extends PApplet {
                 break;
             case 1:
                 //testScreen();
-                if(mode.equals("host")) {
-                    showGameScreen();
-                } else {
-                    showMirrorScreen();
-                }
-
+                showGameScreen();
                 break;
             case 2:
                 showGameOverScreen();
@@ -116,6 +126,7 @@ public class Sketch extends PApplet {
 
     /********* SCREENCONTENT *********/
     void showConnectScreen() {
+        background(255);
         PFont font;
         font = createFont("SansSerif", (float) (height / 40), true);
         fill(0);
@@ -125,22 +136,11 @@ public class Sketch extends PApplet {
         switch(mode) {
             case "host":
                 text("You are Host", width/2, height*(float)0.4);
-
-
                 text("Checking for connection in local network", width/2, height*(float)0.6);
 
                 if(!connectstate) {
-                    String[] myipparts = split(myipadress, ".");
+                    sendHostConnect();
 
-                    for (int i = 0; i < 256; i++) {
-                        String checkipadress = myipparts[0] + "." + myipparts[1] + "." + myipparts[2] + "." + str(i);
-                        if(!checkipadress.equals(myipadress)) {
-                            NetAddress checkRemoteLocation = new NetAddress(checkipadress, port);
-                            OscMessage connectMessage = new OscMessage("/hostconnect");
-                            connectMessage.add(myipadress);
-                            oscP5.send(connectMessage, checkRemoteLocation);
-                        }
-                    }
                     text(str(framecounter), width/2, height*(float)0.65);
                 } else {
                     text("Connected to "+remoteipadress, width/2, height*(float)0.7);
@@ -170,13 +170,6 @@ public class Sketch extends PApplet {
 
     }
 
-    void createBalls() {
-        balls=new Ball[numberofballs];
-        balls[0]=new Ball(width/2,height/2,-10,0,50,false,0,0);
-        for(int i=1;i<balls.length;i++) {
-            balls[i] = new Ball(random((float) (width * 0.1), (float) (width * 0.9)), random((float) (height * 0.1), (float) (height * 0.5)), random(-amp, amp), random(-amp, amp), random(width/100, width/50), false, i, 0);
-        }
-    }
     void testScreen() {
         ellipse(width/2,height/2,width/2,width/2);
 
@@ -184,43 +177,68 @@ public class Sketch extends PApplet {
 
     void showGameScreen() {
         //display and check buttons for pressing
-        gravbutton.display();
+        background(0);
         if (gravbutton.pressed()) {
             grav=(float)0.7;
         } else {
             grav=0;
         }
-        attractbutton.display();
         if (attractbutton.pressed()) {
             mouseattraction=200;
         } else {
             mouseattraction=0;
         }
+        if (zoombutton.pressed()) {
+            zoom=(float)0.5;
+        } else {
+            zoom=1;
+        }
+
+
+        checkZoom("out");
+        fill(255);
+        rect(width/2,0,width,2*height0);
+        float linethickness=height/50;
+        fill(0);
+        rect(width/2,-linethickness/2,width,linethickness,linethickness/2);
+        textMode(CORNER);
+        fill(0);
+        text(str(parseInt(frameRate)),width*(float)0.9,height*(float)0.05);
+        //checkZoom("in");
+        gravbutton.display();
+
+        attractbutton.display();
+
+        zoombutton.display();
+
+        //checkZoom("out");
+
+
+
 
         //move and display bat
-        bat.move();
-        bat.display();
+        mybat.move();
+        sendBat(mybat);
+        mybat.display();
+        otherbat.display();
 
         //first check all balls for collisions and then update all balls
         for (Ball ball : balls) {
-            ball.checkBallCollision();
-            ball.checkExternalFroce();
-            ball.checkBatCollision(bat);
-            ball.checkBoundaryCollision();
+            if(ball.playerScreen==myplayerscreen) {
+                ball.checkPlayerScreenChange();
+                ball.checkBallCollision();
+                ball.checkExternalFroce();
+                ball.checkBatCollision(mybat);
+                ball.checkBoundaryCollision();
+            }
         }
         for (Ball ball : balls) {
-            ball.update();
-            ball.display();
-        }
-
-        //value = (value + 1) % 255;
-
-
-        //send data every n frames
-        if(framecounter%1==0) {
-            for (Ball ball : balls) {
+            if(ball.playerScreen==myplayerscreen) {
+                ball.update();
                 sendBall(ball);
             }
+
+            ball.display();
         }
 
 
@@ -231,11 +249,12 @@ public class Sketch extends PApplet {
     }
 
     void showMirrorScreen() {
-        bat.move();
-        bat.display();
+        mybat.move();
+        mybat.display();
 
-        for (int j=0;j<balls.length;j++) {
-            balls[j].display();
+        for (Ball ball : balls) {
+            ball.checkPlayerScreenChange();
+            ball.display();
         }
     }
 
@@ -258,7 +277,7 @@ public class Sketch extends PApplet {
                 OscMessage readyMessage = new OscMessage("/clientready");
                 readyMessage.add("paty");
                 oscP5.send(readyMessage, myRemoteLocation);
-                createBalls();
+                createBallsClient();
                 gameScreen=1;
 
                 //println("background: ",value);
@@ -273,7 +292,7 @@ public class Sketch extends PApplet {
 
             case "/clientready":
                 readystate=true;
-                createBalls();
+                createBallsHost();
                 gameScreen=1;
                 //clientname=theOscMessage.get(0).stringValue();
 
@@ -302,7 +321,24 @@ public class Sketch extends PApplet {
                         balls[i].radius=theOscMessage.get(0).floatValue()*width;
                         //println("radius: ",balls[i].radius," m: ",balls[i].m);
                     }
+                    if(theOscMessage.addrPattern().equals("/ball/"+str(i)+"/playerscreen")) {
+                        balls[i].playerScreen=theOscMessage.get(0).intValue();
+                        balls[i].velocity.x=-theOscMessage.get(1).floatValue()*width;
+                        balls[i].velocity.y=-theOscMessage.get(2).floatValue()*height;
+                        //println("radius: ",balls[i].radius," m: ",balls[i].m);
+                    }
                 }
+                for (int i=0;i<2;i++) {
+                    if(i!=myplayerscreen) {
+                        if(theOscMessage.addrPattern().equals("/bat/"+str(i)+"/position")) {
+                            otherbat.position.x=theOscMessage.get(0).floatValue()*width;
+                            otherbat.position.y=theOscMessage.get(1).floatValue()*height;
+                            otherbat.orientation=theOscMessage.get(2).floatValue();
+                            //println("position: ",balls[i].position.x,balls[i].position.y);
+                        }
+                    }
+                }
+
                 break;
 
         }
@@ -315,9 +351,19 @@ public class Sketch extends PApplet {
         super.mouseReleased(mouseEvent);
         gravbutton.flip=true;
         attractbutton.flip=true;
+        zoombutton.flip=true;
     }
 
-    /********* OTHER FUNCTIONS *********/
+    /********* SENDING FUNCTIONS *********/
+
+    void sendHostConnect() {
+        String[] myipparts = split(myipadress, ".");
+        String checkipadress = myipparts[0] + "." + myipparts[1] + "." + myipparts[2] + ".255";
+        NetAddress checkRemoteLocation = new NetAddress(checkipadress, port);
+        OscMessage connectMessage = new OscMessage("/hostconnect");
+        connectMessage.add(myipadress);
+        oscP5.send(connectMessage, checkRemoteLocation);
+    }
 
     //send ball data to remotelocation
     void sendBall(Ball theBall) {
@@ -339,16 +385,91 @@ public class Sketch extends PApplet {
         oscP5.send(settingsMessage, myRemoteLocation);
     }
 
-    void sendBat() {
-        OscMessage batMessage = new OscMessage("/bat/position");
-        batMessage.add(bat.position.x/width);
-        batMessage.add(bat.position.y/height);
-        batMessage.add(bat.orientation);
+    void sendPlayerScreenChange(Ball theBall) {
+        OscMessage playerscreenMessage = new OscMessage("/ball/"+str(theBall.ballnumber)+"/playerscreen");
+        playerscreenMessage.add(theBall.playerScreen);
+        playerscreenMessage.add(theBall.velocity.x/width);
+        playerscreenMessage.add(theBall.velocity.y/height);
+        oscP5.send(playerscreenMessage, myRemoteLocation);
+    }
 
+    void sendBat(Bat theBat) {
+        OscMessage batMessage = new OscMessage("/bat/"+str(myplayerscreen)+"/position");
+        batMessage.add(theBat.position.x/width);
+        batMessage.add(theBat.position.y/height);
+        batMessage.add(theBat.orientation);
         oscP5.send(batMessage, myRemoteLocation);
 
     }
 
+    /********* OTHER FUNCTIONS *********/
+
+    void createBallsHost() {
+        balls=new Ball[numberofballs];
+
+        //balls[0]=new Ball(bat.origin.x,bat.origin.y,0,0,width/20,false,0,0);
+        for(int i=0;i<balls.length;i++) {
+            if(i%2==0) {
+                balls[i]=new Ball(mybat.origin.x,mybat.origin.y-mybat.moveradius,0,0,width/20,false,i,0);
+
+            } else {
+                balls[i]=new Ball(mybat.origin.x,-mybat.origin.y+mybat.moveradius,0,0,width/20,false,i,1);
+            }
+
+            //balls[i] = new Ball(random((float) (width * 0.1), (float) (width * 0.9)), random((float) (height * 0.1), (float) (height * 0.5)), random(-amp, amp), random(-amp, amp), random(width/100, width/50), false, i, 0);
+        }
+    }
+
+    void createBallsClient() {
+        balls=new Ball[numberofballs];
+
+        //balls[0]=new Ball(bat.origin.x,bat.origin.y,0,0,width/20,false,0,0);
+        for(int i=0;i<balls.length;i++) {
+            if(i%2==0) {
+                balls[i]=new Ball(mybat.origin.x,-mybat.origin.y+mybat.moveradius,0,0,width/20,false,i,0);
+
+            } else {
+                balls[i]=new Ball(mybat.origin.x,mybat.origin.y-mybat.moveradius,0,0,width/20,false,i,1);
+            }
+
+            //balls[i] = new Ball(random((float) (width * 0.1), (float) (width * 0.9)), random((float) (height * 0.1), (float) (height * 0.5)), random(-amp, amp), random(-amp, amp), random(width/100, width/50), false, i, 0);
+        }
+    }
+
+    void checkZoom(String zoommode) {
+        translate(zoompoint.x,zoompoint.y);
+        switch(zoommode) {
+            case "out":
+                scale(zoom);
+                break;
+            case "in":
+                scale(1/zoom);
+                break;
+            default:
+                scale(1);
+        }
+        translate(-zoompoint.x,-zoompoint.y);
+
+    }
+
+    void rotatePlayerScreen(int playerScreen,String rotateMode) {
+        float rotationangle=0;
+        if(playerScreen==(myplayerscreen+1)%2) {
+            rotationangle=PI;
+        }
+
+        translate(width/2,0);
+        switch(rotateMode) {
+            case "cw":
+                rotate(rotationangle);
+                break;
+            case "acw":
+                rotate(-rotationangle);
+                break;
+
+        }
+        translate(-width/2,0);
+    }
 
     /********* CLASSES *********/
 
@@ -372,12 +493,19 @@ public class Sketch extends PApplet {
             velocity = new PVector(xvel,yvel);
             radius=r_;
             m=(float)(radius*0.1);
-            ballcolor[0]=(int)random(255);
-            ballcolor[1]=(int)random(255);
-            ballcolor[2]=(int)random(255);
             controlled=controlled_;
             ballnumber=ballnumber_;
             playerScreen=playerScreen_;
+
+            ballcolor[0] =0;
+            ballcolor[1]=0;
+            ballcolor[2]=255;
+
+            if (playerScreen!=0) {
+                ballcolor[0] =255;
+                ballcolor[2]=0;
+            }
+            //(int)random(255);
         }
 
         //update position of ball with velocity
@@ -396,6 +524,7 @@ public class Sketch extends PApplet {
 
         //display ball
         void display() {
+            
             fill(ballcolor[0],ballcolor[1],ballcolor[2]);
             ellipse(position.x,position.y,radius*2,radius*2);
         }
@@ -531,6 +660,13 @@ public class Sketch extends PApplet {
 
             velocity.add(PVector.mult(velocity,-frict/m));
         }
+
+        void checkPlayerScreenChange() {
+            if(position.y>0 && position.y+velocity.y<0) {
+                playerScreen=(playerScreen+1)%2;
+                sendPlayerScreenChange(this);
+            }
+        }
     }
 
 
@@ -543,8 +679,11 @@ public class Sketch extends PApplet {
         int[] batcolor=new int[3];
         boolean controlled;
 
+        int playerScreen;
+
         //cunstructor for bat
-        Bat(float x, float y, float wid_,float hei_, boolean controlled_) {
+        Bat(float x, float y, float wid_,float hei_, boolean controlled_,int playerScreen_) {
+            rotatePlayerScreen(playerScreen,"acw");
             origin= new PVector(x,y);
             position = PVector.add(origin,new PVector(0,-height/10));
             velocity = new PVector(0,0);
@@ -556,25 +695,35 @@ public class Sketch extends PApplet {
             wid=wid_;
             hei=hei_;
 
+            playerScreen=playerScreen_;
 
-            batcolor[0]=(int)random(255);
-            batcolor[1]=(int)random(255);
-            batcolor[1]=(int)random(255);
+
+
+            batcolor[0] =0;
+            batcolor[1]=0;
+            batcolor[2]=255;
+
+            if (playerScreen!=0) {
+                batcolor[0] =255;
+                batcolor[2]=0;
+            }
 
             controlled=controlled_;
+            rotatePlayerScreen(playerScreen,"cw");
 
         }
 
 
         //move bat to new position
         void move() {
+            origin= new PVector(width/2,height);
             if(controlled) {
                 if (mousePressed) {
-                    if (PVector.sub(new PVector(mouseX,mouseY), origin).mag() <= moveradius) {
+                    if (PVector.sub(new PVector(mouseX,mouseY), origin).mag() <= moveradius*zoom) {
                         position = new PVector(mouseX,mouseY);
-                    } else {
+                    } else if(PVector.sub(new PVector(mouseX,mouseY), origin).mag() <= moveradius*(float)1.1*zoom){
                         float posangle=getangle(mouseX,mouseY);
-                        position=PVector.add(origin,PVector.mult(new PVector(cos(posangle),sin(posangle)),moveradius));
+                        position=PVector.add(origin,PVector.mult(new PVector(cos(posangle),sin(posangle)),moveradius*sqrt(zoom)));
                     }
                     velocity = PVector.sub(position, mouselast);
                     velocity.mult(mousevelocity);
@@ -587,19 +736,34 @@ public class Sketch extends PApplet {
 
         //display bat also rotating
         void display() {
-            fill(128,128,128);
-            ellipse(origin.x,origin.y,2*moveradius,2*moveradius);
+            //pushMatrix();
+            rotatePlayerScreen(playerScreen,"acw");
+
+            fill(batcolor[0],batcolor[1],batcolor[2],50);
+            ellipse(width/2,height,2*moveradius,2*moveradius);
+
+            rectMode(CORNERS);
+            fill(0);
+
+            rect(width, height - moveradius, width + moveradius, height + moveradius);
+            rect(-moveradius, height - moveradius, 0, height + moveradius);
+            rect(0, height, width, height + moveradius);
+
+            rectMode(CENTER);
+
             fill(batcolor[0],batcolor[1],batcolor[2]);
-            pushMatrix();
             translate(position.x,position.y);
             rotate(orientation-PI/2);
             rect(0,0,wid,hei,hei/2);
-            popMatrix();
+            rotate(-(orientation-PI/2));
+            translate(-(position.x),-(position.y));
 
             /*fill(255);
             ellipse(position.x+wid*ornormal.x,position.y+wid*ornormal.y,50,50);
             fill(255,0,0);
             ellipse(position.x+wid*orparallel.x,position.y+wid*orparallel.y,50,50);*/
+            rotatePlayerScreen(playerScreen,"cw");
+            //popMatrix();
 
         }
 
@@ -647,7 +811,8 @@ public class Sketch extends PApplet {
         boolean pressed() {
             if (holdbutton) {
                 if (mousePressed) {
-                    if (mouseX >= position.x - wid / 2 && mouseX <= position.x + wid / 2 && mouseY >= position.y - hei / 2 && mouseY <= position.y + hei / 2) {
+                    if (mouseX >= (position.x - wid / 2)*zoom+(1-zoom)*zoompoint.x && mouseX <= (position.x + wid / 2)*zoom+(1-zoom)*zoompoint.x &&
+                            mouseY >= (position.y - hei / 2)*zoom+(1-zoom)*zoompoint.y && mouseY <= (position.y + hei / 2)*zoom+(1-zoom)*zoompoint.y) {
                         value = true;
                     }
                 } else {
@@ -656,7 +821,8 @@ public class Sketch extends PApplet {
 
             } else {
                 if (mousePressed) {
-                    if (flip && mouseX >= position.x - wid / 2 && mouseX <= position.x + wid / 2 && mouseY >= position.y - hei / 2 && mouseY <= position.y + hei / 2) {
+                    if (flip && mouseX >= (position.x - wid / 2)*zoom+(1-zoom)*zoompoint.x && mouseX <= (position.x + wid / 2)*zoom+(1-zoom)*zoompoint.x &&
+                            mouseY >= (position.y - hei / 2)*zoom +(1-zoom)*zoompoint.y && mouseY <= (position.y + hei / 2)*zoom+(1-zoom)*zoompoint.y) {
                         value = !value;
                         flip = false;
                     }
