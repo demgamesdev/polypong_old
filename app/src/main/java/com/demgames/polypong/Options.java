@@ -32,7 +32,7 @@ public class Options extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent startServer = new Intent(getApplicationContext(), Server.class);
-                startServer.putExtra("ballnumber", Integer.toString(ballnum));
+                startServer.putExtra("numberofballs", Integer.toString(ballnum));
                 startActivity(startServer);
             }
         });
