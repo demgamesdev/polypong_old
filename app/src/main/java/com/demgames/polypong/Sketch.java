@@ -525,7 +525,7 @@ public class Sketch extends PApplet {
 
         //display ball
         void display() {
-            
+
             fill(ballcolor[0],ballcolor[1],ballcolor[2]);
             ellipse(position.x,position.y,radius*2,radius*2);
         }
@@ -602,7 +602,7 @@ public class Sketch extends PApplet {
                     velocity.add(PVector.mult(thebat.ornormal,PVector.dot(thebat.ornormal,thebat.velocity)));
                     velocity.mult(inelast);
 
-                //lower side
+                    //lower side
                 } else if(positionnormal<0 && positionnormal>-(thebat.hei/2+radius)) {
 
                     println("down");
@@ -620,7 +620,7 @@ public class Sketch extends PApplet {
                     velocity.add(parallelforce);
                     velocity.add(PVector.mult(thebat.orparallel,PVector.dot(thebat.orparallel,thebat.velocity)));
                     velocity.mult(inelast);
-                //left side
+                    //left side
                 } else if(positionparallel<0 && positionparallel>-(thebat.wid/2+radius)) {
 
                     println("left");
