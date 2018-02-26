@@ -1,5 +1,7 @@
 package com.demgames.polypong;
 
+import android.content.Context;
+
 //importing processing libraries
 import processing.core.*;
 import oscP5.*;
@@ -11,6 +13,7 @@ import processing.event.KeyEvent;
 
 
 public class Sketch extends PApplet {
+    //Globals globalVariables = (Globals) getApplicationContext;
 
     //declare oscp5 object for sending and receiving messages
     OscP5 oscP5;
@@ -34,6 +37,9 @@ public class Sketch extends PApplet {
         numberofballs=Integer.parseInt(numberofballs_);
         if(mode.equals("client")) {
             myplayerscreen=1;
+            createBallsClient();
+        } else {
+            createBallsHost();
         }
 
     }
@@ -53,7 +59,7 @@ public class Sketch extends PApplet {
 
     int value=255;
     int framecounter=0;
-    int gameScreen=0;
+    int gameScreen=1;
 
     int numberofballs;
 
@@ -171,10 +177,6 @@ public class Sketch extends PApplet {
 
     }
 
-    void testScreen() {
-        ellipse(width/2,height/2,width/2,width/2);
-
-    }
 
     void showGameScreen() {
         //display and check buttons for pressing
@@ -272,7 +274,7 @@ public class Sketch extends PApplet {
     //check for incoming osc messages
     void oscEvent(OscMessage theOscMessage) {
         switch(theOscMessage.addrPattern()) {
-            case "/settings":
+            /*case "/settings":
                 value=theOscMessage.get(0).intValue();
                 numberofballs=theOscMessage.get(1).intValue();
                 OscMessage readyMessage = new OscMessage("/clientready");
@@ -309,7 +311,7 @@ public class Sketch extends PApplet {
                     connectMessage.add(myipadress);
                     oscP5.send(connectMessage, myRemoteLocation);
                 }
-                break;
+                break;*/
 
             default:
                 for (int i=0;i<balls.length;i++) { //balls.length

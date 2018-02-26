@@ -28,7 +28,7 @@ public class gamelaunch extends AppCompatActivity {
 
         sketch = new Sketch(getIntent().getExtras().getString("mode"),
                 getIntent().getExtras().getString("myipadress"),
-                getIntent().getExtras().getString("ballnumber"));
+                getIntent().getExtras().getString("numberofballs"));
         PFragment fragment = new PFragment(sketch);
         fragment.setView(frame, this);
 
