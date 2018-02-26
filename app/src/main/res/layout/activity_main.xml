@@ -12,25 +12,28 @@
         android:id="@+id/startHostButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="132dp"
+        android:layout_marginBottom="44dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Spiel erstellen"
+        android:text="@string/mainhost"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/startClientButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/startClientButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="156dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Spiel beitreten"
+        android:layout_marginTop="8dp"
+        android:text="@string/mainjoin"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
