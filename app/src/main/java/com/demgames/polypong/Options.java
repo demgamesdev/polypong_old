@@ -24,6 +24,7 @@ public class Options extends AppCompatActivity {
         final SeekBar ballSeekBar = (SeekBar) findViewById(R.id.seekBar2);
         final TextView ballTextView = (TextView) findViewById(R.id.ballll);
 
+        ballTextView.setText( getString(R.string.numballs) + Integer.toString(ballnum));
 
         devBtnn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +42,7 @@ public class Options extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 ballnum = i+1;
-                ballTextView.setText("Anzahl der Bälle: "+Integer.toString(ballnum));
+                ballTextView.setText(getString(R.string.numballs) + Integer.toString(ballnum));
             }
 
             @Override
