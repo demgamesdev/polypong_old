@@ -85,7 +85,7 @@
         app:layout_constraintTop_toBottomOf="@+id/IPtextView" />
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/serverListView"
         android:layout_width="336dp"
         android:layout_height="242dp"
         android:layout_marginBottom="8dp"
