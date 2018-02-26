@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-v13\\values-v13.xml",
+            "outputFile": "/home/paty/DEV/Android/Apps/polypong/app/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-v13/values-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Raphael\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\318149fa7b810fd1137e4d1c56a12d6b\\res\\values-v13\\values-v13.xml",
+                    "source": "/home/paty/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7a00dfecbb14092577dfb777f2ee8aed/res/values-v13/values-v13.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
