@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         //ToDo eventuell nur Portrait modus für menu einstellen
 
 
+
          /* will make the screen be always on until this Activity gets destroyed. */
         final PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");

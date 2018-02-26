@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-35:12
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-35:12
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-35:12
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-35:12
+ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-36:12
+INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-36:12
+INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-36:12
+INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-36:12
 MERGED from [com.android.support:design:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/41f2f2f9d3eb0b99c73b5fd76637c44f/AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support:appcompat-v7:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7a00dfecbb14092577dfb777f2ee8aed/AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /home/paty/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/4a943412895040cd88c7c1f30901ad0d/AndroidManifest.xml:2:1-11:12
@@ -18,20 +18,20 @@ MERGED from [com.android.support:support-core-utils:26.1.0] /home/paty/.gradle/c
 MERGED from [com.android.support:support-core-ui:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-core-ui-26.1.0.aar/133a5a015377b2ba1ea7e65f3198afac/AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support:support-compat:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/d9b424383f87211e32bd35dece0a08e9/AndroidManifest.xml:17:1-31:12
 MERGED from [android.arch.lifecycle:runtime:1.0.0] /home/paty/.gradle/caches/transforms-1/files-1.1/runtime-1.0.0.aar/daeb11f24b8d6a5fb5991d5472467da0/AndroidManifest.xml:17:1-30:12
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-35:12
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-35:12
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-35:12
+INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-36:12
+INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-36:12
+INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-36:12
 	package
 		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:3:5-36
 		INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
 		INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
 	android:versionName
 		INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-35:12
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-36:12
 		INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
 	android:versionCode
 		INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-35:12
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-36:12
 		INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
 	xmlns:android
 		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:11-69
@@ -48,7 +48,7 @@ ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
 	android:name
 		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:7:22-65
 application
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:9:5-33:19
+ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:9:5-34:19
 MERGED from [com.android.support:design:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/41f2f2f9d3eb0b99c73b5fd76637c44f/AndroidManifest.xml:25:5-29:19
 MERGED from [com.android.support:design:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/41f2f2f9d3eb0b99c73b5fd76637c44f/AndroidManifest.xml:25:5-29:19
 MERGED from [com.android.support:appcompat-v7:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7a00dfecbb14092577dfb777f2ee8aed/AndroidManifest.xml:25:5-29:19
@@ -78,55 +78,57 @@ MERGED from [com.android.support:support-compat:26.1.0] /home/paty/.gradle/cache
 MERGED from [android.arch.lifecycle:runtime:1.0.0] /home/paty/.gradle/caches/transforms-1/files-1.1/runtime-1.0.0.aar/daeb11f24b8d6a5fb5991d5472467da0/AndroidManifest.xml:24:5-28:19
 MERGED from [android.arch.lifecycle:runtime:1.0.0] /home/paty/.gradle/caches/transforms-1/files-1.1/runtime-1.0.0.aar/daeb11f24b8d6a5fb5991d5472467da0/AndroidManifest.xml:24:5-28:19
 	android:supportsRtl
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:14:9-35
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:15:9-35
 	android:label
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:12:9-41
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:13:9-41
 	android:roundIcon
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:13:9-54
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:14:9-54
 	android:icon
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:11:9-43
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:12:9-43
 	android:allowBackup
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:10:9-35
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:11:9-35
 	android:theme
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:15:9-40
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:16:9-40
+	android:name
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:10:9-32
 activity#com.demgames.polypong.MainActivity
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:16:9-25:20
+ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:17:9-26:20
 	android:screenOrientation
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:19:13-49
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:20:13-49
 	android:configChanges
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:18:13-48
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:19:13-48
 	android:name
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:17:13-41
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:18:13-41
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:20:13-24:29
+ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:21:13-25:29
 action#android.intent.action.MAIN
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:21:17-69
+ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:22:17-69
 	android:name
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:21:25-66
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:22:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:23:17-77
+ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:24:17-77
 	android:name
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:23:27-74
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:24:27-74
 activity#com.demgames.polypong.gamelaunch
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:26:9-29:52
+ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:27:9-30:52
 	android:screenOrientation
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:29:13-49
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:30:13-49
 	android:configChanges
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:28:13-48
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:29:13-48
 	android:name
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:27:13-39
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:28:13-39
 activity#com.demgames.polypong.Client
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:30:9-44
-	android:name
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:30:19-41
-activity#com.demgames.polypong.Server
 ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:31:9-44
 	android:name
 		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:31:19-41
-activity#com.demgames.polypong.Options
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:32:9-54
+activity#com.demgames.polypong.Server
+ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:32:9-44
 	android:name
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:32:19-42
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:32:19-41
+activity#com.demgames.polypong.Options
+ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:33:9-54
+	android:name
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:33:19-42
 uses-sdk
 INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml

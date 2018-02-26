@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.net.wifi.WifiManager;
 import android.content.Intent;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,6 +23,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import oscP5.*;
+import netP5.*;
+
 import org.w3c.dom.Text;
 
 public class Client extends AppCompatActivity {
@@ -32,23 +36,23 @@ public class Client extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
 
+        final Globals globalVariables = (Globals) getApplicationContext();
+
         final TextView myIpTextView = (TextView) findViewById(R.id.IpAdressTextView);
         final Button devBtn = (Button) findViewById(R.id.devButton);
         final ListView ClientLV = (ListView) findViewById(R.id.ClientListView);
 
-        //LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
-        String[] IPAdressen = new String[] {        };
-
-        final List<String> server_list = new ArrayList<String>(Arrays.asList(IPAdressen));
-
-        //DEFINING A STRING ADAPTER WHICH WILL HANDLE THE DATA OF THE LISTVIEW
+        globalVariables.setMyIpList(new String[] {});
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, server_list);
+                (this, android.R.layout.simple_list_item_1, globalVariables.getMyIpList());
+        globalVariables.setArrayAdapter(arrayAdapter);
+
         ClientLV.setAdapter(arrayAdapter);
 
+        globalVariables.oscP5 = new OscP5(this, globalVariables.getMyPort());
 
         //automatically detect ip if available, create new thread for searching ip
-        final Byte testByte=0;
+        final Byte testByte = 0;
         Runnable myRunnable = new Runnable() {
             @Override
             public void run() {
@@ -58,14 +62,14 @@ public class Client extends AppCompatActivity {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    final String myIpAdress=wifiIpAddress(getApplicationContext());
+                    globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
                     myIpTextView.post(new Runnable() {
                         @Override
                         public void run() {
-                            if(myIpAdress!=null) {
-                                myIpTextView.setText("Deine IP-Adresse lautet: " + myIpAdress);
+                            if (globalVariables.getMyIpAdress() != null) {
+                                myIpTextView.setText("Deine IP-Adresse lautet: " + globalVariables.getMyIpAdress());
                                 //IP Adresse wird in die Liste Hinzugefügt
-                                addipTolist(myIpAdress, server_list, arrayAdapter);
+                                //globalVariables.addIpTolist(globalVariables.getMyIpAdress());
 
                             } else {
                                 myIpTextView.setText("Unable to get Ip-Adress");
@@ -84,7 +88,7 @@ public class Client extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String balls = "20";
-                final String myIpAdress=wifiIpAddress(getApplicationContext());
+                final String myIpAdress = wifiIpAddress(getApplicationContext());
                 Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
                 //Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
                 startGame.putExtra("myipadress", myIpAdress);
@@ -93,6 +97,8 @@ public class Client extends AppCompatActivity {
                 startActivity(startGame);
             }
         });
+
+
     }
     
     @Override
@@ -108,6 +114,7 @@ public class Client extends AppCompatActivity {
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
     }
+
     protected String wifiIpAddress(Context context) {
         WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
         int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
@@ -129,6 +136,7 @@ public class Client extends AppCompatActivity {
 
         return ipAddressString;
     }
+
     boolean checkIfIp(String teststring) {
         String[] parts=teststring.split("\\.");
         if(parts.length==4) {
@@ -138,12 +146,25 @@ public class Client extends AppCompatActivity {
         return (false);
 
     }
-    //IP in die Liste hinzufügen
-    public void addipTolist(String IP, List server_list, ArrayAdapter arrayAdapter){
-        if(!server_list.contains(IP)){
-            server_list.add(IP);
-            //Liste wird aktualisiert
-            arrayAdapter.notifyDataSetChanged();
+
+
+    void oscEvent(OscMessage theOscMessage) {
+        final Globals globalVariables=(Globals) getApplication();
+        switch(theOscMessage.addrPattern()) {
+            case "/hostconnect":
+                if (!theOscMessage.get(0).stringValue().equals(globalVariables.getMyIpAdress())) {
+                    String remoteIpAdress = theOscMessage.get(0).stringValue();
+                    globalVariables.addIpTolist(remoteIpAdress);
+                    globalVariables.myRemoteLocation = new NetAddress(remoteIpAdress, globalVariables.getMyPort());
+                    OscMessage connectMessage = new OscMessage("/clientconnect");
+                    connectMessage.add(globalVariables.getMyIpAdress());
+                    globalVariables.oscP5.send(connectMessage, globalVariables.myRemoteLocation);
+                }
+                break;
         }
     }
+
+
 }
+
+
