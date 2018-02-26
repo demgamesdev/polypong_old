@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-34:12
-INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-34:12
-INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-34:12
-INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-34:12
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-35:12
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-35:12
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-35:12
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-35:12
 MERGED from [com.android.support:design:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\design-26.1.0.aar\3f13238bcc321e4498dacda346521ac2\AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.1.0.aar\318149fa7b810fd1137e4d1c56a12d6b\AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\8b8c06ff1fddc293b03498b9111727a9\AndroidManifest.xml:2:1-11:12
@@ -18,20 +18,20 @@ MERGED from [com.android.support:support-core-utils:26.1.0] C:\Users\Raphael\.gr
 MERGED from [com.android.support:support-core-ui:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.1.0.aar\fb106b9695026c86a921b15c2beb9568\AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support:support-compat:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-compat-26.1.0.aar\276675e8a29c8ddae2b72e5dfec47576\AndroidManifest.xml:17:1-31:12
 MERGED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0.aar\008478e67a790bd0b8a4be5420282c99\AndroidManifest.xml:17:1-30:12
-INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-34:12
-INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-34:12
-INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-34:12
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-35:12
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-35:12
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-35:12
 	package
 		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:3:5-36
 		INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
 		INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-34:12
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-35:12
 		INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
 	android:versionCode
 		INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-34:12
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-35:12
 		INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:11-69
@@ -43,8 +43,12 @@ uses-permission#android.permission.ACCESS_WIFI_STATE
 ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:6:5-76
 	android:name
 		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:6:22-73
+uses-permission#android.permission.WAKE_LOCK
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:7:5-68
+	android:name
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:7:22-65
 application
-ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:8:5-32:19
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:9:5-33:19
 MERGED from [com.android.support:design:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\design-26.1.0.aar\3f13238bcc321e4498dacda346521ac2\AndroidManifest.xml:25:5-29:19
 MERGED from [com.android.support:design:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\design-26.1.0.aar\3f13238bcc321e4498dacda346521ac2\AndroidManifest.xml:25:5-29:19
 MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.1.0.aar\318149fa7b810fd1137e4d1c56a12d6b\AndroidManifest.xml:25:5-29:19
@@ -74,55 +78,55 @@ MERGED from [com.android.support:support-compat:26.1.0] C:\Users\Raphael\.gradle
 MERGED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0.aar\008478e67a790bd0b8a4be5420282c99\AndroidManifest.xml:24:5-28:19
 MERGED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0.aar\008478e67a790bd0b8a4be5420282c99\AndroidManifest.xml:24:5-28:19
 	android:supportsRtl
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:13:9-35
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:14:9-35
 	android:label
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:11:9-41
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:12:9-41
 	android:roundIcon
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:12:9-54
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:13:9-54
 	android:icon
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:10:9-43
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:11:9-43
 	android:allowBackup
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:9:9-35
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:10:9-35
 	android:theme
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:14:9-40
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:15:9-40
 activity#com.demgames.polypong.MainActivity
-ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:15:9-24:20
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:16:9-25:20
 	android:screenOrientation
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:18:13-49
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:19:13-49
 	android:configChanges
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:17:13-48
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:18:13-48
 	android:name
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:16:13-41
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:17:13-41
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:19:13-23:29
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:20:13-24:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:20:17-69
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:21:17-69
 	android:name
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:20:25-66
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:21:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:22:17-77
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:23:17-77
 	android:name
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:22:27-74
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:23:27-74
 activity#com.demgames.polypong.gamelaunch
-ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:25:9-28:52
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:26:9-29:52
 	android:screenOrientation
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:28:13-49
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:29:13-49
 	android:configChanges
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:27:13-48
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:28:13-48
 	android:name
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:26:13-39
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:27:13-39
 activity#com.demgames.polypong.Client
-ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:29:9-44
-	android:name
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:29:19-41
-activity#com.demgames.polypong.Server
 ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:30:9-44
 	android:name
 		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:30:19-41
-activity#com.demgames.polypong.Options
-ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:31:9-54
+activity#com.demgames.polypong.Server
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:31:9-44
 	android:name
-		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:31:19-42
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:31:19-41
+activity#com.demgames.polypong.Options
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:32:9-54
+	android:name
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:32:19-42
 uses-sdk
 INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
