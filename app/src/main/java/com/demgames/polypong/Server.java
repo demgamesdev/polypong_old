@@ -8,7 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -16,6 +18,9 @@ import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Server extends AppCompatActivity {
 
@@ -28,8 +33,18 @@ public class Server extends AppCompatActivity {
 
         final Button devBtn = (Button) findViewById(R.id.devBtn);
         final TextView myIpTextView = (TextView) findViewById(R.id.IPtextView);
+        final ListView ServerLV = (ListView) findViewById(R.id.serverListView);
 
         final String ballnum = getIntent().getExtras().getString("ballnumber");
+
+        //LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
+        String[] IPAdressen = new String[] {        };
+
+        final List<String> server_list = new ArrayList<String>(Arrays.asList(IPAdressen));
+        //DEFINING A STRING ADAPTER WHICH WILL HANDLE THE DATA OF THE LISTVIEW
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_list_item_1, server_list);
+        ServerLV.setAdapter(arrayAdapter);
 
         final Byte testByte=0;
         Runnable myRunnable = new Runnable() {
@@ -47,6 +62,8 @@ public class Server extends AppCompatActivity {
                         public void run() {
                             if(myIpAdress!=null) {
                                 myIpTextView.setText("Deine IP-Adresse lautet: " + myIpAdress);
+                                //IP Adresse wird in die Liste Hinzugefügt
+                                addipTolist(myIpAdress, server_list, arrayAdapter);
 
                             } else {
                                 myIpTextView.setText("Unable to get Ip-Adress");
@@ -121,5 +138,13 @@ public class Server extends AppCompatActivity {
 
         return (false);
 
+    }
+    //IP in die Liste hinzufügen
+    public void addipTolist(String IP, List server_list, ArrayAdapter arrayAdapter){
+        if(!server_list.contains(IP)){
+            server_list.add(IP);
+            //Liste wird aktualisiert
+            arrayAdapter.notifyDataSetChanged();
+        }
     }
 }
