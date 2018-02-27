@@ -31,16 +31,15 @@ public class Sketch extends PApplet {
     int myplayerscreen=0;
 
     //constructor which is called in gamelaunch
-    Sketch(String mode_, String myipadress_,String numberofballs_) {
+
+    Sketch(String mode_, String myipadress_,String remoteipadress_, String numberofballs_) {
         mode=mode_;
         myipadress=myipadress_;
+        remoteipadress=remoteipadress_;
         numberofballs=Integer.parseInt(numberofballs_);
-        if(mode.equals("client")) {
-            myplayerscreen=1;
-            createBallsClient();
-        } else {
-            createBallsHost();
-        }
+        println(remoteipadress);
+
+        myRemoteLocation=new NetAddress(remoteipadress,port);
 
     }
     /********* VARIABLES *********/
@@ -106,6 +105,13 @@ public class Sketch extends PApplet {
 
         width0=width;
         height0=height;
+
+        if(mode.equals("client")) {
+            myplayerscreen=1;
+            createBallsClient();
+        } else {
+            createBallsHost();
+        }
     }
 
     //loop for drawing
@@ -115,7 +121,6 @@ public class Sketch extends PApplet {
         //show different screens
         switch(gameScreen) {
             case 0:
-                showConnectScreen();
                 break;
             case 1:
                 //testScreen();
@@ -132,50 +137,6 @@ public class Sketch extends PApplet {
     }
 
     /********* SCREENCONTENT *********/
-    void showConnectScreen() {
-        background(255);
-        PFont font;
-        font = createFont("SansSerif", (float) (height / 40), true);
-        fill(0);
-        textFont(font);
-        textAlign(CENTER, CENTER);
-        text("Connecting", width/2, height*(float)0.2);
-        switch(mode) {
-            case "host":
-                text("You are Host", width/2, height*(float)0.4);
-                text("Checking for connection in local network", width/2, height*(float)0.6);
-
-                if(!connectstate) {
-                    sendHostConnect();
-
-                    text(str(framecounter), width/2, height*(float)0.65);
-                } else {
-                    text("Connected to "+remoteipadress, width/2, height*(float)0.7);
-                    sendSettings();
-                    if(readystate) {
-                        text(clientname+" ready", width/2, height*(float)0.8);
-                    }
-                }
-
-                break;
-
-            case "client":
-                text("You are Client", width/2, height*(float)0.4);
-                text("Your Ip-Adress is: "+myipadress, width/2, height*(float)0.5);
-
-                if(!connectstate) {
-                    text("Waiting for connection in local network", width/2, height*(float)0.6);
-
-                } else {
-                    text("Connected to "+remoteipadress, width/2, height*(float)0.6);
-                }
-
-                break;
-
-        }
-
-
-    }
 
 
     void showGameScreen() {
@@ -230,7 +191,7 @@ public class Sketch extends PApplet {
             if(ball.playerScreen==myplayerscreen) {
                 ball.checkPlayerScreenChange();
                 ball.checkBallCollision();
-                ball.checkExternalFroce();
+                ball.checkExternalForce();
                 ball.checkBatCollision(mybat);
                 ball.checkBoundaryCollision();
             }
@@ -273,80 +234,38 @@ public class Sketch extends PApplet {
 
     //check for incoming osc messages
     void oscEvent(OscMessage theOscMessage) {
-        switch(theOscMessage.addrPattern()) {
-            /*case "/settings":
-                value=theOscMessage.get(0).intValue();
-                numberofballs=theOscMessage.get(1).intValue();
-                OscMessage readyMessage = new OscMessage("/clientready");
-                readyMessage.add("paty");
-                oscP5.send(readyMessage, myRemoteLocation);
-                createBallsClient();
-                gameScreen=1;
-
-                //println("background: ",value);
-                break;
-
-            case "/clientconnect":
-                connectstate=true;
-                remoteipadress=theOscMessage.get(0).stringValue();
-                myRemoteLocation=new NetAddress(remoteipadress,port);
-
-                break;
-
-            case "/clientready":
-                readystate=true;
-                createBallsHost();
-                gameScreen=1;
-                //clientname=theOscMessage.get(0).stringValue();
-
-                break;
-
-            case "/hostconnect":
-                if(!theOscMessage.get(0).stringValue().equals(myipadress)) {
-                    remoteipadress=theOscMessage.get(0).stringValue();
-                    connectstate=true;
-                    println("hostipadress: ", remoteipadress);
-                    myRemoteLocation = new NetAddress(remoteipadress, port);
-                    OscMessage connectMessage = new OscMessage("/clientconnect");
-                    connectMessage.add(myipadress);
-                    oscP5.send(connectMessage, myRemoteLocation);
+        for (int i=0;i<balls.length;i++) { //balls.length
+            if(theOscMessage.addrPattern().equals("/ball/"+str(i)+"/position")) {
+                balls[i].position.x=width-theOscMessage.get(0).floatValue()*width;
+                balls[i].position.y=-theOscMessage.get(1).floatValue()*height;
+                //println("position: ",balls[i].position.x,balls[i].position.y);
+            }
+            if(theOscMessage.addrPattern().equals("/ball/"+str(i)+"/attributes")) {
+                balls[i].radius=theOscMessage.get(0).floatValue()*width;
+                //println("radius: ",balls[i].radius," m: ",balls[i].m);
+            }
+            if(theOscMessage.addrPattern().equals("/ball/"+str(i)+"/playerscreen")) {
+                balls[i].playerScreen=theOscMessage.get(0).intValue();
+                balls[i].velocity.x=-theOscMessage.get(1).floatValue()*width;
+                balls[i].velocity.y=-theOscMessage.get(2).floatValue()*height;
+                //println("radius: ",balls[i].radius," m: ",balls[i].m);
+            }
+        }
+        for (int i=0;i<2;i++) {
+            if(i!=myplayerscreen) {
+                if(theOscMessage.addrPattern().equals("/bat/"+str(i)+"/position")) {
+                    otherbat.position.x=theOscMessage.get(0).floatValue()*width;
+                    otherbat.position.y=theOscMessage.get(1).floatValue()*height;
+                    otherbat.orientation=theOscMessage.get(2).floatValue();
+                    //println("position: ",balls[i].position.x,balls[i].position.y);
                 }
-                break;*/
-
-            default:
-                for (int i=0;i<balls.length;i++) { //balls.length
-                    if(theOscMessage.addrPattern().equals("/ball/"+str(i)+"/position")) {
-                        balls[i].position.x=width-theOscMessage.get(0).floatValue()*width;
-                        balls[i].position.y=-theOscMessage.get(1).floatValue()*height;
-                        //println("position: ",balls[i].position.x,balls[i].position.y);
-                    }
-                    if(theOscMessage.addrPattern().equals("/ball/"+str(i)+"/attributes")) {
-                        balls[i].radius=theOscMessage.get(0).floatValue()*width;
-                        //println("radius: ",balls[i].radius," m: ",balls[i].m);
-                    }
-                    if(theOscMessage.addrPattern().equals("/ball/"+str(i)+"/playerscreen")) {
-                        balls[i].playerScreen=theOscMessage.get(0).intValue();
-                        balls[i].velocity.x=-theOscMessage.get(1).floatValue()*width;
-                        balls[i].velocity.y=-theOscMessage.get(2).floatValue()*height;
-                        //println("radius: ",balls[i].radius," m: ",balls[i].m);
-                    }
-                }
-                for (int i=0;i<2;i++) {
-                    if(i!=myplayerscreen) {
-                        if(theOscMessage.addrPattern().equals("/bat/"+str(i)+"/position")) {
-                            otherbat.position.x=theOscMessage.get(0).floatValue()*width;
-                            otherbat.position.y=theOscMessage.get(1).floatValue()*height;
-                            otherbat.orientation=theOscMessage.get(2).floatValue();
-                            //println("position: ",balls[i].position.x,balls[i].position.y);
-                        }
-                    }
-                }
-
-                break;
-
+            }
         }
 
+
     }
+
+
 
     //check mouse for being released
     @Override
@@ -359,15 +278,6 @@ public class Sketch extends PApplet {
 
     /********* SENDING FUNCTIONS *********/
 
-    void sendHostConnect() {
-        String[] myipparts = split(myipadress, ".");
-        String checkipadress = myipparts[0] + "." + myipparts[1] + "." + myipparts[2] + ".255";
-        NetAddress checkRemoteLocation = new NetAddress(checkipadress, port);
-        OscMessage connectMessage = new OscMessage("/hostconnect");
-        connectMessage.add(myipadress);
-        oscP5.send(connectMessage, checkRemoteLocation);
-    }
-
     //send ball data to remotelocation
     void sendBall(Ball theBall) {
         OscMessage posMessage = new OscMessage("/ball/"+str(theBall.ballnumber)+"/position");
@@ -378,14 +288,6 @@ public class Sketch extends PApplet {
         attrMessage.add(theBall.radius/width);
         //attrMessage.add(theBall.m);
         oscP5.send(attrMessage,myRemoteLocation);
-    }
-
-    //send settings data to remote location
-    void sendSettings() {
-        OscMessage settingsMessage = new OscMessage("/settings");
-        settingsMessage.add(value); /* add an int to the osc message */
-        settingsMessage.add(numberofballs);
-        oscP5.send(settingsMessage, myRemoteLocation);
     }
 
     void sendPlayerScreenChange(Ball theBall) {
@@ -592,12 +494,12 @@ public class Sketch extends PApplet {
             float factor=(float)2;
             float part=(float)0.95;
 
-            print("------");
+            //print("------");
             if(abs(positionparallel)<(thebat.wid/2+radius)*part) {
-                println("parallel fit");
+                //println("parallel fit");
                 //upper side
                 if(positionnormal>=0 && positionnormal<thebat.hei/2+radius) {
-                    println("up");
+                    //println("up");
 
                     PVector normalforce = PVector.mult(thebat.ornormal, (thebat.hei / 2 + radius - positionnormal)*batspring/m);
                     velocity.add(normalforce);
@@ -607,17 +509,17 @@ public class Sketch extends PApplet {
                     //lower side
                 } else if(positionnormal<0 && positionnormal>-(thebat.hei/2+radius)) {
 
-                    println("down");
+                    //println("down");
                     PVector normalforce = PVector.mult(thebat.ornormal, -(thebat.hei / 2 + radius + positionnormal) * batspring/m);
                     velocity.add(normalforce);
                     velocity.add(PVector.mult(thebat.ornormal,PVector.dot(thebat.ornormal,thebat.velocity)));
                     velocity.mult(inelast);
                 }
             } else if(abs(positionnormal)<(thebat.hei/2+radius)*part) {
-                println("normal fit");
+                //println("normal fit");
                 //right side
                 if(positionparallel>=0 && positionparallel<thebat.wid/2+radius) {
-                    println("right");
+                    //println("right");
                     PVector parallelforce = PVector.mult(thebat.orparallel, (thebat.wid/2+radius-positionparallel) *batspring/m);
                     velocity.add(parallelforce);
                     velocity.add(PVector.mult(thebat.orparallel,PVector.dot(thebat.orparallel,thebat.velocity)));
@@ -625,7 +527,7 @@ public class Sketch extends PApplet {
                     //left side
                 } else if(positionparallel<0 && positionparallel>-(thebat.wid/2+radius)) {
 
-                    println("left");
+                    //println("left");
                     PVector parallelforce = PVector.mult(thebat.orparallel, -(thebat.wid/2+radius+positionparallel) *batspring/m);
                     velocity.add(parallelforce);
                     velocity.add(PVector.mult(thebat.orparallel,PVector.dot(thebat.orparallel,thebat.velocity)));
@@ -642,7 +544,7 @@ public class Sketch extends PApplet {
 
 
 
-            print("------");
+            //print("------");
 
 
 
@@ -651,7 +553,7 @@ public class Sketch extends PApplet {
         }
 
         //add external force such as gravity, mouse attraction and friction
-        void checkExternalFroce() {
+        void checkExternalForce() {
             velocity.add(new PVector(0,grav));
             if (mousePressed) {
                 //println("pressed");

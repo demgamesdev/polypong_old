@@ -19,6 +19,7 @@ public class gamelaunch extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final Globals globalVariables = (Globals) getApplicationContext();
 
         FrameLayout frame = new FrameLayout(this);
         frame.setId(CompatUtils.getUniqueViewId());
@@ -27,7 +28,7 @@ public class gamelaunch extends AppCompatActivity {
 
 
         sketch = new Sketch(getIntent().getExtras().getString("mode"),
-                getIntent().getExtras().getString("myipadress"),
+                getIntent().getExtras().getString("myipadress"),getIntent().getExtras().getString("remoteipadress"),
                 getIntent().getExtras().getString("numberofballs"));
         PFragment fragment = new PFragment(sketch);
         fragment.setView(frame, this);
