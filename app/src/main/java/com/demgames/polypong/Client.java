@@ -92,6 +92,7 @@ public class Client extends AppCompatActivity {
         final Thread myThread = new Thread(myRunnable);
         myThread.start();
 
+        /*Developer Button Listener*/
         devBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
