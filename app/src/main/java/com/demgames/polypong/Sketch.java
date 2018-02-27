@@ -18,8 +18,6 @@ public class Sketch extends PApplet {
     //declare oscp5 object for sending and receiving messages
     OscP5 oscP5;
     NetAddress myRemoteLocation;
-    boolean connectstate=false;
-    boolean readystate=false;
 
     //listening port of application
     int port=12000;
@@ -318,10 +316,10 @@ public class Sketch extends PApplet {
         //balls[0]=new Ball(bat.origin.x,bat.origin.y,0,0,width/20,false,0,0);
         for(int i=0;i<balls.length;i++) {
             if(i%2==0) {
-                balls[i]=new Ball(mybat.origin.x,mybat.origin.y-mybat.moveradius,0,0,width/20,false,i,0);
+                balls[i]=new Ball(mybat.origin.x,mybat.origin.y-mybat.moveradius,0,0,width/30,false,i,0);
 
             } else {
-                balls[i]=new Ball(mybat.origin.x,-mybat.origin.y+mybat.moveradius,0,0,width/20,false,i,1);
+                balls[i]=new Ball(mybat.origin.x,-mybat.origin.y+mybat.moveradius,0,0,width/30,false,i,1);
             }
 
             //balls[i] = new Ball(random((float) (width * 0.1), (float) (width * 0.9)), random((float) (height * 0.1), (float) (height * 0.5)), random(-amp, amp), random(-amp, amp), random(width/100, width/50), false, i, 0);
@@ -334,10 +332,10 @@ public class Sketch extends PApplet {
         //balls[0]=new Ball(bat.origin.x,bat.origin.y,0,0,width/20,false,0,0);
         for(int i=0;i<balls.length;i++) {
             if(i%2==0) {
-                balls[i]=new Ball(mybat.origin.x,-mybat.origin.y+mybat.moveradius,0,0,width/20,false,i,0);
+                balls[i]=new Ball(mybat.origin.x,-mybat.origin.y+mybat.moveradius,0,0,width/30,false,i,0);
 
             } else {
-                balls[i]=new Ball(mybat.origin.x,mybat.origin.y-mybat.moveradius,0,0,width/20,false,i,1);
+                balls[i]=new Ball(mybat.origin.x,mybat.origin.y-mybat.moveradius,0,0,width/30,false,i,1);
             }
 
             //balls[i] = new Ball(random((float) (width * 0.1), (float) (width * 0.9)), random((float) (height * 0.1), (float) (height * 0.5)), random(-amp, amp), random(-amp, amp), random(width/100, width/50), false, i, 0);
@@ -549,10 +547,6 @@ public class Sketch extends PApplet {
 
             //print("------");
 
-
-
-
-
         }
 
         //add external force such as gravity, mouse attraction and friction
@@ -628,10 +622,19 @@ public class Sketch extends PApplet {
             if(controlled) {
                 if (mousePressed) {
                     if (PVector.sub(new PVector(mouseX,mouseY), origin).mag() <= moveradius*zoom) {
-                        position = new PVector(mouseX,mouseY);
+                        if(abs(mouseX-origin.x)<=zoom*width/2) {
+                            position = new PVector((mouseX - (1 - zoom) * zoompoint.x) / zoom, (mouseY - (1 - zoom) * zoompoint.y) / zoom);
+                        } else {
+
+                        }
                     } else if(PVector.sub(new PVector(mouseX,mouseY), origin).mag() <= moveradius*(float)1.1*zoom){
-                        float posangle=getangle(mouseX,mouseY);
-                        position=PVector.add(origin,PVector.mult(new PVector(cos(posangle),sin(posangle)),moveradius*sqrt(zoom)));
+                        if(abs(mouseX-origin.x)<=zoom*width/2) {
+                            float posangle = getangle(mouseX, mouseY);
+                            position = PVector.mult(PVector.add(origin, new PVector((cos(posangle) * moveradius * zoom - (1 - zoom) * zoompoint.x),
+                                    (sin(posangle) * moveradius * zoom - (1 - zoom) * zoompoint.y))), 1 / zoom);
+                        } else {
+
+                        }
                     }
                     velocity = PVector.sub(position, mouselast);
                     velocity.mult(mousevelocity);

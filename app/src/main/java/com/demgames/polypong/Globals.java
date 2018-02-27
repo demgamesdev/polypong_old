@@ -13,41 +13,31 @@ import oscP5.*;
 
 public class Globals extends Application {
 
-    /*private static Context context;
-
-    public void onCreate() {
-        super.onCreate();
-        Globals.context = getApplicationContext();
-    }
-
-    public static Context getAppContext() {
-        return Globals.context;
-    }*/
-
-
-
-    ArrayAdapter<String> arrayAdapter;
 
     private String myIpAdress;
-    String remoteIpAdress;
+    private String remoteIpAdress;
     private int myPort=12000;
 
+    //arrayadapter for updating list of listview
+    private ArrayAdapter<String> arrayAdapter;
+
     //LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
-    private List<String> ip_list = new ArrayList<String>(Arrays.asList(new String[] {}));
+    private List<String> ipAdressList = new ArrayList<String>(Arrays.asList(new String[] {}));
 
-    OscP5 oscP5;
-    NetAddress myRemoteLocation;
+    private OscP5 oscP5;
 
-    boolean connectState=false;
-    boolean readyState=false;
-    boolean settingsState=false;
-    boolean gameLaunched=false;
+    private boolean connectState=false;
+    private boolean readyState=false;
+    private boolean settingsState=false;
+    private boolean gameLaunched=false;
 
-    String numberOfBalls=null;
-    List<String> playerNames=new ArrayList<String>(Arrays.asList(new String[] {}));
+    private String numberOfBalls=null;
+    private List<String> playerNamesList=new ArrayList<String>(Arrays.asList(new String[] {}));
 
-    Thread myThread;
+    private Thread updateThread;
 
+
+    //---------------NETWORKING-------------------
 
     void setMyIpAdress(String myIpAdress_) {
         this.myIpAdress=myIpAdress_;
@@ -57,6 +47,18 @@ public class Globals extends Application {
         return(this.myIpAdress);
     }
 
+    //----------------------------------
+
+    void setRemoteIpAdress(String remoteIpAdress_) {
+        this.remoteIpAdress=remoteIpAdress_;
+    }
+
+    String getRemoteIpAdress() {
+        return(this.remoteIpAdress);
+    }
+
+    //----------------------------------
+
     void setMyPort(int myPort_) {
         this.myPort=myPort_;
     }
@@ -65,17 +67,59 @@ public class Globals extends Application {
         return(this.myPort);
     }
 
-    void setMyIpList(String[] IpAdressen_) {
-        this.ip_list=new ArrayList<String>(Arrays.asList(IpAdressen_));
+    //----------------------------------
+
+    void setConnectState(boolean connectState_) {
+        this.connectState=connectState_;
+    }
+
+    boolean getConnectState() {
+        return(this.connectState);
+    }
+
+
+
+    void setSettingsState(boolean settingsState_) {
+        this.settingsState=settingsState_;
+    }
+
+    boolean getSettingsState() {
+        return(this.settingsState);
+    }
+
+    //----------------------------------
+
+
+    void setReadyStateState(boolean readyState_) {
+        this.readyState=readyState_;
+    }
+
+    boolean getReadyState() {
+        return(this.readyState);
+    }
+
+    //----------------------------------
+
+    void setGameLaunched(boolean gameLaunched_) {
+        this.gameLaunched=gameLaunched_;
+    }
+
+    boolean getGameLaunched() {
+        return(this.gameLaunched);
+    }
+
+    //----------------------------------
+
+    void setMyIpList(String[] IpAdresses_) {
+        this.ipAdressList=new ArrayList<String>(Arrays.asList(IpAdresses_));
     }
 
     List<String> getMyIpList() {
-        return(this.ip_list);
+        return(this.ipAdressList);
     }
 
-    void setArrayAdapter(ArrayAdapter arrayAdapter_) {
-        this.arrayAdapter=arrayAdapter_;
-    }
+
+    //----------------------------------
 
     void setOscP5(OscP5 oscP5_) {
         this.oscP5=oscP5_;
@@ -85,38 +129,80 @@ public class Globals extends Application {
         return(this.oscP5);
     }
 
-    void setMyRemoteLocation(String remoteIpAdress_) {
-        this.myRemoteLocation=new NetAddress(remoteIpAdress, this.myPort);
-    }
-
-    NetAddress getMyRemoteLocation() {
-        return(this.myRemoteLocation);
-    }
-
-    void updateListView() {
-        this.arrayAdapter.notifyDataSetChanged();
-    }
-
-    void addIpTolist(String IpAdress){
-        if(!this.ip_list.contains(IpAdress)){
-            this.ip_list.add(IpAdress);
-        }
-
-        this.arrayAdapter.notifyDataSetChanged();
-    }
-
     void stopOscP5() {
         this.oscP5.stop();
     }
 
+
+
+
+    //----------------LISTVIEW------------------
+
+    void setArrayAdapter(ArrayAdapter arrayAdapter_) {
+        this.arrayAdapter=arrayAdapter_;
+    }
+
+    ArrayAdapter getArrayAdapter() {
+        return(this.arrayAdapter);
+    }
+
+
+
+
+
+    //---------------LIST MANIPULATION-------------------
+
+    void addIpTolist(String IpAdress){
+        if(!this.ipAdressList.contains(IpAdress)){
+            this.ipAdressList.add(IpAdress);
+        }
+
+        this.arrayAdapter.notifyDataSetChanged();
+    }
+
+    //----------------------------------
+
     void addPlayerNameTolist(String newPlayerName){
-        if(!this.playerNames.contains(newPlayerName)){
-            this.playerNames.add(newPlayerName);
+        if(!this.playerNamesList.contains(newPlayerName)){
+            this.playerNamesList.add(newPlayerName);
         }
     }
 
-    void setMyThread(Runnable myRunnable) {
-        myThread = new Thread(myRunnable);
+
+
+
+    //----------------THREAD------------------
+
+    void setUpdateThread(Runnable myRunnable) {
+        updateThread = new Thread(myRunnable);
+    }
+
+    Thread getUpdateThread() {
+        return(this.updateThread);
+    }
+
+    void interruptUpdateThread() {
+        this.updateThread.interrupt();
+    }
+
+    //----------------GAMEVARIABLES------------------
+
+    void setNumberOfBalls(String numberOfBalls_) {
+        this.numberOfBalls=numberOfBalls_;
+    }
+
+    String getNumberOfBalls() {
+        return(this.numberOfBalls);
+    }
+
+    //----------------------------------
+
+    void setPlayerNamesList(String[] playerNames_) {
+        this.playerNamesList=new ArrayList<String>(Arrays.asList(playerNames_));
+    }
+
+    List<String> getPlayerNamesList() {
+        return(this.playerNamesList);
     }
 }
 
