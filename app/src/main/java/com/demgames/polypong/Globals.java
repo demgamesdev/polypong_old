@@ -46,6 +46,8 @@ public class Globals extends Application {
     String numberOfBalls=null;
     List<String> playerNames=new ArrayList<String>(Arrays.asList(new String[] {}));
 
+    Thread myThread;
+
 
     void setMyIpAdress(String myIpAdress_) {
         this.myIpAdress=myIpAdress_;
@@ -103,10 +105,18 @@ public class Globals extends Application {
         this.arrayAdapter.notifyDataSetChanged();
     }
 
+    void stopOscP5() {
+        this.oscP5.stop();
+    }
+
     void addPlayerNameTolist(String newPlayerName){
         if(!this.playerNames.contains(newPlayerName)){
             this.playerNames.add(newPlayerName);
         }
+    }
+
+    void setMyThread(Runnable myRunnable) {
+        myThread = new Thread(myRunnable);
     }
 }
 

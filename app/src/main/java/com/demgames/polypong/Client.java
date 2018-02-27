@@ -77,9 +77,9 @@ public class Client extends AppCompatActivity {
                     }*/
 
                     if(globalVariables.connectState && !globalVariables.settingsState &&
-                            checkIfIp(globalVariables.getMyIpAdress())) {
+                            checkIfIp(globalVariables.getMyIpAdress()) && !globalVariables.gameLaunched) {
                         sendClientConnect();
-                    } else if(globalVariables.settingsState && globalVariables.connectState) {
+                    } else if(globalVariables.settingsState && globalVariables.connectState && !globalVariables.gameLaunched) {
                         sendClientReady();
                     }
 
@@ -102,8 +102,9 @@ public class Client extends AppCompatActivity {
             }
         };
 
-        final Thread myThread = new Thread(myRunnable);
-        myThread.start();
+        globalVariables.setMyThread(myRunnable);
+        globalVariables.myThread.start();
+
 
         /*Developer Button Listener*/
         devBtn.setOnClickListener(new View.OnClickListener() {
@@ -196,15 +197,18 @@ public class Client extends AppCompatActivity {
                 Log.d(Client.class.getSimpleName(),"oscP5 received hostready");
                 globalVariables.readyState=true;
                 if(!globalVariables.gameLaunched) {
+                    globalVariables.stopOscP5();
                     Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
                     //Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
                     startGame.putExtra("myipadress", globalVariables.getMyIpAdress());
                     startGame.putExtra("remoteipadress", globalVariables.remoteIpAdress);
                     startGame.putExtra("numberofballs", globalVariables.numberOfBalls);
                     startGame.putExtra("mode", "client");
-                    finish();
                     startActivity(startGame);
+                    //globalVariables.myThread.stop();
+                    globalVariables.stopOscP5();
                     globalVariables.gameLaunched=true;
+                    finish();
                 }
                 break;
         }
