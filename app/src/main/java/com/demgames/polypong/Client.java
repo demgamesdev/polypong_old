@@ -39,6 +39,8 @@ public class Client extends AppCompatActivity {
         final Globals globalVariables = (Globals) getApplicationContext();
         globalVariables.connectState=false;
         globalVariables.readyState=false;
+        globalVariables.settingsState=false;
+        globalVariables.gameLaunched=false;
 
         final TextView myIpTextView = (TextView) findViewById(R.id.IpAdressTextView);
         final Button devBtn = (Button) findViewById(R.id.devButton);
@@ -51,8 +53,7 @@ public class Client extends AppCompatActivity {
 
         ClientLV.setAdapter(globalVariables.arrayAdapter);
 
-        globalVariables.oscP5 = new OscP5(this, globalVariables.getMyPort());
-
+        globalVariables.setOscP5(new OscP5(this, globalVariables.getMyPort()));
         //automatically detect ip if available, create new thread for searching ip
         final Byte testByte = 0;
         Runnable myRunnable = new Runnable() {
@@ -60,14 +61,26 @@ public class Client extends AppCompatActivity {
             public void run() {
                 while (testByte == 0) {
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(2000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
-                    if(globalVariables.connectState && !globalVariables.readyState
+                    if(!checkIfIp(globalVariables.getMyIpAdress())) {
+                        globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
+                    }
+
+                    /*if(globalVariables.connectState && !globalVariables.readyState
                             && checkIfIp(globalVariables.getMyIpAdress())) {
                         sendClientConnect();
+                    } else {
+                        Log.d(Client.class.getSimpleName(),"sendClientConnect failed");
+                    }*/
+
+                    if(globalVariables.connectState && !globalVariables.settingsState &&
+                            checkIfIp(globalVariables.getMyIpAdress())) {
+                        sendClientConnect();
+                    } else if(globalVariables.settingsState && globalVariables.connectState) {
+                        sendClientReady();
                     }
 
                     myIpTextView.post(new Runnable() {
@@ -146,9 +159,11 @@ public class Client extends AppCompatActivity {
     }
 
     boolean checkIfIp(String teststring) {
-        String[] parts=teststring.split("\\.");
-        if(parts.length==4) {
-            return(true);
+        if(teststring != null) {
+            String[] parts = teststring.split("\\.");
+            if (parts.length == 4) {
+                return (true);
+            }
         }
 
         return (false);
@@ -160,45 +175,57 @@ public class Client extends AppCompatActivity {
         final Globals globalVariables=(Globals) getApplication();
         switch(theOscMessage.addrPattern()) {
             case "/hostconnect":
-                globalVariables.connectState=true;
+                Log.d(Client.class.getSimpleName(),"oscP5 received hostconnect");
                 String remoteIpAdress = theOscMessage.get(0).stringValue();
-                globalVariables.addIpTolist(remoteIpAdress);
-                globalVariables.myRemoteLocation = new NetAddress(remoteIpAdress, globalVariables.getMyPort());
-                sendClientConnect();
+                if(checkIfIp(remoteIpAdress)) {
+                    globalVariables.connectState=true;
+                    globalVariables.addIpTolist(remoteIpAdress);
+                    globalVariables.remoteIpAdress=remoteIpAdress;
+                }
+                //sendClientConnect();
                 break;
 
             case "/settings":
+                globalVariables.settingsState=true;
+                Log.d(Client.class.getSimpleName(),"oscP5 received settings");
                 //value=theOscMessage.get(0).intValue();
                 globalVariables.numberOfBalls=theOscMessage.get(0).stringValue();
-                sendClientReady();
-
                 break;
 
             case "/hostready":
+                Log.d(Client.class.getSimpleName(),"oscP5 received hostready");
                 globalVariables.readyState=true;
-                Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
-                //Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
-                startGame.putExtra("myipadress", globalVariables.getMyIpAdress());
-                startGame.putExtra("numberofballs", globalVariables.numberOfBalls);
-                startGame.putExtra("mode", "client");
-                startActivity(startGame);
-                finish();
+                if(!globalVariables.gameLaunched) {
+                    Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
+                    //Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
+                    startGame.putExtra("myipadress", globalVariables.getMyIpAdress());
+                    startGame.putExtra("remoteipadress", globalVariables.remoteIpAdress);
+                    startGame.putExtra("numberofballs", globalVariables.numberOfBalls);
+                    startGame.putExtra("mode", "client");
+                    finish();
+                    startActivity(startGame);
+                    globalVariables.gameLaunched=true;
+                }
                 break;
         }
     }
 
     void sendClientConnect() {
         Globals globalVariables = (Globals) getApplicationContext();
+        NetAddress myRemoteLocation=new NetAddress(globalVariables.remoteIpAdress,globalVariables.getMyPort());
+        Log.d(Client.class.getSimpleName(),"oscP5 send clientconnect");
         OscMessage connectMessage = new OscMessage("/clientconnect");
         connectMessage.add(globalVariables.getMyIpAdress());
-        globalVariables.oscP5.send(connectMessage, globalVariables.myRemoteLocation);
+        globalVariables.getOscP5().send(connectMessage, myRemoteLocation);
     }
 
     void sendClientReady() {
+        Log.d(Client.class.getSimpleName(),"oscP5 send clientready");
         Globals globalVariables = (Globals) getApplicationContext();
+        NetAddress myRemoteLocation=new NetAddress(globalVariables.remoteIpAdress,globalVariables.getMyPort());
         OscMessage readyMessage = new OscMessage("/clientready");
         readyMessage.add(globalVariables.getMyIpAdress());
-        globalVariables.oscP5.send(readyMessage, globalVariables.myRemoteLocation);
+        globalVariables.getOscP5().send(readyMessage, myRemoteLocation);
     }
 
 

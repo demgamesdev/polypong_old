@@ -29,6 +29,7 @@ public class Globals extends Application {
     ArrayAdapter<String> arrayAdapter;
 
     private String myIpAdress;
+    String remoteIpAdress;
     private int myPort=12000;
 
     //LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
@@ -39,6 +40,8 @@ public class Globals extends Application {
 
     boolean connectState=false;
     boolean readyState=false;
+    boolean settingsState=false;
+    boolean gameLaunched=false;
 
     String numberOfBalls=null;
     List<String> playerNames=new ArrayList<String>(Arrays.asList(new String[] {}));
@@ -70,6 +73,22 @@ public class Globals extends Application {
 
     void setArrayAdapter(ArrayAdapter arrayAdapter_) {
         this.arrayAdapter=arrayAdapter_;
+    }
+
+    void setOscP5(OscP5 oscP5_) {
+        this.oscP5=oscP5_;
+    }
+
+    OscP5 getOscP5() {
+        return(this.oscP5);
+    }
+
+    void setMyRemoteLocation(String remoteIpAdress_) {
+        this.myRemoteLocation=new NetAddress(remoteIpAdress, this.myPort);
+    }
+
+    NetAddress getMyRemoteLocation() {
+        return(this.myRemoteLocation);
     }
 
     void updateListView() {
