@@ -67,15 +67,16 @@ public class Server extends AppCompatActivity {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+
                     if(!checkIfIp(globalVariables.getMyIpAdress())) {
                         globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
                     }
 
-                    if(!globalVariables.connectState && checkIfIp(globalVariables.getMyIpAdress())) {
+                    if(!globalVariables.connectState && checkIfIp(globalVariables.getMyIpAdress()) && !globalVariables.gameLaunched) {
                         sendHostConnect();
-                    } else if(!globalVariables.settingsState && globalVariables.connectState) {
+                    } else if(!globalVariables.settingsState && globalVariables.connectState && !globalVariables.gameLaunched) {
                         sendSettings();
-                    } else if(globalVariables.readyState && globalVariables.settingsState) {
+                    } else if(globalVariables.readyState && globalVariables.settingsState && !globalVariables.gameLaunched) {
                         sendHostReady();
                     }
 
@@ -98,8 +99,9 @@ public class Server extends AppCompatActivity {
             }
         };
 
-        final Thread myThread = new Thread(myRunnable);
-        myThread.start();
+        globalVariables.setMyThread(myRunnable);
+        globalVariables.myThread.start();
+
 
         devBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,9 +244,11 @@ public class Server extends AppCompatActivity {
             startGame.putExtra("remoteipadress", globalVariables.remoteIpAdress);
             startGame.putExtra("numberofballs", globalVariables.numberOfBalls);
             startGame.putExtra("mode", "host");
-            finish();
             startActivity(startGame);
+            //globalVariables.myThread.stop();
+            globalVariables.stopOscP5();
             globalVariables.gameLaunched=true;
+            finish();
         }
     }
 }

@@ -41,6 +41,10 @@ public class Sketch extends PApplet {
 
         myRemoteLocation=new NetAddress(remoteipadress,port);
 
+        if(mode.equals("client")) {
+            myplayerscreen=1;
+        }
+
     }
     /********* VARIABLES *********/
 
@@ -107,9 +111,8 @@ public class Sketch extends PApplet {
         height0=height;
 
         if(mode.equals("client")) {
-            myplayerscreen=1;
             createBallsClient();
-        } else {
+        } else if(mode.equals("host")) {
             createBallsHost();
         }
     }
