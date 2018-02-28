@@ -29,38 +29,31 @@ import netP5.*;
 
 public class Server extends AppCompatActivity {
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
+
+        /***Decklarationen***/
 
         final Globals globalVariables = (Globals) getApplicationContext();
         globalVariables.setConnectState(false);
         globalVariables.setReadyStateState(false);
         globalVariables.setSettingsState(false);
         globalVariables.setGameLaunched(false);
-        globalVariables.setNumberOfBalls(getIntent().getExtras().getString("numberofballs"));
-
+        //globalVariables.setNumberOfBalls(getIntent().getExtras().getString("numberofballs"));  Wird bereits in Options Activity in Globals gespeichert
         globalVariables.setMyIpList(new String[] {});
 
         globalVariables.setArrayAdapter(new ArrayAdapter<String>
                 (this, android.R.layout.simple_list_item_1, globalVariables.getMyIpList()));
 
-
         globalVariables.setOscP5(new OscP5(this, globalVariables.getMyPort()));
-
-
-
 
         final Button devBtn = (Button) findViewById(R.id.devBtn);
         final TextView myIpTextView = (TextView) findViewById(R.id.IPtextView);
         final ListView ServerLV = (ListView) findViewById(R.id.serverListView);
 
         ServerLV.setAdapter(globalVariables.getArrayAdapter());
-
-
 
         //update runnable
         final Byte testByte = 0;

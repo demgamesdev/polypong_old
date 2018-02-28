@@ -32,6 +32,7 @@ public class Client extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
 
+        /***Deklarationen***/
         final Globals globalVariables = (Globals) getApplicationContext();
         globalVariables.setConnectState(false);
         globalVariables.setReadyStateState(false);
@@ -44,17 +45,11 @@ public class Client extends AppCompatActivity {
 
         globalVariables.setOscP5(new OscP5(this, globalVariables.getMyPort()));
 
-
-
-
-
         final TextView myIpTextView = (TextView) findViewById(R.id.IpAdressTextView);
         final Button devBtn = (Button) findViewById(R.id.devButton);
         final ListView ClientLV = (ListView) findViewById(R.id.ClientListView);
 
         ClientLV.setAdapter(globalVariables.getArrayAdapter());
-
-
 
 
         //automatically detect ip if available, create new thread for searching ip
@@ -120,7 +115,6 @@ public class Client extends AppCompatActivity {
                 startActivity(startGame);
             }
         });
-
 
     }
 
@@ -192,7 +186,6 @@ public class Client extends AppCompatActivity {
 
     /********* OTHER FUNCTIONS *********/
 
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -231,8 +224,8 @@ public class Client extends AppCompatActivity {
 
     boolean checkIfIp(String teststring) {
         if(teststring != null) {
-            String[] parts = teststring.split("\\.");
-            if (parts.length == 4) {
+            String[] parts = teststring.split("\\."); //String wird bei jedem Punkt gesplittet
+            if (parts.length == 4) {                        //String muss aus 4 Teilen bestehen
                 return (true);
             }
         }
