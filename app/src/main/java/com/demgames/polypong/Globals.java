@@ -13,16 +13,11 @@ import oscP5.*;
 
 public class Globals extends Application {
 
-
+    //Variablen
     private String myIpAdress;
     private String remoteIpAdress;
+    private String numberOfBalls=null;
     private int myPort=12000;
-
-    //arrayadapter for updating list of listview
-    private ArrayAdapter<String> arrayAdapter;
-
-    //LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
-    private List<String> ipAdressList = new ArrayList<String>(Arrays.asList(new String[] {}));
 
     private OscP5 oscP5;
 
@@ -31,7 +26,13 @@ public class Globals extends Application {
     private boolean settingsState=false;
     private boolean gameLaunched=false;
 
-    private String numberOfBalls=null;
+
+    //arrayadapter for updating list of listview
+    private ArrayAdapter<String> arrayAdapter;
+
+    //LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
+    private List<String> ipAdressList = new ArrayList<String>(Arrays.asList(new String[] {}));
+
     private List<String> playerNamesList=new ArrayList<String>(Arrays.asList(new String[] {}));
 
     private Thread updateThread;
@@ -148,8 +149,6 @@ public class Globals extends Application {
 
 
 
-
-
     //---------------LIST MANIPULATION-------------------
 
     void addIpTolist(String IpAdress){
@@ -157,6 +156,7 @@ public class Globals extends Application {
             this.ipAdressList.add(IpAdress);
         }
 
+        //Updatet die Liesview wenn eine neue IP Adresse gefunden wird
         this.arrayAdapter.notifyDataSetChanged();
     }
 
@@ -167,8 +167,6 @@ public class Globals extends Application {
             this.playerNamesList.add(newPlayerName);
         }
     }
-
-
 
 
     //----------------THREAD------------------

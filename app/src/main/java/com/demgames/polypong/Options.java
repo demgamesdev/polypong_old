@@ -28,11 +28,14 @@ public class Options extends AppCompatActivity {
 
         ballTextView.setText( getString(R.string.numballs) + Integer.toString(ballnum));
 
+        final Globals globalVariables = (Globals) getApplicationContext();
+
         devBtnn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent startServer = new Intent(getApplicationContext(), Server.class);
-                startServer.putExtra("numberofballs", Integer.toString(ballnum));
+                globalVariables.setNumberOfBalls(Integer.toString(ballnum));
+                //startServer.putExtra("numberofballs", Integer.toString(ballnum));
                 startActivity(startServer);
             }
         });
