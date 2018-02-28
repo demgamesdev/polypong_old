@@ -1048,6 +1048,10 @@
         "source": "C:\\Users\\Raphael\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.1.0.aar\\276675e8a29c8ddae2b72e5dfec47576\\res\\drawable-xhdpi-v4\\notification_bg_normal_pressed.9.png"
     },
     {
+        "merged": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_splashscreen.xml.flat",
+        "source": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\src\\main\\res\\layout\\activity_splashscreen.xml"
+    },
+    {
         "merged": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\build\\intermediates\\res\\merged\\debug\\layout_abc_action_menu_item_layout.xml.flat",
         "source": "C:\\Users\\Raphael\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\318149fa7b810fd1137e4d1c56a12d6b\\res\\layout\\abc_action_menu_item_layout.xml"
     },
@@ -1118,6 +1122,10 @@
     {
         "merged": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\build\\intermediates\\res\\merged\\debug\\color_abc_tint_btn_checkable.xml.flat",
         "source": "C:\\Users\\Raphael\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\318149fa7b810fd1137e4d1c56a12d6b\\res\\color\\abc_tint_btn_checkable.xml"
+    },
+    {
+        "merged": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\build\\intermediates\\res\\merged\\debug\\raw_splash_sound.mp3.flat",
+        "source": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\src\\main\\res\\raw\\splash_sound.mp3"
     },
     {
         "merged": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\build\\intermediates\\res\\merged\\debug\\anim_design_bottom_sheet_slide_in.xml.flat",
@@ -1338,6 +1346,10 @@
     {
         "merged": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\build\\intermediates\\res\\merged\\debug\\layout_notification_template_media.xml.flat",
         "source": "C:\\Users\\Raphael\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-26.1.0.aar\\7666dbcd1dae33570686b1c360ead68a\\res\\layout\\notification_template_media.xml"
+    },
+    {
+        "merged": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\build\\intermediates\\res\\merged\\debug\\anim_transition.xml.flat",
+        "source": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\src\\main\\res\\anim\\transition.xml"
     },
     {
         "merged": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4_abc_ic_star_black_36dp.png.flat",

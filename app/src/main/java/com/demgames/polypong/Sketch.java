@@ -128,7 +128,7 @@ public class Sketch extends PApplet {
                 showGameScreen();
                 break;
             case 2:
-                showGameOverScreen();
+                //showGameOverScreen();
                 break;
         }
 
@@ -143,7 +143,7 @@ public class Sketch extends PApplet {
     void showGameScreen() {
         //display and check buttons for pressing
         background(0);
-        if (gravbutton.pressed()) {
+        /*if (gravbutton.pressed()) {
             grav=(float)0.7;
         } else {
             grav=0;
@@ -157,10 +157,10 @@ public class Sketch extends PApplet {
             zoom=(float)0.5;
         } else {
             zoom=1;
-        }
+        }*/
 
 
-        checkZoom("out");
+        //checkZoom("out");
         fill(255);
         rect(width/2,0,width,2*height0);
         float linethickness=height/50;
@@ -169,12 +169,12 @@ public class Sketch extends PApplet {
         textMode(CORNER);
         fill(0);
         text(str(parseInt(frameRate)),width*(float)0.9,height*(float)0.05);
-        //checkZoom("in");
-        gravbutton.display();
+        checkZoom("in");
+        //gravbutton.display();
 
-        attractbutton.display();
+        //attractbutton.display();
 
-        zoombutton.display();
+        //zoombutton.display();
 
         //checkZoom("out");
 

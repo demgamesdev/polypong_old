@@ -42,6 +42,7 @@ public class Options extends AppCompatActivity {
             public void onClick(View view) {
                 Intent startServer = new Intent(getApplicationContext(), Server.class);
                 globalVariables.setNumberOfBalls(Integer.toString(ballnum));
+                Log.d(TAG, "Anzahl der bälle: "+ globalVariables.getNumberOfBalls());
                 //startServer.putExtra("numberofballs", Integer.toString(ballnum));
                 startActivity(startServer);
             }
