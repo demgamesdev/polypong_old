@@ -1,6 +1,8 @@
 package com.demgames.polypong;
 
 import android.app.Application;
+import android.nfc.Tag;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.content.Context;
 
@@ -18,6 +20,7 @@ public class Globals extends Application {
     private String remoteIpAdress;
     private String numberOfBalls=null;
     private int myPort=12000;
+    private float friction=(float)0.0;
 
     private OscP5 oscP5;
 
@@ -27,6 +30,8 @@ public class Globals extends Application {
     private boolean gameLaunched=false;
     private boolean attraction=false;
     private boolean gravity=false;
+
+    private static final String TAG = "Globals";
 
 
     //arrayadapter for updating list of listview
@@ -157,9 +162,9 @@ public class Globals extends Application {
         if(!this.ipAdressList.contains(IpAdress)){
             this.ipAdressList.add(IpAdress);
         }
-
+        updateList();
         //Updatet die Liesview wenn eine neue IP Adresse gefunden wird
-        this.arrayAdapter.notifyDataSetChanged();
+
     }
 
     //----------------------------------
@@ -168,6 +173,11 @@ public class Globals extends Application {
         if(!this.playerNamesList.contains(newPlayerName)){
             this.playerNamesList.add(newPlayerName);
         }
+    }
+
+    void updateList(){
+        this.arrayAdapter.notifyDataSetChanged();
+        Log.d(TAG, "addIpTolist: IP wurde hinzugefügt++++++++++++++++++++++++++++++++++++++++++++");
     }
 
 
@@ -224,6 +234,14 @@ public class Globals extends Application {
 
     Boolean getGravity() {
         return(this.gravity);
+    }
+
+    void setFriction(Float friction_) {
+        this.friction=friction_;
+    }
+
+    Float getFriction() {
+        return(this.friction);
     }
 }
 

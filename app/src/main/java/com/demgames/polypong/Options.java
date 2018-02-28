@@ -19,6 +19,7 @@ public class Options extends AppCompatActivity {
 
     private static final String TAG = "MyActivity";
     int ballnum = 1;
+    float fric;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,10 @@ public class Options extends AppCompatActivity {
 
         final Button devBtnn = (Button) findViewById(R.id.button12);
         final SeekBar ballSeekBar = (SeekBar) findViewById(R.id.seekBar2);
+        final SeekBar frictionSeekBar = (SeekBar) findViewById(R.id.frictionSeekBar);
+
         final TextView ballTextView = (TextView) findViewById(R.id.ballll);
+        final TextView frictionTextView = (TextView) findViewById(R.id.frictionTextView);
 
         final CheckBox gravity = (CheckBox) findViewById(R.id.gravitycheckBox);
         final CheckBox attraction = (CheckBox) findViewById(R.id.attractcheckBox);
@@ -49,6 +53,7 @@ public class Options extends AppCompatActivity {
                 Log.d(TAG, "Anzahl der bälle: "+ globalVariables.getNumberOfBalls());
                 globalVariables.setGravity(gravity.isChecked());
                 globalVariables.setAttraction(attraction.isChecked());
+                globalVariables.setFriction(fric);
 
                 /***Server Activity starten***/
                 Intent startServer = new Intent(getApplicationContext(), Server.class);
@@ -64,6 +69,24 @@ public class Options extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 ballnum = i+1;
                 ballTextView.setText(getString(R.string.numballs) + Integer.toString(ballnum));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        frictionSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                fric = ((float)i/10000)*2;
+                frictionTextView.setText(Float.toString(fric) + " Reibung");
             }
 
             @Override

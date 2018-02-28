@@ -112,21 +112,6 @@ public class Server extends AppCompatActivity {
         globalVariables.getUpdateThread().start();
 
 
-        //developerbutton clickevent
-        devBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendHostReady();
-                Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
-                startGame.putExtra("myipadress", globalVariables.getMyIpAdress());
-                startGame.putExtra("numberofballs", globalVariables.getNumberOfBalls());
-                startGame.putExtra("mode", "host");
-                startActivity(startGame);
-                finish();
-            }
-        });
-
-
         //listview clickevent
         ServerLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -194,10 +179,12 @@ public class Server extends AppCompatActivity {
         NetAddress myRemoteLocation=new NetAddress(globalVariables.getRemoteIpAdress(),globalVariables.getMyPort());
         OscMessage settingsMessage = new OscMessage("/settings");
         settingsMessage.add(globalVariables.getNumberOfBalls());
+        settingsMessage.add(globalVariables.getFriction());
         globalVariables.getOscP5().send(settingsMessage, myRemoteLocation);
 
     }
 
+    //Spiel wird gestartet
     void sendHostReady() {
         Log.d(Server.class.getSimpleName(),"oscP5 send hostready");
         Globals globalVariables = (Globals) getApplicationContext();

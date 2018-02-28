@@ -78,6 +78,7 @@ public class Client extends AppCompatActivity {
                             sendClientReady();
                         }
 
+                        //Eigene IP-Adresse
                         myIpTextView.post(new Runnable() {
                             @Override
                             public void run() {
@@ -109,8 +110,8 @@ public class Client extends AppCompatActivity {
         globalVariables.getUpdateThread().start();
 
 
-        /*Developer Button Listener*/
-        devBtn.setOnClickListener(new View.OnClickListener() {
+        /***Developer Button Listener***/
+        /*devBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String balls = "20";
@@ -121,7 +122,7 @@ public class Client extends AppCompatActivity {
                 startGame.putExtra("mode", "client");
                 startActivity(startGame);
             }
-        });
+        });*/
 
     }
 
@@ -147,6 +148,8 @@ public class Client extends AppCompatActivity {
                 Log.d(Client.class.getSimpleName(),"oscP5 received settings");
                 //value=theOscMessage.get(0).intValue();
                 globalVariables.setNumberOfBalls(theOscMessage.get(0).stringValue());
+                globalVariables.setFriction(theOscMessage.get(1).floatValue());
+                Log.d(Client.class.getSimpleName(),"+++++++++++++Friction="+Float.toString(globalVariables.getFriction()));
                 break;
 
             case "/hostready":

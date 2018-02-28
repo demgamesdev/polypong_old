@@ -1,5 +1,6 @@
 package com.demgames.polypong;
 
+import android.app.Activity;
 import android.content.Context;
 
 //importing processing libraries
@@ -10,7 +11,6 @@ import processing.data.IntList;
 import processing.event.MouseEvent;
 import processing.event.KeyEvent;
 //test
-
 
 public class Sketch extends PApplet {
     //Globals globalVariables = (Globals) getApplicationContext;
@@ -27,15 +27,18 @@ public class Sketch extends PApplet {
     String mode;
     float zoom=1;
     int myplayerscreen=0;
+    Float frict;
+
 
     //constructor which is called in gamelaunch
 
-    Sketch(String mode_, String myipadress_,String remoteipadress_, String numberofballs_) {
+    Sketch(String mode_, String myipadress_,String remoteipadress_, String numberofballs_, Float friction_) {
         mode=mode_;
         myipadress=myipadress_;
         remoteipadress=remoteipadress_;
         numberofballs=Integer.parseInt(numberofballs_);
         println(remoteipadress);
+        frict=friction_;
 
         myRemoteLocation=new NetAddress(remoteipadress,port);
 
@@ -47,7 +50,7 @@ public class Sketch extends PApplet {
     /********* VARIABLES *********/
 
     //declare game variables
-    float frict=(float)0.02;
+    //float frict=(float)0.0;
     float batfrict=(float)0.05;
     float grav;
     float inelast=(float)0.6;
