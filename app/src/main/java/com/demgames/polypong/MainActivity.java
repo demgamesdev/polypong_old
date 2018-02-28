@@ -36,9 +36,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //ToDo Splash screen mit Pixellook integrieren?
-        //ToDo Aufteilung des Menüs, Button Optik
-        //ToDo eventuell nur Portrait modus für menu einstellen
 
         //Vollbildmodus
         requestWindowFeature(Window.FEATURE_NO_TITLE);

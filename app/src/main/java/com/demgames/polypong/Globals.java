@@ -25,6 +25,8 @@ public class Globals extends Application {
     private boolean readyState=false;
     private boolean settingsState=false;
     private boolean gameLaunched=false;
+    private boolean attraction=false;
+    private boolean gravity=false;
 
 
     //arrayadapter for updating list of listview
@@ -193,6 +195,7 @@ public class Globals extends Application {
         return(this.numberOfBalls);
     }
 
+
     //----------------------------------
 
     void setPlayerNamesList(String[] playerNames_) {
@@ -201,6 +204,26 @@ public class Globals extends Application {
 
     List<String> getPlayerNamesList() {
         return(this.playerNamesList);
+    }
+
+    //----------------------------------
+
+    void setAttraction(Boolean attraction_) {
+        this.attraction=attraction_;
+    }
+
+    Boolean getAttraction() {
+        return(this.attraction);
+    }
+
+    //----------------------------------
+
+    void setGravity(Boolean gravity_) {
+        this.gravity=gravity_;
+    }
+
+    Boolean getGravity() {
+        return(this.gravity);
     }
 }
 

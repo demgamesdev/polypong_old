@@ -8,6 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -25,8 +26,11 @@ public class Splashscreen extends AppCompatActivity {
         setContentView(R.layout.activity_splashscreen);
 
         TextView DemGames = (TextView) findViewById(R.id.SplashLogo);
+        ImageView Logo = (ImageView) findViewById(R.id.splashLogoImage);
+
         Animation transition = AnimationUtils.loadAnimation(this,R.anim.transition);
         DemGames.startAnimation(transition);
+        Logo.startAnimation(transition);
 
         final MediaPlayer splashSound = MediaPlayer.create(this, R.raw.splash_sound);
         splashSound.start();

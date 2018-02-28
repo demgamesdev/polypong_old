@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -33,6 +34,9 @@ public class Options extends AppCompatActivity {
         final SeekBar ballSeekBar = (SeekBar) findViewById(R.id.seekBar2);
         final TextView ballTextView = (TextView) findViewById(R.id.ballll);
 
+        final CheckBox gravity = (CheckBox) findViewById(R.id.gravitycheckBox);
+        final CheckBox attraction = (CheckBox) findViewById(R.id.attractcheckBox);
+
         ballTextView.setText( getString(R.string.numballs) + Integer.toString(ballnum));
 
         final Globals globalVariables = (Globals) getApplicationContext();
@@ -40,10 +44,14 @@ public class Options extends AppCompatActivity {
         devBtnn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent startServer = new Intent(getApplicationContext(), Server.class);
+                /***Optionen an Global Übergeben'**/
                 globalVariables.setNumberOfBalls(Integer.toString(ballnum));
                 Log.d(TAG, "Anzahl der bälle: "+ globalVariables.getNumberOfBalls());
-                //startServer.putExtra("numberofballs", Integer.toString(ballnum));
+                globalVariables.setGravity(gravity.isChecked());
+                globalVariables.setAttraction(attraction.isChecked());
+
+                /***Server Activity starten***/
+                Intent startServer = new Intent(getApplicationContext(), Server.class);
                 startActivity(startServer);
             }
         });
