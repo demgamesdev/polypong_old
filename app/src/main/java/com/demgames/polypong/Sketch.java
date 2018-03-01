@@ -13,6 +13,10 @@ import processing.event.KeyEvent;
 //test
 
 public class Sketch extends PApplet {
+
+    Activity myActivity;
+    Context myContext;
+
     //Globals globalVariables = (Globals) getApplicationContext;
 
     //declare oscp5 object for sending and receiving messages
@@ -29,60 +33,54 @@ public class Sketch extends PApplet {
     int myplayerscreen=0;
     Float frict;
 
-
-    //constructor which is called in gamelaunch
-
-    Sketch(String mode_, String myipadress_,String remoteipadress_, String numberofballs_, Float friction_) {
-        mode=mode_;
-        myipadress=myipadress_;
-        remoteipadress=remoteipadress_;
-        numberofballs=Integer.parseInt(numberofballs_);
-        println(remoteipadress);
-        frict=friction_;
-
-        myRemoteLocation=new NetAddress(remoteipadress,port);
-
-        if(mode.equals("client")) {
-            myplayerscreen=1;
-        }
-
-    }
     /********* VARIABLES *********/
 
     //declare game variables
-    //float frict=(float)0.0;
     float batfrict=(float)0.05;
-    float grav;
+    float gravityMag=(float)0.6;
+    float attractionMag=200;
     float inelast=(float)0.6;
     float ballspring=3;
     float batspring=6;
     float mousevelocity=1;
-    float mouseattraction;//200;
-    float amp=20;
+
     float width0,height0;
 
-    int value=255;
+    boolean gravityState;
+    boolean attractionState;
+
     int framecounter=0;
     int gameScreen=1;
 
     int numberofballs;
 
-    IntList ballstocompute;
-
     //define pvector of last touch event
     PVector mouselast=new PVector(0,0);
     PVector zoompoint;
-    PVector zoomoffset=new PVector(0,0);
     Bat mybat;
     Bat otherbat;
     //declare array of balls and buttons
     Ball[] balls;
     Button gravbutton,attractbutton,zoombutton;
 
+
+    //constructor which is called in gamelaunch
+
+    Sketch(String mode_, String myipadress_,String remoteipadress_, String numberofballs_, Float friction_) {
+
+        mode=mode_;
+
+
+        if(mode.equals("client")) {
+            myplayerscreen=1;
+        }
+
+    }
+
     //set size of canvas
     public void settings() {
         fullScreen();
-        //smooth();
+        smooth();
         //frameRate(60);
 
     }
@@ -90,6 +88,23 @@ public class Sketch extends PApplet {
     public void setup() {
 
         frameRate(60);
+
+        myActivity=this.getActivity();
+        myContext = myActivity.getApplicationContext();
+        Globals globalVariables = (Globals) myContext;
+
+        myipadress=globalVariables.getMyIpAdress();
+        remoteipadress=globalVariables.getRemoteIpAdress();
+
+        numberofballs=Integer.parseInt(globalVariables.getNumberOfBalls());
+        println(remoteipadress);
+        frict=globalVariables.getFriction();
+
+        gravityState=globalVariables.getGravity();
+        attractionState=globalVariables.getAttraction();
+
+        myRemoteLocation=new NetAddress(remoteipadress,port);
+
         //initialize oscp5 object for sending and receiving messages
         oscP5 = new OscP5(this,port);
 
@@ -102,20 +117,21 @@ public class Sketch extends PApplet {
         otherbat=new Bat(width/2,-height,width/4,height/25,true,(myplayerscreen+1)%2);
 
         //initialize buttons
-        gravbutton = new Button("Gravity",width/3,height/8,width/3,height/15,false);
+        /*gravbutton = new Button("Gravity",width/3,height/8,width/3,height/15,false);
         attractbutton = new Button("Attract",2*width/3,height/8,width/3,height/15,false);
-        zoombutton=new Button("Zoom",width/2,height/4,width/3,height/15,false);
+        zoombutton=new Button("Zoom",width/2,height/4,width/3,height/15,false);*/
 
+        //initialize zoompoint
         zoompoint=new PVector(width/2,height);
-
-        width0=width;
-        height0=height;
 
         if(mode.equals("client")) {
             createBallsClient();
         } else if(mode.equals("host")) {
             createBallsHost();
         }
+
+        width0=width;
+        height0=height;
     }
 
     //loop for drawing
@@ -196,8 +212,8 @@ public class Sketch extends PApplet {
                 ball.checkPlayerScreenChange();
                 ball.checkBallCollision();
                 ball.checkExternalForce();
-                ball.checkBatCollision(mybat);
                 ball.checkBoundaryCollision();
+                ball.checkBatCollision(mybat);
             }
         }
         for (Ball ball : balls) {
@@ -213,16 +229,6 @@ public class Sketch extends PApplet {
         //update mouselast
         if (mousePressed) {
             mouselast=new PVector(mouseX,mouseY);
-        }
-    }
-
-    void showMirrorScreen() {
-        mybat.move();
-        mybat.display();
-
-        for (Ball ball : balls) {
-            ball.checkPlayerScreenChange();
-            ball.display();
         }
     }
 
@@ -275,9 +281,9 @@ public class Sketch extends PApplet {
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
         super.mouseReleased(mouseEvent);
-        gravbutton.flip=true;
+        /*gravbutton.flip=true;
         attractbutton.flip=true;
-        zoombutton.flip=true;
+        zoombutton.flip=true;*/
     }
 
     /********* SENDING FUNCTIONS *********/
@@ -318,14 +324,14 @@ public class Sketch extends PApplet {
 
         //balls[0]=new Ball(bat.origin.x,bat.origin.y,0,0,width/20,false,0,0);
         for(int i=0;i<balls.length;i++) {
-            if(i%2==0) {
+            /*if(i%2==0) {
                 balls[i]=new Ball(mybat.origin.x,mybat.origin.y-mybat.moveradius,0,0,width/30,false,i,0);
 
             } else {
                 balls[i]=new Ball(mybat.origin.x,-mybat.origin.y+mybat.moveradius,0,0,width/30,false,i,1);
-            }
+            }*/
 
-            //balls[i] = new Ball(random((float) (width * 0.1), (float) (width * 0.9)), random((float) (height * 0.1), (float) (height * 0.5)), random(-amp, amp), random(-amp, amp), random(width/100, width/50), false, i, 0);
+            balls[i] = new Ball(random((float) (width * 0.1), (float) (width * 0.9)), random((float) (height * 0.1), (float) (height * 0.5)), 0,0, width/30, false, i, 0);
         }
     }
 
@@ -334,14 +340,14 @@ public class Sketch extends PApplet {
 
         //balls[0]=new Ball(bat.origin.x,bat.origin.y,0,0,width/20,false,0,0);
         for(int i=0;i<balls.length;i++) {
-            if(i%2==0) {
+            /*if(i%2==0) {
                 balls[i]=new Ball(mybat.origin.x,-mybat.origin.y+mybat.moveradius,0,0,width/30,false,i,0);
 
             } else {
                 balls[i]=new Ball(mybat.origin.x,mybat.origin.y-mybat.moveradius,0,0,width/30,false,i,1);
-            }
+            }*/
 
-            //balls[i] = new Ball(random((float) (width * 0.1), (float) (width * 0.9)), random((float) (height * 0.1), (float) (height * 0.5)), random(-amp, amp), random(-amp, amp), random(width/100, width/50), false, i, 0);
+            balls[i] = new Ball(mybat.origin.x, -mybat.origin.x+mybat.moveradius,0, 0, width/30, false, i, 0);
         }
     }
 
@@ -462,18 +468,18 @@ public class Sketch extends PApplet {
 
         //check for collision with other balls and push away like a spring
         void checkBallCollision() {
-            PVector distanceV;
+            PVector relPos;
             float dist;
             float mindist;
             for (int i=0;i<balls.length;i++) {
                 if (i != ballnumber) {
-                    distanceV = PVector.sub(balls[i].position, position);
-                    dist = distanceV.mag();
+                    relPos = PVector.sub(balls[i].position, position);
+                    dist = relPos.mag();
 
                     mindist = radius + balls[i].radius;
 
                     if (dist < mindist) {
-                        PVector equil = PVector.add(position, PVector.mult(distanceV, mindist / dist));
+                        PVector equil = PVector.add(position, PVector.mult(relPos, mindist / dist));
                         velocity.add(PVector.mult(PVector.sub(balls[i].position, equil), ballspring/m));
                         velocity.mult(inelast);
                     }
@@ -484,58 +490,67 @@ public class Sketch extends PApplet {
 
         //check for collision with Bat thebat and again behave like a spring
         void checkBatCollision(Bat thebat) {
-            PVector distanceV=PVector.sub(position,thebat.position);
-            float dist =distanceV.mag();
+            PVector relPosition=PVector.sub(position,thebat.position);
+            PVector relVelocity=PVector.sub(velocity,thebat.velocity);
+            float dist =relPosition.mag();
             //distanceV.mult(1/dist);
-            float positionparallel=PVector.dot(thebat.orparallel,distanceV);
-            float positionnormal=PVector.dot(thebat.ornormal,distanceV);
+            float positionparallel=PVector.dot(thebat.orparallel,relPosition);
+            float positionnormal=PVector.dot(thebat.ornormal,relPosition);
             //distanceV.mult(1/dist);
 
             //print("projections:", positionparallel,positionnormal);
-            float velocityparallel=PVector.dot(thebat.orparallel,velocity);
-            float velocitynormal=PVector.dot(thebat.ornormal,velocity);
+            float velocityparallel=PVector.dot(thebat.orparallel,relVelocity);
+            float velocitynormal=PVector.dot(thebat.ornormal,relVelocity);
 
-            float factor=(float)2;
-            float part=(float)0.95;
+            float factor=(float)10;
+            float part=(float)0.9;
 
             //print("------");
-            if(abs(positionparallel)<(thebat.wid/2+radius)*part) {
+            if(abs(positionparallel+velocityparallel)<(thebat.wid/2+radius) ) {
                 //println("parallel fit");
                 //upper side
-                if(positionnormal>=0 && positionnormal<thebat.hei/2+radius) {
+                if(positionnormal>0 && positionnormal+velocitynormal<=(thebat.hei/2+radius)*part) {
                     //println("up");
 
-                    PVector normalforce = PVector.mult(thebat.ornormal, (thebat.hei / 2 + radius - positionnormal)*batspring/m);
+                    PVector normalforce = PVector.mult(thebat.ornormal, (thebat.hei / 2 + radius - positionnormal)*batspring/m*factor);
                     velocity.add(normalforce);
                     velocity.add(PVector.mult(thebat.ornormal,PVector.dot(thebat.ornormal,thebat.velocity)));
-                    velocity.mult(inelast);
+
+                    //velocity=PVector.add(PVector.mult(thebat.orparallel,velocityparallel),PVector.mult(thebat.ornormal,-velocitynormal));
+                    velocity.mult(inelast/factor);
 
                     //lower side
-                } else if(positionnormal<0 && positionnormal>-(thebat.hei/2+radius)) {
+                } else if(positionnormal<0 && positionnormal+velocitynormal>=-(thebat.hei/2+radius)*part) {
 
                     //println("down");
-                    PVector normalforce = PVector.mult(thebat.ornormal, -(thebat.hei / 2 + radius + positionnormal) * batspring/m);
+                    PVector normalforce = PVector.mult(thebat.ornormal, -(thebat.hei / 2 + radius + positionnormal) * batspring/m*factor);
                     velocity.add(normalforce);
                     velocity.add(PVector.mult(thebat.ornormal,PVector.dot(thebat.ornormal,thebat.velocity)));
-                    velocity.mult(inelast);
+
+                    //velocity=PVector.add(PVector.mult(thebat.orparallel,velocityparallel),PVector.mult(thebat.ornormal,-velocitynormal));
+                    velocity.mult(inelast/factor);
                 }
-            } else if(abs(positionnormal)<(thebat.hei/2+radius)*part) {
+            } else if(abs(positionnormal+velocitynormal)<(thebat.hei/2+radius)) {
                 //println("normal fit");
                 //right side
-                if(positionparallel>=0 && positionparallel<thebat.wid/2+radius) {
+                if(positionparallel>0 && positionparallel+velocityparallel<=(thebat.wid/2+radius)*part) {
                     //println("right");
-                    PVector parallelforce = PVector.mult(thebat.orparallel, (thebat.wid/2+radius-positionparallel) *batspring/m);
+                    PVector parallelforce = PVector.mult(thebat.orparallel, (thebat.wid/2+radius-positionparallel) *batspring/m*factor);
                     velocity.add(parallelforce);
                     velocity.add(PVector.mult(thebat.orparallel,PVector.dot(thebat.orparallel,thebat.velocity)));
-                    velocity.mult(inelast);
+
+                    //velocity=PVector.add(PVector.mult(thebat.orparallel,-velocityparallel),PVector.mult(thebat.ornormal,velocitynormal));
+                    velocity.mult(inelast/factor);
                     //left side
-                } else if(positionparallel<0 && positionparallel>-(thebat.wid/2+radius)) {
+                } else if(positionparallel<0 && positionparallel+velocityparallel>=-(thebat.wid/2+radius)*part) {
 
                     //println("left");
-                    PVector parallelforce = PVector.mult(thebat.orparallel, -(thebat.wid/2+radius+positionparallel) *batspring/m);
+                    PVector parallelforce = PVector.mult(thebat.orparallel, -(thebat.wid/2+radius+positionparallel) *batspring/m*factor);
                     velocity.add(parallelforce);
                     velocity.add(PVector.mult(thebat.orparallel,PVector.dot(thebat.orparallel,thebat.velocity)));
-                    velocity.mult(inelast);
+
+                    //velocity=PVector.add(PVector.mult(thebat.orparallel,-velocityparallel),PVector.mult(thebat.ornormal,velocitynormal));
+                    velocity.mult(inelast/factor);
 
                 }
             } /*else if(dist<sqrt(thebat.wid*thebat.wid+thebat.hei*thebat.hei)/2){
@@ -554,15 +569,19 @@ public class Sketch extends PApplet {
 
         //add external force such as gravity, mouse attraction and friction
         void checkExternalForce() {
-            velocity.add(new PVector(0,grav));
-            if (mousePressed) {
-                //println("pressed");
-                PVector mousepos=new PVector(mouseX,mouseY);
-                PVector distanceV=PVector.sub(mousepos,position);
-                float dist=distanceV.mag();
-                velocity.add(PVector.mult(distanceV,mouseattraction/pow(dist,2)));
-            }
+            if (gravityState) {
+                velocity.add(new PVector(0, gravityMag));
 
+            }
+            if(attractionState) {
+                if (mousePressed) {
+                    //println("pressed");
+                    PVector mousepos = new PVector(mouseX, mouseY);
+                    PVector distanceV = PVector.sub(mousepos, position);
+                    float dist = distanceV.mag();
+                    velocity.add(PVector.mult(distanceV, attractionMag / pow(dist, 2)));
+                }
+            }
             velocity.add(PVector.mult(velocity,-frict/m));
         }
 
