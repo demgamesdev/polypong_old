@@ -63,16 +63,13 @@ public class Client extends AppCompatActivity {
 
 
         //automatically detect ip if available, create new thread for searching ip
-        final Byte testByte = 0;
         Runnable updateRunnable = new Runnable() {
             @Override
             public void run() {
                 try {
                     while(!Thread.currentThread().isInterrupted()) {
                         Thread.sleep(1000);
-                        if(!checkIfIp(globalVariables.getMyIpAdress())) {
-                            globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
-                        }
+                        globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
 
                         if(globalVariables.getConnectState() && !globalVariables.getSettingsState() &&
                                 checkIfIp(globalVariables.getMyIpAdress())) {

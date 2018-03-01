@@ -63,7 +63,6 @@ public class Server extends AppCompatActivity {
         ServerLV.setAdapter(globalVariables.getArrayAdapter());
 
         //update runnable
-        final Byte testByte = 0;
         Runnable updateRunnable = new Runnable() {
             @Override
             public void run() {
@@ -71,9 +70,7 @@ public class Server extends AppCompatActivity {
                     while(!Thread.currentThread().isInterrupted()) {
 
                         Thread.sleep(1000);
-                        if(!checkIfIp(globalVariables.getMyIpAdress())) {
-                            globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
-                        }
+                        globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
 
                         if(!globalVariables.getConnectState() && checkIfIp(globalVariables.getMyIpAdress())) {
                             sendHostConnect();
@@ -228,7 +225,8 @@ public class Server extends AppCompatActivity {
             ipAddressString = InetAddress.getByAddress(ipByteArray).getHostAddress();
         } catch (UnknownHostException ex) {
             Log.e("WIFIIP", "Unable to get host address.");
-            ipAddressString = null;
+            //ipAddressString = null;
+            ipAddressString = "192.168.43.1";
         }
 
         return ipAddressString;
