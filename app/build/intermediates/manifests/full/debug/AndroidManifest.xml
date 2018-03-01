@@ -10,8 +10,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
+        android:name="com.demgames.polypong.Globals"
         android:allowBackup="true"
         android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,7 +23,7 @@
         android:testOnly="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.demgames.polypong.MainActivity"
+            android:name="com.demgames.polypong.Splashscreen"
             android:configChanges="orientation"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -31,7 +33,24 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.demgames.polypong.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.demgames.polypong.gamelaunch"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.demgames.polypong.Client"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.demgames.polypong.Server"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.demgames.polypong.Options"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

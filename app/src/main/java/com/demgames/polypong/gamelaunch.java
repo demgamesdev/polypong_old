@@ -16,10 +16,10 @@ import processing.core.PApplet;
 
 public class gamelaunch extends AppCompatActivity {
     private PApplet sketch;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final Globals globalVariables = (Globals) getApplicationContext();
 
         FrameLayout frame = new FrameLayout(this);
         frame.setId(CompatUtils.getUniqueViewId());
@@ -28,9 +28,8 @@ public class gamelaunch extends AppCompatActivity {
 
 
         sketch = new Sketch(getIntent().getExtras().getString("mode"),
-                getIntent().getExtras().getString("myipadress"),
-                getIntent().getExtras().getString("hostipadress"),
-                getIntent().getExtras().getString("ballnumber"));
+                getIntent().getExtras().getString("myipadress"),getIntent().getExtras().getString("remoteipadress"),
+                getIntent().getExtras().getString("numberofballs"), globalVariables.getFriction());
         PFragment fragment = new PFragment(sketch);
         fragment.setView(frame, this);
 

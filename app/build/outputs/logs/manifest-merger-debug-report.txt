@@ -1,170 +1,229 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-30:12
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-30:12
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-30:12
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-30:12
-MERGED from [com.android.support:appcompat-v7:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7a00dfecbb14092577dfb777f2ee8aed/AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /home/paty/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/4a943412895040cd88c7c1f30901ad0d/AndroidManifest.xml:2:1-11:12
-MERGED from [com.android.support:animated-vector-drawable:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-26.1.0.aar/b72fcd4ebae983d7305a3bb840ebb5e6/AndroidManifest.xml:17:1-28:12
-MERGED from [com.android.support:support-vector-drawable:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-26.1.0.aar/8c5f93112df90db2a614b2bc3dc4ef66/AndroidManifest.xml:17:1-28:12
-MERGED from [com.android.support:support-v4:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-v4-26.1.0.aar/5892417d6bac01f0d71e6cee34b7497f/AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-media-compat:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/ce90853a15d9e24e597cadfa679b05b7/AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-fragment:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-fragment-26.1.0.aar/aadb5b06d3d97866f6bbb0528a02a779/AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-core-utils:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-core-utils-26.1.0.aar/12b16a80fb86419ad28f7e53b46fa6c1/AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-core-ui:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-core-ui-26.1.0.aar/133a5a015377b2ba1ea7e65f3198afac/AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-compat:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/d9b424383f87211e32bd35dece0a08e9/AndroidManifest.xml:17:1-31:12
-MERGED from [android.arch.lifecycle:runtime:1.0.0] /home/paty/.gradle/caches/transforms-1/files-1.1/runtime-1.0.0.aar/daeb11f24b8d6a5fb5991d5472467da0/AndroidManifest.xml:17:1-30:12
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-30:12
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-30:12
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-30:12
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-46:12
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-46:12
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-46:12
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-46:12
+MERGED from [com.android.support:design:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\design-26.1.0.aar\3f13238bcc321e4498dacda346521ac2\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.1.0.aar\318149fa7b810fd1137e4d1c56a12d6b\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\8b8c06ff1fddc293b03498b9111727a9\AndroidManifest.xml:2:1-11:12
+MERGED from [com.android.support:animated-vector-drawable:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.1.0.aar\cf81fcc0b52e93a63d33a6bdfcccc20f\AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:support-vector-drawable:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-26.1.0.aar\36615bc9e61415bc8c9aa5370caefdf8\AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:recyclerview-v7:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-26.1.0.aar\525c24fd6e579b9844d242c61545ed61\AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:transition:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\transition-26.1.0.aar\d5c87703dc807461023bbf1b3ec021a0\AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:support-v4:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-v4-26.1.0.aar\398e14a8f44c2a65367a4dd328b0203b\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-media-compat:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.1.0.aar\7666dbcd1dae33570686b1c360ead68a\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-fragment:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-fragment-26.1.0.aar\b43cc14e4a78574c5c87a989ed17ee14\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-core-utils:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-core-utils-26.1.0.aar\fb4be8e6a032b27872faf817efdd2df2\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-core-ui:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.1.0.aar\fb106b9695026c86a921b15c2beb9568\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-compat:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-compat-26.1.0.aar\276675e8a29c8ddae2b72e5dfec47576\AndroidManifest.xml:17:1-31:12
+MERGED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0.aar\008478e67a790bd0b8a4be5420282c99\AndroidManifest.xml:17:1-30:12
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-46:12
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-46:12
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-46:12
 	package
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:3:5-36
-		INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
-		INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:3:5-36
+		INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-30:12
-		INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
+		INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-46:12
+		INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
 	android:versionCode
-		INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:1-30:12
-		INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
+		INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:1-46:12
+		INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:2:11-69
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:2:11-69
 uses-permission#android.permission.INTERNET
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:5:5-67
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:5:5-67
 	android:name
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:5:22-64
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:5:22-64
 uses-permission#android.permission.ACCESS_WIFI_STATE
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:6:5-76
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:6:5-76
 	android:name
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:6:22-73
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:6:22-73
+uses-permission#android.permission.WAKE_LOCK
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:7:5-68
+	android:name
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:7:22-65
 application
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:8:5-28:19
-MERGED from [com.android.support:appcompat-v7:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7a00dfecbb14092577dfb777f2ee8aed/AndroidManifest.xml:25:5-29:19
-MERGED from [com.android.support:appcompat-v7:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7a00dfecbb14092577dfb777f2ee8aed/AndroidManifest.xml:25:5-29:19
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /home/paty/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/4a943412895040cd88c7c1f30901ad0d/AndroidManifest.xml:9:5-20
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /home/paty/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/4a943412895040cd88c7c1f30901ad0d/AndroidManifest.xml:9:5-20
-MERGED from [com.android.support:animated-vector-drawable:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-26.1.0.aar/b72fcd4ebae983d7305a3bb840ebb5e6/AndroidManifest.xml:22:5-26:19
-MERGED from [com.android.support:animated-vector-drawable:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-26.1.0.aar/b72fcd4ebae983d7305a3bb840ebb5e6/AndroidManifest.xml:22:5-26:19
-MERGED from [com.android.support:support-vector-drawable:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-26.1.0.aar/8c5f93112df90db2a614b2bc3dc4ef66/AndroidManifest.xml:22:5-26:19
-MERGED from [com.android.support:support-vector-drawable:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-26.1.0.aar/8c5f93112df90db2a614b2bc3dc4ef66/AndroidManifest.xml:22:5-26:19
-MERGED from [com.android.support:support-v4:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-v4-26.1.0.aar/5892417d6bac01f0d71e6cee34b7497f/AndroidManifest.xml:25:5-29:19
-MERGED from [com.android.support:support-v4:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-v4-26.1.0.aar/5892417d6bac01f0d71e6cee34b7497f/AndroidManifest.xml:25:5-29:19
-MERGED from [com.android.support:support-media-compat:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/ce90853a15d9e24e597cadfa679b05b7/AndroidManifest.xml:25:5-29:19
-MERGED from [com.android.support:support-media-compat:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/ce90853a15d9e24e597cadfa679b05b7/AndroidManifest.xml:25:5-29:19
-MERGED from [com.android.support:support-fragment:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-fragment-26.1.0.aar/aadb5b06d3d97866f6bbb0528a02a779/AndroidManifest.xml:25:5-29:19
-MERGED from [com.android.support:support-fragment:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-fragment-26.1.0.aar/aadb5b06d3d97866f6bbb0528a02a779/AndroidManifest.xml:25:5-29:19
-MERGED from [com.android.support:support-core-utils:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-core-utils-26.1.0.aar/12b16a80fb86419ad28f7e53b46fa6c1/AndroidManifest.xml:25:5-29:19
-MERGED from [com.android.support:support-core-utils:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-core-utils-26.1.0.aar/12b16a80fb86419ad28f7e53b46fa6c1/AndroidManifest.xml:25:5-29:19
-MERGED from [com.android.support:support-core-ui:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-core-ui-26.1.0.aar/133a5a015377b2ba1ea7e65f3198afac/AndroidManifest.xml:25:5-29:19
-MERGED from [com.android.support:support-core-ui:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-core-ui-26.1.0.aar/133a5a015377b2ba1ea7e65f3198afac/AndroidManifest.xml:25:5-29:19
-MERGED from [com.android.support:support-compat:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/d9b424383f87211e32bd35dece0a08e9/AndroidManifest.xml:25:5-29:19
-MERGED from [com.android.support:support-compat:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/d9b424383f87211e32bd35dece0a08e9/AndroidManifest.xml:25:5-29:19
-MERGED from [android.arch.lifecycle:runtime:1.0.0] /home/paty/.gradle/caches/transforms-1/files-1.1/runtime-1.0.0.aar/daeb11f24b8d6a5fb5991d5472467da0/AndroidManifest.xml:24:5-28:19
-MERGED from [android.arch.lifecycle:runtime:1.0.0] /home/paty/.gradle/caches/transforms-1/files-1.1/runtime-1.0.0.aar/daeb11f24b8d6a5fb5991d5472467da0/AndroidManifest.xml:24:5-28:19
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:9:5-44:19
+MERGED from [com.android.support:design:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\design-26.1.0.aar\3f13238bcc321e4498dacda346521ac2\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:design:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\design-26.1.0.aar\3f13238bcc321e4498dacda346521ac2\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.1.0.aar\318149fa7b810fd1137e4d1c56a12d6b\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.1.0.aar\318149fa7b810fd1137e4d1c56a12d6b\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\8b8c06ff1fddc293b03498b9111727a9\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\8b8c06ff1fddc293b03498b9111727a9\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support:animated-vector-drawable:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.1.0.aar\cf81fcc0b52e93a63d33a6bdfcccc20f\AndroidManifest.xml:22:5-26:19
+MERGED from [com.android.support:animated-vector-drawable:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.1.0.aar\cf81fcc0b52e93a63d33a6bdfcccc20f\AndroidManifest.xml:22:5-26:19
+MERGED from [com.android.support:support-vector-drawable:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-26.1.0.aar\36615bc9e61415bc8c9aa5370caefdf8\AndroidManifest.xml:22:5-26:19
+MERGED from [com.android.support:support-vector-drawable:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-26.1.0.aar\36615bc9e61415bc8c9aa5370caefdf8\AndroidManifest.xml:22:5-26:19
+MERGED from [com.android.support:recyclerview-v7:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-26.1.0.aar\525c24fd6e579b9844d242c61545ed61\AndroidManifest.xml:22:5-26:19
+MERGED from [com.android.support:recyclerview-v7:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-26.1.0.aar\525c24fd6e579b9844d242c61545ed61\AndroidManifest.xml:22:5-26:19
+MERGED from [com.android.support:transition:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\transition-26.1.0.aar\d5c87703dc807461023bbf1b3ec021a0\AndroidManifest.xml:22:5-26:19
+MERGED from [com.android.support:transition:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\transition-26.1.0.aar\d5c87703dc807461023bbf1b3ec021a0\AndroidManifest.xml:22:5-26:19
+MERGED from [com.android.support:support-v4:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-v4-26.1.0.aar\398e14a8f44c2a65367a4dd328b0203b\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:support-v4:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-v4-26.1.0.aar\398e14a8f44c2a65367a4dd328b0203b\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:support-media-compat:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.1.0.aar\7666dbcd1dae33570686b1c360ead68a\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:support-media-compat:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.1.0.aar\7666dbcd1dae33570686b1c360ead68a\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:support-fragment:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-fragment-26.1.0.aar\b43cc14e4a78574c5c87a989ed17ee14\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:support-fragment:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-fragment-26.1.0.aar\b43cc14e4a78574c5c87a989ed17ee14\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:support-core-utils:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-core-utils-26.1.0.aar\fb4be8e6a032b27872faf817efdd2df2\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:support-core-utils:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-core-utils-26.1.0.aar\fb4be8e6a032b27872faf817efdd2df2\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:support-core-ui:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.1.0.aar\fb106b9695026c86a921b15c2beb9568\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:support-core-ui:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.1.0.aar\fb106b9695026c86a921b15c2beb9568\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:support-compat:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-compat-26.1.0.aar\276675e8a29c8ddae2b72e5dfec47576\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:support-compat:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-compat-26.1.0.aar\276675e8a29c8ddae2b72e5dfec47576\AndroidManifest.xml:25:5-29:19
+MERGED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0.aar\008478e67a790bd0b8a4be5420282c99\AndroidManifest.xml:24:5-28:19
+MERGED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0.aar\008478e67a790bd0b8a4be5420282c99\AndroidManifest.xml:24:5-28:19
 	android:supportsRtl
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:13:9-35
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:15:9-35
 	android:label
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:11:9-41
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:13:9-41
 	android:roundIcon
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:12:9-54
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:14:9-54
 	android:icon
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:10:9-43
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:12:9-43
 	android:allowBackup
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:9:9-35
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:11:9-35
 	android:theme
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:14:9-40
-activity#com.demgames.polypong.MainActivity
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:15:9-24:20
-	android:screenOrientation
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:17:13-49
-	android:configChanges
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:16:13-48
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:16:9-40
 	android:name
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:15:19-47
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:10:9-32
+activity#com.demgames.polypong.Splashscreen
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:17:9-24:20
+	android:screenOrientation
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:19:13-49
+	android:configChanges
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:18:13-48
+	android:name
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:17:19-47
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:19:13-23:29
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:20:13-23:29
 action#android.intent.action.MAIN
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:20:17-69
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:21:17-69
 	android:name
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:20:25-66
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:21:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:22:17-77
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:22:17-77
 	android:name
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:22:27-74
-activity#com.demgames.polypong.gamelaunch
-ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:25:9-27:51
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:22:27-74
+activity#com.demgames.polypong.MainActivity
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:25:9-29:20
 	android:screenOrientation
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:27:13-49
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:28:13-49
 	android:configChanges
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:26:13-48
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:27:13-48
 	android:name
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:25:19-45
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:26:13-41
+activity#com.demgames.polypong.gamelaunch
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:30:9-33:52
+	android:screenOrientation
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:33:13-49
+	android:configChanges
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:32:13-48
+	android:name
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:31:13-39
+activity#com.demgames.polypong.Client
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:34:9-36:51
+	android:screenOrientation
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:36:13-49
+	android:configChanges
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:35:13-48
+	android:name
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:34:19-41
+activity#com.demgames.polypong.Server
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:37:9-39:51
+	android:screenOrientation
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:39:13-49
+	android:configChanges
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:38:13-48
+	android:name
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:37:19-41
+activity#com.demgames.polypong.Options
+ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:40:9-42:51
+	android:screenOrientation
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:42:13-49
+	android:configChanges
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:41:13-48
+	android:name
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml:40:19-42
 uses-sdk
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
-MERGED from [com.android.support:appcompat-v7:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7a00dfecbb14092577dfb777f2ee8aed/AndroidManifest.xml:21:5-23:78
-MERGED from [com.android.support:appcompat-v7:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7a00dfecbb14092577dfb777f2ee8aed/AndroidManifest.xml:21:5-23:78
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /home/paty/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/4a943412895040cd88c7c1f30901ad0d/AndroidManifest.xml:5:5-7:41
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /home/paty/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/4a943412895040cd88c7c1f30901ad0d/AndroidManifest.xml:5:5-7:41
-MERGED from [com.android.support:animated-vector-drawable:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-26.1.0.aar/b72fcd4ebae983d7305a3bb840ebb5e6/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:animated-vector-drawable:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-26.1.0.aar/b72fcd4ebae983d7305a3bb840ebb5e6/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-vector-drawable:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-26.1.0.aar/8c5f93112df90db2a614b2bc3dc4ef66/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-vector-drawable:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-26.1.0.aar/8c5f93112df90db2a614b2bc3dc4ef66/AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-v4:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-v4-26.1.0.aar/5892417d6bac01f0d71e6cee34b7497f/AndroidManifest.xml:21:5-23:54
-MERGED from [com.android.support:support-v4:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-v4-26.1.0.aar/5892417d6bac01f0d71e6cee34b7497f/AndroidManifest.xml:21:5-23:54
-MERGED from [com.android.support:support-media-compat:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/ce90853a15d9e24e597cadfa679b05b7/AndroidManifest.xml:21:5-23:63
-MERGED from [com.android.support:support-media-compat:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/ce90853a15d9e24e597cadfa679b05b7/AndroidManifest.xml:21:5-23:63
-MERGED from [com.android.support:support-fragment:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-fragment-26.1.0.aar/aadb5b06d3d97866f6bbb0528a02a779/AndroidManifest.xml:21:5-23:60
-MERGED from [com.android.support:support-fragment:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-fragment-26.1.0.aar/aadb5b06d3d97866f6bbb0528a02a779/AndroidManifest.xml:21:5-23:60
-MERGED from [com.android.support:support-core-utils:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-core-utils-26.1.0.aar/12b16a80fb86419ad28f7e53b46fa6c1/AndroidManifest.xml:21:5-23:61
-MERGED from [com.android.support:support-core-utils:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-core-utils-26.1.0.aar/12b16a80fb86419ad28f7e53b46fa6c1/AndroidManifest.xml:21:5-23:61
-MERGED from [com.android.support:support-core-ui:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-core-ui-26.1.0.aar/133a5a015377b2ba1ea7e65f3198afac/AndroidManifest.xml:21:5-23:58
-MERGED from [com.android.support:support-core-ui:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-core-ui-26.1.0.aar/133a5a015377b2ba1ea7e65f3198afac/AndroidManifest.xml:21:5-23:58
-MERGED from [com.android.support:support-compat:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/d9b424383f87211e32bd35dece0a08e9/AndroidManifest.xml:21:5-23:58
-MERGED from [com.android.support:support-compat:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/d9b424383f87211e32bd35dece0a08e9/AndroidManifest.xml:21:5-23:58
-MERGED from [android.arch.lifecycle:runtime:1.0.0] /home/paty/.gradle/caches/transforms-1/files-1.1/runtime-1.0.0.aar/daeb11f24b8d6a5fb5991d5472467da0/AndroidManifest.xml:20:5-22:41
-MERGED from [android.arch.lifecycle:runtime:1.0.0] /home/paty/.gradle/caches/transforms-1/files-1.1/runtime-1.0.0.aar/daeb11f24b8d6a5fb5991d5472467da0/AndroidManifest.xml:20:5-22:41
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
-INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
+MERGED from [com.android.support:design:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\design-26.1.0.aar\3f13238bcc321e4498dacda346521ac2\AndroidManifest.xml:21:5-23:62
+MERGED from [com.android.support:design:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\design-26.1.0.aar\3f13238bcc321e4498dacda346521ac2\AndroidManifest.xml:21:5-23:62
+MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.1.0.aar\318149fa7b810fd1137e4d1c56a12d6b\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.1.0.aar\318149fa7b810fd1137e4d1c56a12d6b\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\8b8c06ff1fddc293b03498b9111727a9\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\8b8c06ff1fddc293b03498b9111727a9\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:animated-vector-drawable:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.1.0.aar\cf81fcc0b52e93a63d33a6bdfcccc20f\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.1.0.aar\cf81fcc0b52e93a63d33a6bdfcccc20f\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-26.1.0.aar\36615bc9e61415bc8c9aa5370caefdf8\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-26.1.0.aar\36615bc9e61415bc8c9aa5370caefdf8\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:recyclerview-v7:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-26.1.0.aar\525c24fd6e579b9844d242c61545ed61\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:recyclerview-v7:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-26.1.0.aar\525c24fd6e579b9844d242c61545ed61\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\transition-26.1.0.aar\d5c87703dc807461023bbf1b3ec021a0\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\transition-26.1.0.aar\d5c87703dc807461023bbf1b3ec021a0\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-v4-26.1.0.aar\398e14a8f44c2a65367a4dd328b0203b\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-v4:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-v4-26.1.0.aar\398e14a8f44c2a65367a4dd328b0203b\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-media-compat:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.1.0.aar\7666dbcd1dae33570686b1c360ead68a\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-media-compat:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.1.0.aar\7666dbcd1dae33570686b1c360ead68a\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-fragment:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-fragment-26.1.0.aar\b43cc14e4a78574c5c87a989ed17ee14\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-fragment:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-fragment-26.1.0.aar\b43cc14e4a78574c5c87a989ed17ee14\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-core-utils:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-core-utils-26.1.0.aar\fb4be8e6a032b27872faf817efdd2df2\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:support-core-utils:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-core-utils-26.1.0.aar\fb4be8e6a032b27872faf817efdd2df2\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:support-core-ui:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.1.0.aar\fb106b9695026c86a921b15c2beb9568\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-ui:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.1.0.aar\fb106b9695026c86a921b15c2beb9568\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-compat:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-compat-26.1.0.aar\276675e8a29c8ddae2b72e5dfec47576\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-compat:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-compat-26.1.0.aar\276675e8a29c8ddae2b72e5dfec47576\AndroidManifest.xml:21:5-23:58
+MERGED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0.aar\008478e67a790bd0b8a4be5420282c99\AndroidManifest.xml:20:5-22:41
+MERGED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0.aar\008478e67a790bd0b8a4be5420282c99\AndroidManifest.xml:20:5-22:41
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
 	tools:overrideLibrary
-		ADDED from [com.android.support:appcompat-v7:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7a00dfecbb14092577dfb777f2ee8aed/AndroidManifest.xml:23:9-75
+		ADDED from [com.android.support:design:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\design-26.1.0.aar\3f13238bcc321e4498dacda346521ac2\AndroidManifest.xml:23:9-59
 	android:targetSdkVersion
-		INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
-		INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
+		INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
-		INJECTED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
+		INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Raphael\Documents\GitHub\polypong\app\src\main\AndroidManifest.xml
 meta-data#android.support.VERSION
-ADDED from [com.android.support:appcompat-v7:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7a00dfecbb14092577dfb777f2ee8aed/AndroidManifest.xml:26:9-28:38
-MERGED from [com.android.support:animated-vector-drawable:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-26.1.0.aar/b72fcd4ebae983d7305a3bb840ebb5e6/AndroidManifest.xml:23:9-25:38
-MERGED from [com.android.support:animated-vector-drawable:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-26.1.0.aar/b72fcd4ebae983d7305a3bb840ebb5e6/AndroidManifest.xml:23:9-25:38
-MERGED from [com.android.support:support-vector-drawable:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-26.1.0.aar/8c5f93112df90db2a614b2bc3dc4ef66/AndroidManifest.xml:23:9-25:38
-MERGED from [com.android.support:support-vector-drawable:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-26.1.0.aar/8c5f93112df90db2a614b2bc3dc4ef66/AndroidManifest.xml:23:9-25:38
-MERGED from [com.android.support:support-v4:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-v4-26.1.0.aar/5892417d6bac01f0d71e6cee34b7497f/AndroidManifest.xml:26:9-28:38
-MERGED from [com.android.support:support-v4:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-v4-26.1.0.aar/5892417d6bac01f0d71e6cee34b7497f/AndroidManifest.xml:26:9-28:38
-MERGED from [com.android.support:support-media-compat:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/ce90853a15d9e24e597cadfa679b05b7/AndroidManifest.xml:26:9-28:38
-MERGED from [com.android.support:support-media-compat:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-media-compat-26.1.0.aar/ce90853a15d9e24e597cadfa679b05b7/AndroidManifest.xml:26:9-28:38
-MERGED from [com.android.support:support-fragment:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-fragment-26.1.0.aar/aadb5b06d3d97866f6bbb0528a02a779/AndroidManifest.xml:26:9-28:38
-MERGED from [com.android.support:support-fragment:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-fragment-26.1.0.aar/aadb5b06d3d97866f6bbb0528a02a779/AndroidManifest.xml:26:9-28:38
-MERGED from [com.android.support:support-core-utils:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-core-utils-26.1.0.aar/12b16a80fb86419ad28f7e53b46fa6c1/AndroidManifest.xml:26:9-28:38
-MERGED from [com.android.support:support-core-utils:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-core-utils-26.1.0.aar/12b16a80fb86419ad28f7e53b46fa6c1/AndroidManifest.xml:26:9-28:38
-MERGED from [com.android.support:support-core-ui:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-core-ui-26.1.0.aar/133a5a015377b2ba1ea7e65f3198afac/AndroidManifest.xml:26:9-28:38
-MERGED from [com.android.support:support-core-ui:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-core-ui-26.1.0.aar/133a5a015377b2ba1ea7e65f3198afac/AndroidManifest.xml:26:9-28:38
-MERGED from [com.android.support:support-compat:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/d9b424383f87211e32bd35dece0a08e9/AndroidManifest.xml:26:9-28:38
-MERGED from [com.android.support:support-compat:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/support-compat-26.1.0.aar/d9b424383f87211e32bd35dece0a08e9/AndroidManifest.xml:26:9-28:38
+ADDED from [com.android.support:design:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\design-26.1.0.aar\3f13238bcc321e4498dacda346521ac2\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.1.0.aar\318149fa7b810fd1137e4d1c56a12d6b\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.1.0.aar\318149fa7b810fd1137e4d1c56a12d6b\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:animated-vector-drawable:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.1.0.aar\cf81fcc0b52e93a63d33a6bdfcccc20f\AndroidManifest.xml:23:9-25:38
+MERGED from [com.android.support:animated-vector-drawable:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.1.0.aar\cf81fcc0b52e93a63d33a6bdfcccc20f\AndroidManifest.xml:23:9-25:38
+MERGED from [com.android.support:support-vector-drawable:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-26.1.0.aar\36615bc9e61415bc8c9aa5370caefdf8\AndroidManifest.xml:23:9-25:38
+MERGED from [com.android.support:support-vector-drawable:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-26.1.0.aar\36615bc9e61415bc8c9aa5370caefdf8\AndroidManifest.xml:23:9-25:38
+MERGED from [com.android.support:recyclerview-v7:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-26.1.0.aar\525c24fd6e579b9844d242c61545ed61\AndroidManifest.xml:23:9-25:38
+MERGED from [com.android.support:recyclerview-v7:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-26.1.0.aar\525c24fd6e579b9844d242c61545ed61\AndroidManifest.xml:23:9-25:38
+MERGED from [com.android.support:transition:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\transition-26.1.0.aar\d5c87703dc807461023bbf1b3ec021a0\AndroidManifest.xml:23:9-25:38
+MERGED from [com.android.support:transition:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\transition-26.1.0.aar\d5c87703dc807461023bbf1b3ec021a0\AndroidManifest.xml:23:9-25:38
+MERGED from [com.android.support:support-v4:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-v4-26.1.0.aar\398e14a8f44c2a65367a4dd328b0203b\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:support-v4:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-v4-26.1.0.aar\398e14a8f44c2a65367a4dd328b0203b\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:support-media-compat:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.1.0.aar\7666dbcd1dae33570686b1c360ead68a\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:support-media-compat:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.1.0.aar\7666dbcd1dae33570686b1c360ead68a\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:support-fragment:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-fragment-26.1.0.aar\b43cc14e4a78574c5c87a989ed17ee14\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:support-fragment:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-fragment-26.1.0.aar\b43cc14e4a78574c5c87a989ed17ee14\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:support-core-utils:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-core-utils-26.1.0.aar\fb4be8e6a032b27872faf817efdd2df2\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:support-core-utils:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-core-utils-26.1.0.aar\fb4be8e6a032b27872faf817efdd2df2\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:support-core-ui:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.1.0.aar\fb106b9695026c86a921b15c2beb9568\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:support-core-ui:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.1.0.aar\fb106b9695026c86a921b15c2beb9568\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:support-compat:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-compat-26.1.0.aar\276675e8a29c8ddae2b72e5dfec47576\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:support-compat:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\support-compat-26.1.0.aar\276675e8a29c8ddae2b72e5dfec47576\AndroidManifest.xml:26:9-28:38
 	android:value
-		ADDED from [com.android.support:appcompat-v7:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7a00dfecbb14092577dfb777f2ee8aed/AndroidManifest.xml:28:13-35
+		ADDED from [com.android.support:design:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\design-26.1.0.aar\3f13238bcc321e4498dacda346521ac2\AndroidManifest.xml:28:13-35
 	android:name
-		ADDED from [com.android.support:appcompat-v7:26.1.0] /home/paty/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7a00dfecbb14092577dfb777f2ee8aed/AndroidManifest.xml:27:13-51
+		ADDED from [com.android.support:design:26.1.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\design-26.1.0.aar\3f13238bcc321e4498dacda346521ac2\AndroidManifest.xml:27:13-51
 meta-data#android.arch.lifecycle.VERSION
-ADDED from [android.arch.lifecycle:runtime:1.0.0] /home/paty/.gradle/caches/transforms-1/files-1.1/runtime-1.0.0.aar/daeb11f24b8d6a5fb5991d5472467da0/AndroidManifest.xml:25:9-27:47
+ADDED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0.aar\008478e67a790bd0b8a4be5420282c99\AndroidManifest.xml:25:9-27:47
 	android:value
-		ADDED from [android.arch.lifecycle:runtime:1.0.0] /home/paty/.gradle/caches/transforms-1/files-1.1/runtime-1.0.0.aar/daeb11f24b8d6a5fb5991d5472467da0/AndroidManifest.xml:27:13-44
+		ADDED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0.aar\008478e67a790bd0b8a4be5420282c99\AndroidManifest.xml:27:13-44
 	android:name
-		ADDED from [android.arch.lifecycle:runtime:1.0.0] /home/paty/.gradle/caches/transforms-1/files-1.1/runtime-1.0.0.aar/daeb11f24b8d6a5fb5991d5472467da0/AndroidManifest.xml:26:13-58
+		ADDED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\Raphael\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0.aar\008478e67a790bd0b8a4be5420282c99\AndroidManifest.xml:26:13-58
