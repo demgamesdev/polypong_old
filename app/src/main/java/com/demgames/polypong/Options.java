@@ -51,7 +51,7 @@ public class Options extends AppCompatActivity implements AdapterView.OnItemSele
         final Spinner gamemode = (Spinner) findViewById(R.id.gamemodeSpinner);
         gamemode.setOnItemSelectedListener(this);
         ArrayAdapter<CharSequence> spinneradapter = ArrayAdapter.createFromResource(this,
-                R.array.gamemodes, android.R.layout.simple_spinner_item);
+                R.array.gamemodes, R.layout.spinner_item);
         spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         gamemode.setAdapter(spinneradapter);
 

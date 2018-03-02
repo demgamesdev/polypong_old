@@ -932,6 +932,10 @@
         "source": "C:\\Users\\Raphael\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\318149fa7b810fd1137e4d1c56a12d6b\\res\\drawable-mdpi-v4\\abc_cab_background_top_mtrl_alpha.9.png"
     },
     {
+        "merged": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\build\\intermediates\\res\\merged\\debug\\layout_listview.xml.flat",
+        "source": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\src\\main\\res\\layout\\listview.xml"
+    },
+    {
         "merged": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\build\\intermediates\\res\\merged\\debug\\color_abc_primary_text_material_light.xml.flat",
         "source": "C:\\Users\\Raphael\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\318149fa7b810fd1137e4d1c56a12d6b\\res\\color\\abc_primary_text_material_light.xml"
     },
@@ -974,6 +978,10 @@
     {
         "merged": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4_abc_btn_switch_to_on_mtrl_00001.9.png.flat",
         "source": "C:\\Users\\Raphael\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\318149fa7b810fd1137e4d1c56a12d6b\\res\\drawable-xxxhdpi-v4\\abc_btn_switch_to_on_mtrl_00001.9.png"
+    },
+    {
+        "merged": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\build\\intermediates\\res\\merged\\debug\\layout_spinner_item.xml.flat",
+        "source": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\src\\main\\res\\layout\\spinner_item.xml"
     },
     {
         "merged": "C:\\Users\\Raphael\\Documents\\GitHub\\polypong\\app\\build\\intermediates\\res\\merged\\debug\\layout_design_layout_snackbar.xml.flat",
