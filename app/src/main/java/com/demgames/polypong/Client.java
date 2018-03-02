@@ -51,7 +51,7 @@ public class Client extends AppCompatActivity {
 
         globalVariables.setMyIpList(new String[] {});
         globalVariables.setArrayAdapter(new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, globalVariables.getMyIpList()));
+                (this, R.layout.listview, globalVariables.getMyIpList()));
 
         globalVariables.setOscP5(new OscP5(this, globalVariables.getMyPort()));
 
