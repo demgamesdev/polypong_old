@@ -3,6 +3,7 @@ package com.demgames.polypong;
 import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.view.View;
 import android.view.Window;
@@ -16,6 +17,7 @@ import processing.core.PApplet;
 
 public class gamelaunch extends AppCompatActivity {
     private PApplet sketch;
+    private static final String TAG = "MyActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,12 +28,27 @@ public class gamelaunch extends AppCompatActivity {
         setContentView(frame, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
+        Log.d(TAG, "onCreate: Entscheide welches spiel gestartet wird");
+        Log.d(TAG, "onCreate: Spiel: " + globalVariables.getGameMode());
 
-        sketch = new Sketch(getIntent().getExtras().getString("mode"),
-                getIntent().getExtras().getString("myipadress"),getIntent().getExtras().getString("remoteipadress"),
-                getIntent().getExtras().getString("numberofballs"), globalVariables.getFriction());
-        PFragment fragment = new PFragment(sketch);
-        fragment.setView(frame, this);
+        if (globalVariables.getGameMode()==1){
+            Log.d(TAG, "onCreate: Patys sketch gestartet");
+            sketch = new Sketch(getIntent().getExtras().getString("mode"),
+                    getIntent().getExtras().getString("myipadress"),getIntent().getExtras().getString("remoteipadress"),
+                    getIntent().getExtras().getString("numberofballs"), globalVariables.getFriction());
+            PFragment fragment = new PFragment(sketch);
+            fragment.setView(frame, this);
+
+        } else if (globalVariables.getGameMode()==2){
+            sketch = new SketchRaphael(getIntent().getExtras().getString("mode"),
+                    getIntent().getExtras().getString("myipadress"),getIntent().getExtras().getString("remoteipadress"),
+                    getIntent().getExtras().getString("numberofballs"), globalVariables.getFriction());
+            PFragment fragment = new PFragment(sketch);
+            fragment.setView(frame, this);
+            Log.d(TAG, "onCreate: Raphaels sketch gestartet");
+        }
+
+
 
     }
 

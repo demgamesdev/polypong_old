@@ -123,11 +123,11 @@ public class Options extends AppCompatActivity implements AdapterView.OnItemSele
         Globals globalVariables = (Globals) getApplicationContext();
         switch (i){
             case 0:
-                globalVariables.setGameMode("Klassisch");
+                globalVariables.setGameMode(1);
                 Log.d(TAG, "onItemSelected: Klassischer Spielmodus ausgewähöt");
                 break;
             case 1:
-                globalVariables.setGameMode("Pong");
+                globalVariables.setGameMode(2);
                 Log.d(TAG, "onItemSelected: Pong Spielmodus ausgewählt");
                 break;
         }
@@ -136,6 +136,6 @@ public class Options extends AppCompatActivity implements AdapterView.OnItemSele
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
         Globals globalVariables = (Globals) getApplicationContext();
-        globalVariables.setGameMode("Klassisch");
+        globalVariables.setGameMode(1);
     }
 }
