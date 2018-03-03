@@ -177,6 +177,8 @@ public class Server extends AppCompatActivity {
         OscMessage settingsMessage = new OscMessage("/settings");
         settingsMessage.add(globalVariables.getNumberOfBalls());
         settingsMessage.add(globalVariables.getFriction());
+        settingsMessage.add(globalVariables.getGameMode());
+        //settingsMessage.add(globalVariables.getGravity());
         globalVariables.getOscP5().send(settingsMessage, myRemoteLocation);
 
     }

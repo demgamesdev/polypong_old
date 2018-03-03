@@ -36,6 +36,8 @@ public class Client extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         //Vollbildmodus
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -130,6 +132,7 @@ public class Client extends AppCompatActivity {
     /********* OSCP5 EVENTHANDLER *********/
 
     void oscEvent(OscMessage theOscMessage) {
+        final String TAG = "MyActivity";
         final Globals globalVariables=(Globals) getApplication();
         switch(theOscMessage.addrPattern()) {
             case "/hostconnect":
@@ -149,6 +152,9 @@ public class Client extends AppCompatActivity {
                 //value=theOscMessage.get(0).intValue();
                 globalVariables.setNumberOfBalls(theOscMessage.get(0).stringValue());
                 globalVariables.setFriction(theOscMessage.get(1).floatValue());
+                globalVariables.setGameMode(theOscMessage.get(2).intValue());
+                Log.d(TAG, "oscEvent: Client Gamemode" + theOscMessage.get(2).stringValue());
+                //globalVariables.setGravity(theOscMessage.get(3).booleanValue());
                 Log.d(Client.class.getSimpleName(),"+++++++++++++Friction="+Float.toString(globalVariables.getFriction()));
                 break;
 

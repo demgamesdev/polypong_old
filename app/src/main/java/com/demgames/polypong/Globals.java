@@ -19,7 +19,7 @@ public class Globals extends Application {
     private String myIpAdress;
     private String remoteIpAdress;
     private String numberOfBalls=null;
-    private String gamemode;
+    private int gamemode;
     private int myPort=12000;
     private float friction=(float)0.0;
 
@@ -248,11 +248,11 @@ public class Globals extends Application {
 
     //----------------------------------
 
-    void setGameMode(String gamemode_) {
+    void setGameMode(int gamemode_) {
         this.gamemode=gamemode_;
     }
 
-    String getGameMode() {
+    int getGameMode() {
         return(this.gamemode);
     }
 
