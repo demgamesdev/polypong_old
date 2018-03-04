@@ -3,6 +3,9 @@ package com.demgames.polypong;
 import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.ViewGroup;
 import android.view.View;
 import android.view.Window;
@@ -15,11 +18,13 @@ import processing.android.CompatUtils;
 import processing.core.PApplet;
 
 public class gamelaunch extends AppCompatActivity {
+
     private PApplet sketch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Globals globalVariables = (Globals) getApplicationContext();
+
 
         FrameLayout frame = new FrameLayout(this);
         frame.setId(CompatUtils.getUniqueViewId());
@@ -27,11 +32,11 @@ public class gamelaunch extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
 
-        sketch = new Sketch(getIntent().getExtras().getString("mode"),
-                getIntent().getExtras().getString("myipadress"),getIntent().getExtras().getString("remoteipadress"),
-                getIntent().getExtras().getString("numberofballs"), globalVariables.getFriction());
+        sketch = new Sketch(getIntent().getExtras().getString("mode"));
         PFragment fragment = new PFragment(sketch);
         fragment.setView(frame, this);
+
+
 
     }
 

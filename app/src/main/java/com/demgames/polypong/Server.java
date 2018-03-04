@@ -62,6 +62,8 @@ public class Server extends AppCompatActivity {
 
         ServerLV.setAdapter(globalVariables.getArrayAdapter());
 
+        globalVariables.setBalls(true);
+
         //update runnable
         Runnable updateRunnable = new Runnable() {
             @Override
@@ -175,8 +177,25 @@ public class Server extends AppCompatActivity {
         Globals globalVariables = (Globals) getApplicationContext();
         NetAddress myRemoteLocation=new NetAddress(globalVariables.getRemoteIpAdress(),globalVariables.getMyPort());
         OscMessage settingsMessage = new OscMessage("/settings");
+
         settingsMessage.add(globalVariables.getNumberOfBalls());
         settingsMessage.add(globalVariables.getFriction());
+        if(globalVariables.getGravityState()) {
+            settingsMessage.add(1);
+        } else {
+            settingsMessage.add(0);
+        }
+        if(globalVariables.getAttractionState()) {
+            settingsMessage.add(1);
+        } else {
+            settingsMessage.add(0);
+        }
+
+        Log.d(Server.class.getSimpleName(),"oscP5 send ballsX[0] "+Float.toString(globalVariables.getBallsXPositions()[0]));
+        settingsMessage.add(globalVariables.getBallsXPositions());
+        settingsMessage.add(globalVariables.getBallsYPositions());
+        settingsMessage.add(globalVariables.getBallsSizes());
+
         globalVariables.getOscP5().send(settingsMessage, myRemoteLocation);
 
     }

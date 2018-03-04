@@ -149,7 +149,26 @@ public class Client extends AppCompatActivity {
                 //value=theOscMessage.get(0).intValue();
                 globalVariables.setNumberOfBalls(theOscMessage.get(0).stringValue());
                 globalVariables.setFriction(theOscMessage.get(1).floatValue());
-                Log.d(Client.class.getSimpleName(),"+++++++++++++Friction="+Float.toString(globalVariables.getFriction()));
+                //Log.d(Client.class.getSimpleName(),"+++++++++++++Friction="+Float.toString(globalVariables.getFriction()));
+                if(theOscMessage.get(2).intValue()==1) {
+                    globalVariables.setGravityState(true);
+                }
+                if(theOscMessage.get(3).intValue()==1) {
+                    globalVariables.setAttractionState(true);
+                }
+
+                globalVariables.setBalls(false);
+                int offset=4;
+                for (int i=0; i<Integer.parseInt(globalVariables.getNumberOfBalls());i++) {
+                    globalVariables.setBallsXPositions(i,theOscMessage.get(offset+i).floatValue());
+                    globalVariables.setBallsYPositions(i,theOscMessage.get(offset+Integer.parseInt(globalVariables.getNumberOfBalls())+i).floatValue());
+                    globalVariables.setBallsSizes(i,theOscMessage.get(offset+2*Integer.parseInt(globalVariables.getNumberOfBalls())+i).floatValue());
+
+                }
+                //Log.d(Client.class.getSimpleName(),"+++++++++++++oscP5 received ball settings ++++++++++++"+Boolean.toString(theOscMessage.get(3).booleanValue()));
+                for (int i=0; i<Integer.parseInt(globalVariables.getNumberOfBalls());i++) {
+                    //Log.d(Client.class.getSimpleName(),"oscP5 received ball settings "+Boolean.toString(theOscMessage.get(3).booleanValue()));
+                }
                 break;
 
             case "/hostready":

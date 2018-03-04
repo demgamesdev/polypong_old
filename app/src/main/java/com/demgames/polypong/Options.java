@@ -51,8 +51,8 @@ public class Options extends AppCompatActivity {
                 /***Optionen an Global Übergeben'**/
                 globalVariables.setNumberOfBalls(Integer.toString(ballnum));
                 Log.d(TAG, "Anzahl der bälle: "+ globalVariables.getNumberOfBalls());
-                globalVariables.setGravity(gravity.isChecked());
-                globalVariables.setAttraction(attraction.isChecked());
+                globalVariables.setGravityState(gravity.isChecked());
+                globalVariables.setAttractionState(attraction.isChecked());
                 globalVariables.setFriction(fric);
 
                 /***Server Activity starten***/
