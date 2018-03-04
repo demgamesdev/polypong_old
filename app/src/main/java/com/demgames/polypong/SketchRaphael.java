@@ -129,19 +129,9 @@ public class SketchRaphael extends PApplet {
     */
         ballSpeedX = width / 100;
         ballSpeedY = width / 100;
-
-
         enemySpeed = width / 150;
-
         ballSize = width / 20;
-
-        //accelerometer info
-        //sensor = new KetaiSensor(this);
-        //sensor.start();
-
         rectMode(CENTER);
-        //drawBallClient();
-
         centerLine();
     }
 
@@ -171,7 +161,6 @@ public class SketchRaphael extends PApplet {
         pushMatrix();
         translate(ball.x, ball.y);
         fill(255);
-        //fill(255 * (ball.x / width), 255 * ((width - ball.x) / width), 0);
         noStroke();
         ellipse(0, 0, width / 20, width / 20);
         popMatrix();
@@ -182,18 +171,13 @@ public class SketchRaphael extends PApplet {
     }
 
     void drawBallClient() {
-
         pushMatrix();
         translate(ball.x, ball.y);
         fill(255);
-
-
-
         noStroke();
         ellipse(0, 0, width / 20, width / 20);
         popMatrix();
         Log.d(TAG, "drawBallClient: Ich stelle den Client ball dar");
-
     }
 
     void ballBoundary()
@@ -230,12 +214,10 @@ public class SketchRaphael extends PApplet {
                     ball.y = height/2;
                     ballSpeedY = width / 100;
                     ballSpeedY *= -1;
-
                 }
             }
         };
         timer.start();
-
     }
 
     if (ball.y < 0) {
@@ -259,20 +241,20 @@ public class SketchRaphael extends PApplet {
         };
         timer.start();
 
-
     }
 
     //Schläger kollision
         if (ball.y > height - height/40 - ballSize && ball.y < height && Math.abs(ball.x - player.x) < width/10) {
             ball.y = height - height/40 - ballSize;
+            ballSpeedY *= 1.1;
             ballSpeedY *= -1;
         }
 
         if (ball.y < height/40 + ballSize && ball.y > 0 && Math.abs(ball.x - enemy.x) < width/10) {
             ball.y = height/40 + ballSize;
+            ballSpeedY *= 1.1;
             ballSpeedY *= -1;
         }
-
     }
 
 
@@ -291,7 +273,6 @@ public class SketchRaphael extends PApplet {
         rect(0, 0, width/5,width/20); //Größe des Schlägers
         //box(width/20, width/5, width/50);
         popMatrix();
-
     }
 
     void drawEnemy()
@@ -306,7 +287,6 @@ public class SketchRaphael extends PApplet {
         //box(width/20, width/5, width/50);
         popMatrix();
         Log.d(TAG, "drawEnemy: zeichne");
-
     }
 
     void scoreText()
@@ -330,7 +310,6 @@ public class SketchRaphael extends PApplet {
         }
 
     }
-    
 
     //send ball data to remotelocation
     void sendBall() {
@@ -363,8 +342,6 @@ public class SketchRaphael extends PApplet {
     }
 
 
-
-
     //check for incoming osc messages
     void oscEvent(OscMessage theOscMessage) {
 
@@ -385,183 +362,7 @@ public class SketchRaphael extends PApplet {
                 Log.d(TAG, "Bat: Ich empfange den x Wert" + Float.toString(enemy.x));
                 enemy.x = -((theOscMessage.get(0).floatValue()*width)-width);
             }
-
     }
-
-
 
 }
 
-
-/*
-        void draw()
-        {
-        //background is important for clearing the frame every frame, so that there is nothing remaining from the previous frame drawn
-        background(0);
-
-        //calling methods for drawing the ball, the player, the enemy, and the scores
-        centerLine();
-        drawBall();
-        drawPlayer();
-        drawEnemy();
-        scoreText();
-
-        println("-------");
-        println("X: " + accelerometerX);
-        println("Y: " + accelerometerY);
-        println("Z: " + accelerometerZ);
-        println("-------");
-        }
-
-        void drawBall()
-        {
-        pushMatrix();
-        translate(ball.x, ball.y);
-        fill(255);
-
-        fill(255 * (ball.x/width), 255 * ((width - ball.x)/width), 0);
-
-        noStroke();
-        ellipse(0, 0, width/20, width/20);
-        popMatrix();
-
-        ball.x += ballSpeedX;
-        ball.y += ballSpeedY;
-
-        ballBoundary();
-        }
-
-        void ballBoundary()
-        {
-        //top
-        if (ball.y < 0) {
-        ball.y = 0;
-        ballSpeedY *= -1;
-        }
-
-        //bottom
-        if (ball.y > height) {
-        ball.y = height;
-        ballSpeedY *= -1;
-        }
-
-
-//   //left
-//   if (ball.x < 0) {
-//      ball.x = 0;
-//      ballSpeedX *= -1; 
-//   }
-//  
-//  
-//   //right 
-//   if (ball.x > width) {
-//      ball.x = width;
-//      ballSpeedX *= -1; 
-//   }
-
-        float playerDist = ball.dist(player);
-
-        if (ball.x > width) {
-        ball.x = width/2;
-        ballSpeedX *= -1;
-        enemyScore ++;
-        }
-
-        if (ball.x < 0) {
-        ball.x = width/2;
-        ballSpeedX *= -1;
-        playerScore ++;
-        }
-
-        //player
-        if (ball.x > width - width/40 - ballSize && ball.x < width && Math.abs(ball.y - player.y) < width/10) {
-        ball.x = width - width/40 - ballSize;
-        ballSpeedX *= -1;
-        }
-
-        //enemy
-        if (ball.x < width/40 + ballSize && ball.x > 0 && Math.abs(ball.y - enemy.y) < width/10) {
-        ball.x = width/40 + ballSize;
-        ballSpeedX *= -1;
-        }
-
-
-
-        }
-
-        void drawPlayer()
-        {
-        player.y = mouseY;
-
-        pushMatrix();
-        translate(player.x - width/20, player.y);
-        stroke(0);
-        fill(255);
-        rect(0, 0, width/20, width/5);
-        //box(width/20, width/5, width/50);
-        popMatrix();
-
-        }
-
-        void drawEnemy()
-        {
-        enemy.y += enemySpeed;
-
-        pushMatrix();
-        translate(enemy.x + width/20, enemy.y);
-        fill(255, 0, 0);
-        rect(0, 0, width/20, width/5);
-        //box(width/20, width/5, width/50);
-        popMatrix();
-
-        enemyAI();
-
-        }
-
-        void enemyAI()
-        {
-        if (enemy.y < ball.y) {
-        enemySpeed = width/150;
-        }
-
-        if (enemy.y > ball.y) {
-        enemySpeed = - width/150;
-        }
-
-        if (enemy.y == ball.y) {
-        enemySpeed = 0;
-        }
-
-        if (ball.x > width/2) {
-        enemySpeed = 0;
-        }
-        }
-
-        void scoreText()
-        {
-        fill(255);
-        textSize(width/20);
-        text(enemyScore, width/10 * 3, height/5);
-        text(playerScore, width/10 * 7, height/5);
-        }
-
-        void onAccelerometerEvent(float x, float y, float z)
-        {
-        accelerometerX = x;
-        accelerometerY = y;
-        accelerometerZ = z;
-        }
-
-        void centerLine()
-        {
-        int numberOfLines = 20;
-
-        for (int i = 0; i < numberOfLines; i++) {
-        strokeWeight(width/100);
-        stroke(255);
-        line(width/2, i * width/numberOfLines, width/2, (i+1) * width/numberOfLines - width/40);
-        stroke(0, 0);
-        line(width/2, (i+1) * width/numberOfLines - width/40, width/2, (i+1) * width/numberOfLines);
-
-        }
-        }*/
