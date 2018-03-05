@@ -4,6 +4,7 @@ import processing.core.*;
 
 import android.app.Activity;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.util.Log;
 
 //importing processing libraries
@@ -11,9 +12,7 @@ import processing.core.*;
 import oscP5.*;
 import netP5.*;
 
-//Todo Gegner Schläger hinzufügen
-//Todo Datenübertragung für ball und schläger von host auf client
-//Todo Datenübertragung schläger von client zu host
+//Todo Ball wie im anderen Sketch von einem Bildschirm zum nächsten schießen lassen (als option)
 
 public class SketchRaphael extends PApplet {
 
@@ -146,6 +145,7 @@ public class SketchRaphael extends PApplet {
             drawEnemy();
             scoreText();
             sendBall();
+            centerLine();
             //drawEnemy();
         }
         else if (mode.equals("client")){
@@ -153,6 +153,7 @@ public class SketchRaphael extends PApplet {
             drawPlayer();
             scoreText();
             drawEnemy();
+            centerLine();
         }
 
     }
@@ -245,12 +246,14 @@ public class SketchRaphael extends PApplet {
 
     //Schläger kollision
         if (ball.y > height - height/40 - ballSize && ball.y < height && Math.abs(ball.x - player.x) < width/10) {
+            pongSound();
             ball.y = height - height/40 - ballSize;
             ballSpeedY *= 1.1;
             ballSpeedY *= -1;
         }
 
         if (ball.y < height/40 + ballSize && ball.y > 0 && Math.abs(ball.x - enemy.x) < width/10) {
+            pongSound();
             ball.y = height/40 + ballSize;
             ballSpeedY *= 1.1;
             ballSpeedY *= -1;
@@ -291,7 +294,7 @@ public class SketchRaphael extends PApplet {
 
     void scoreText()
     {
-        textSize(width/20);
+        textSize(width/10);
         if (mode.equals("host") ){
             fill(255);
             textSize(width/20);
@@ -305,7 +308,7 @@ public class SketchRaphael extends PApplet {
         }
         if (mode.equals("client") ){
             text(enemyScore, width/2, height - width /2);
-            text(playerScore, width/2, height/5);
+            text(playerScore, width/2, width /2);
             //Log.d(TAG, "oscEvent: Ich stelle den score dar");
         }
 
@@ -331,14 +334,14 @@ public class SketchRaphael extends PApplet {
         strokeWeight(width/100);
         stroke(255);
         line(0, height/2, width, height/2);
-        for (int i = 0; i < numberOfLines; i++) {
-            strokeWeight(width/100);
-            stroke(255);
-            line(i * width/numberOfLines, width/2, (i+1) * width/numberOfLines - width/40, height/2);
+        /*for (int i = 0; i < numberOfLines; i++) {
+            //strokeWeight(width/100);
+            ///stroke(255);
+            line(i * width/numberOfLines, height/2, (i+1) * width/numberOfLines - width/40, height/2);
             stroke(0, 0);
-            line((i+1) * width/numberOfLines - width/40, width/2, (i+1) * width/numberOfLines,height/2);
+            line((i+1) * width/numberOfLines - width/40, height/2, (i+1) * width/numberOfLines,height/2);
             
-        }
+        }*/
     }
 
 
@@ -362,6 +365,11 @@ public class SketchRaphael extends PApplet {
                 Log.d(TAG, "Bat: Ich empfange den x Wert" + Float.toString(enemy.x));
                 enemy.x = -((theOscMessage.get(0).floatValue()*width)-width);
             }
+    }
+
+    void pongSound(){
+        MediaPlayer pongSound = MediaPlayer.create(getContext(), R.raw.pong_bat);
+        pongSound.start();
     }
 
 }
