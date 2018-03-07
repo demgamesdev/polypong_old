@@ -8,6 +8,9 @@ import android.media.MediaPlayer;
 import android.util.Log;
 
 //importing processing libraries
+import java.util.ArrayList;
+import java.util.List;
+
 import processing.core.*;
 import oscP5.*;
 import netP5.*;
@@ -294,12 +297,21 @@ public class SketchRaphael extends PApplet {
 
     void scoreText()
     {
+        myActivity=this.getActivity();
+        myContext = myActivity.getApplicationContext();
+        Globals globalVariables = (Globals) myContext;
+
+        List<String> nameList = new ArrayList<String>();
+        nameList=globalVariables.getPlayerNamesList();
+        String player = nameList.get(0) + ": "; //Eigener Name
+        String enemy = nameList.get(1) + ": ";
         textSize(width/10);
         if (mode.equals("host") ){
             fill(255);
-            textSize(width/20);
-            text(playerScore, width/2, height - width /2);
-            text(enemyScore, width/2, height/5);
+            textSize(width/22);
+            textAlign(CENTER);
+            text(player + playerScore, width/2, height - width /2);
+            text( enemy +enemyScore, width/2, height/5);
             OscMessage scoreMessage = new OscMessage("/score");
             scoreMessage.add(playerScore);
             scoreMessage.add(enemyScore);
@@ -307,8 +319,10 @@ public class SketchRaphael extends PApplet {
             //Log.d(TAG, "scoreText: Ich sende den Score");
         }
         if (mode.equals("client") ){
-            text(enemyScore, width/2, height - width /2);
-            text(playerScore, width/2, width /2);
+            textSize(width/22);
+            textAlign(CENTER);
+            text(player + enemyScore, width/2, height - width /2);
+            text(enemy +playerScore, width/2, width /2);
             //Log.d(TAG, "oscEvent: Ich stelle den score dar");
         }
 

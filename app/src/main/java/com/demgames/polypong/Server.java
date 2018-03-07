@@ -137,6 +137,7 @@ public class Server extends AppCompatActivity {
 
     void oscEvent(OscMessage theOscMessage) {
         final Globals globalVariables=(Globals) getApplication();
+        String TAG = "MyActivity";
         switch(theOscMessage.addrPattern()) {
             case "/clientconnect":
                 Log.d(Server.class.getSimpleName(),"oscP5 received clientconnect");
@@ -151,6 +152,19 @@ public class Server extends AppCompatActivity {
                 globalVariables.setSettingsState(true);
                 globalVariables.setReadyStateState(true);
                 globalVariables.addPlayerNameTolist(theOscMessage.get(0).stringValue());
+                //sendHostReady();
+
+                break;
+            case "/settings":
+                Log.d(Server.class.getSimpleName(),"oscP5 received settings");
+                //Spielername empfangen und speichern
+                String[] playerName = new String[2];
+                List<String> nameList = new ArrayList<String>();
+                nameList=globalVariables.getPlayerNamesList();
+                playerName[0] = nameList.get(0); //Eigener Name
+                playerName[1] = (theOscMessage.get(0).stringValue());
+                globalVariables.setPlayerNamesList(playerName);
+                Log.d(TAG, "oscEvent: Name" + playerName[1]);
                 //sendHostReady();
 
                 break;
@@ -178,6 +192,7 @@ public class Server extends AppCompatActivity {
         settingsMessage.add(globalVariables.getNumberOfBalls());
         settingsMessage.add(globalVariables.getFriction());
         settingsMessage.add(globalVariables.getGameMode());
+        settingsMessage.add(globalVariables.getPlayerNamesList().get(0));
         //settingsMessage.add(globalVariables.getGravity());
         globalVariables.getOscP5().send(settingsMessage, myRemoteLocation);
 
