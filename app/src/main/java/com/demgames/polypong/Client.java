@@ -77,6 +77,7 @@ public class Client extends AppCompatActivity {
                                 checkIfIp(globalVariables.getMyIpAdress())) {
                             sendClientConnect();
                         } else if(globalVariables.getSettingsState() && globalVariables.getConnectState()) {
+                            sendSettings();
                             sendClientReady();
                         }
 
@@ -153,6 +154,19 @@ public class Client extends AppCompatActivity {
                 globalVariables.setNumberOfBalls(theOscMessage.get(0).stringValue());
                 globalVariables.setFriction(theOscMessage.get(1).floatValue());
                 globalVariables.setGameMode(theOscMessage.get(2).intValue());
+
+                //Spielername empfangen und speichern
+                String[] playerName = new String[2];
+                List<String> nameList = new ArrayList<String>();
+                nameList=globalVariables.getPlayerNamesList();
+                playerName[0] = nameList.get(0); //Eigener Name
+                playerName[1] = (theOscMessage.get(3).stringValue());
+
+                Log.d(TAG, "oscEvent: Name" +playerName[0] + playerName[1]);
+
+                globalVariables.setPlayerNamesList(playerName);
+
+
                 Log.d(TAG, "oscEvent: Client Gamemode" + theOscMessage.get(2).stringValue());
                 //globalVariables.setGravity(theOscMessage.get(3).booleanValue());
                 Log.d(Client.class.getSimpleName(),"+++++++++++++Friction="+Float.toString(globalVariables.getFriction()));
@@ -198,6 +212,19 @@ public class Client extends AppCompatActivity {
         OscMessage readyMessage = new OscMessage("/clientready");
         readyMessage.add(globalVariables.getMyIpAdress());
         globalVariables.getOscP5().send(readyMessage, myRemoteLocation);
+    }
+
+    void sendSettings() {
+        Log.d(Client.class.getSimpleName(),"oscP5 send clientready");
+        Globals globalVariables = (Globals) getApplicationContext();
+        NetAddress myRemoteLocation=new NetAddress(globalVariables.getRemoteIpAdress(),globalVariables.getMyPort());
+        OscMessage settingsMessage = new OscMessage("/settings");
+        //Namen an Server senden
+        List<String> playerName = new ArrayList<String>();
+        playerName = globalVariables.getPlayerNamesList();
+
+        settingsMessage.add(playerName.get(0));
+        globalVariables.getOscP5().send(settingsMessage, myRemoteLocation);
     }
 
     /********* OTHER FUNCTIONS *********/

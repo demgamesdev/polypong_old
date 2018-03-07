@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="TColor">#ECEFF1</color>
     <color name="BtnTColor">#263238</color>
+    <color name="HintColor">#CFD8DC</color>
 </resources>

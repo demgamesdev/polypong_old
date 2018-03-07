@@ -20,10 +20,16 @@ import java.net.InetAddress;
 import java.nio.ByteOrder;
 import java.math.BigInteger;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.os.PowerManager;
+import android.widget.Toast;
+
+import processing.data.StringList;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MyActivity";
 
     //Always On
     protected PowerManager.WakeLock mWakeLock;
@@ -56,13 +62,13 @@ public class MainActivity extends AppCompatActivity {
         final Button startHostButton = (Button) findViewById(R.id.startHostButton);
         final Button startClientButton = (Button) findViewById(R.id.startClientButton);
 
-
         startHostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent startHost = new Intent(getApplicationContext(), Options.class);
-                startActivity(startHost);
-
+                if (getName()) {
+                    Intent startHost = new Intent(getApplicationContext(), Options.class);
+                    startActivity(startHost);
+                }
             }
 
         });
@@ -70,13 +76,45 @@ public class MainActivity extends AppCompatActivity {
         startClientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent startClient = new Intent(getApplicationContext(), Client.class);
-                startActivity(startClient);
-                //myThread.stop();
+                if (getName()) {
+                    Intent startClient = new Intent(getApplicationContext(), Client.class);
+                    startActivity(startClient);
+                    //myThread.stop();
+                }
+
+
+
 
             }
         });
     }
 
+    boolean getName(){
+        Globals globalVariables = (Globals) getApplicationContext();
+        EditText YourName = (EditText) findViewById(R.id.nameEditText);
+        YourName.getText().toString();
+        if (YourName.getText().toString().matches("")){
+            Context context = getApplicationContext();
+            CharSequence text = "Name ist ungültig!";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+            Log.e(TAG, "MainActivity getName: Kein name eingegeben");
+            return false;
+        }
+        else{
+            //Name in Globals Speichern
+            String[] name = new String[2];
+            name[0]=YourName.getText().toString();
+            globalVariables.setPlayerNamesList(name);
+            List<String> supplierNames1 = new ArrayList<String>();
+            supplierNames1 = globalVariables.getPlayerNamesList();
+            Log.d(TAG, "MainActivity getName: "+ supplierNames1.get(0));
+            return true;
+        }
+
+
+    }
 
 }
