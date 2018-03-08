@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.ViewGroup;
@@ -69,6 +70,15 @@ public class gamelaunch extends AppCompatActivity {
                                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
             }
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            Log.d(this.getClass().getName(), "back button pressed");
+
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
 
