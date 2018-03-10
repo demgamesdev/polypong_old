@@ -93,7 +93,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:entries="@array/planets_array"
         android:textColor="@color/TColor"
         app:layout_constraintBottom_toTopOf="@+id/devBtn"
         app:layout_constraintEnd_toEndOf="parent"

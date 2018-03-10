@@ -62,6 +62,10 @@ public class SketchRaphael extends PApplet {
     PVector mouselast = new PVector(0, 0);
     PVector zoompoint;
 
+
+
+
+
     //constructor which is called in gamelaunch
 
 
@@ -135,9 +139,12 @@ public class SketchRaphael extends PApplet {
         ballSize = width / 20;
         rectMode(CENTER);
         centerLine();
+
+
     }
 
     public void draw() {
+
         //background is important for clearing the frame every frame, so that there is nothing remaining from the previous frame drawn
         background(0);
 
@@ -186,6 +193,8 @@ public class SketchRaphael extends PApplet {
 
     void ballBoundary()
     {
+
+
 
     //left
     if (ball.x < 0) {
@@ -249,14 +258,16 @@ public class SketchRaphael extends PApplet {
 
     //Schläger kollision
         if (ball.y > height - height/40 - ballSize && ball.y < height && Math.abs(ball.x - player.x) < width/10) {
-            pongSound();
+            MediaPlayer pongSound = MediaPlayer.create(getContext(), R.raw.pong_bat);
+            pongSound.start();
             ball.y = height - height/40 - ballSize;
             ballSpeedY *= 1.1;
             ballSpeedY *= -1;
         }
 
         if (ball.y < height/40 + ballSize && ball.y > 0 && Math.abs(ball.x - enemy.x) < width/10) {
-            pongSound();
+            MediaPlayer pongSound = MediaPlayer.create(getContext(), R.raw.pong_bat);
+            pongSound.start();
             ball.y = height/40 + ballSize;
             ballSpeedY *= 1.1;
             ballSpeedY *= -1;
@@ -381,10 +392,6 @@ public class SketchRaphael extends PApplet {
             }
     }
 
-    void pongSound(){
-        MediaPlayer pongSound = MediaPlayer.create(getContext(), R.raw.pong_bat);
-        pongSound.start();
-    }
 
 }
 

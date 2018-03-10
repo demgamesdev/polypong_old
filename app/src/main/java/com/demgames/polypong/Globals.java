@@ -19,11 +19,15 @@ public class Globals extends Application {
     private String myIpAdress;
     private String remoteIpAdress;
     private String numberOfBalls=null;
+    private String remoteName;
     private int gamemode;
     private int myPort=12000;
+    private int length=0;
     private float friction=(float)0.0;
 
     private OscP5 oscP5;
+
+    private String ServerList[] =new String[]{};
 
     private boolean connectState=false;
     private boolean readyState=false;
@@ -36,10 +40,10 @@ public class Globals extends Application {
 
 
     //arrayadapter for updating list of listview
-    private ArrayAdapter<String> arrayAdapter;
+    //private ArrayAdapter<String> arrayAdapter;
 
     //LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
-    private List<String> ipAdressList = new ArrayList<String>(Arrays.asList(new String[] {}));
+    private List<String> ipAdressList = new ArrayList<String>(Arrays.asList(ServerList));
 
     private List<String> playerNamesList=new ArrayList<String>(Arrays.asList(new String[] {}));
 
@@ -123,10 +127,22 @@ public class Globals extends Application {
         this.ipAdressList=new ArrayList<String>(Arrays.asList(IpAdresses_));
     }
 
-    List<String> getMyIpList() {
+    List<String> getMyIpList(int i) {
         return(this.ipAdressList);
     }
 
+    String getMyIpListItem(int i){
+        return(this.ServerList[i]);
+    }
+
+
+    void setremoteName(String _remoteName){
+        this.remoteName=_remoteName;
+    }
+
+    String getremoteName(){
+        return remoteName;
+    }
 
     //----------------------------------
 
@@ -144,29 +160,28 @@ public class Globals extends Application {
 
 
 
-
     //----------------LISTVIEW------------------
 
-    void setArrayAdapter(ArrayAdapter arrayAdapter_) {
+    /*void setArrayAdapter(ArrayAdapter arrayAdapter_) {
         this.arrayAdapter=arrayAdapter_;
     }
 
     ArrayAdapter getArrayAdapter() {
         return(this.arrayAdapter);
-    }
+    }*/
 
 
 
     //---------------LIST MANIPULATION-------------------
 
-    void addIpTolist(String IpAdress){
+    /*void addIpTolist(String IpAdress){
         if(!this.ipAdressList.contains(IpAdress)){
             this.ipAdressList.add(IpAdress);
         }
         updateList();
         //Updatet die Liesview wenn eine neue IP Adresse gefunden wird
 
-    }
+    }*/
 
     //----------------------------------
 
@@ -176,10 +191,18 @@ public class Globals extends Application {
         }
     }
 
-    void updateList(){
+    void setIPListLength(int _length){
+        length=_length;
+    }
+
+    int getIPListLength(){
+        return length;
+    }
+
+    /*void updateList(){
         this.arrayAdapter.notifyDataSetChanged();
         Log.d(TAG, "addIpTolist: IP wurde hinzugefügt++++++++++++++++++++++++++++++++++++++++++++");
-    }
+    }*/
 
 
     //----------------THREAD------------------
