@@ -31,6 +31,7 @@ public class gamelaunch extends AppCompatActivity {
         Log.d(TAG, "onCreate: Entscheide welches spiel gestartet wird");
         Log.d(TAG, "onCreate: Spiel: " + globalVariables.getGameMode());
 
+
         if (globalVariables.getGameMode()==1){
             Log.d(TAG, "onCreate: Patys sketch gestartet");
             sketch = new Sketch(getIntent().getExtras().getString("mode"),
@@ -46,6 +47,14 @@ public class gamelaunch extends AppCompatActivity {
             PFragment fragment = new PFragment(sketch);
             fragment.setView(frame, this);
             Log.d(TAG, "onCreate: Raphaels sketch gestartet");
+        }
+
+        else if(globalVariables.getGameMode()==0){
+            Log.e(TAG, "onCreate: Spiel = 0 (Übertragung der Settings von Server an Client überprüfen)");
+        }
+
+        else{
+            Log.e(TAG, "onCreate: Spiel nicht definiert");
         }
 
 

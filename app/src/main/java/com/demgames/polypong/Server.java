@@ -3,6 +3,7 @@ package com.demgames.polypong;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,9 +18,11 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 import java.math.BigInteger;
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -30,6 +33,8 @@ import oscP5.*;
 import netP5.*;
 
 public class Server extends AppCompatActivity {
+
+    private static final String TAG = "Server";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +56,23 @@ public class Server extends AppCompatActivity {
         //globalVariables.setNumberOfBalls(getIntent().getExtras().getString("numberofballs"));  Wird bereits in Options Activity in Globals gespeichert
         globalVariables.setMyIpList(new String[] {});
 
-        globalVariables.setArrayAdapter(new ArrayAdapter<String>
-                (this, R.layout.listview, globalVariables.getMyIpList()));
+        //globalVariables.setArrayAdapter(new ArrayAdapter<String>
+                //(this, R.layout.listview, globalVariables.getMyIpList()));
 
         globalVariables.setOscP5(new OscP5(this, globalVariables.getMyPort()));
 
         final Button devBtn = (Button) findViewById(R.id.devBtn);
         final TextView myIpTextView = (TextView) findViewById(R.id.IPtextView);
+
+
         final ListView ServerLV = (ListView) findViewById(R.id.serverListView);
 
-        ServerLV.setAdapter(globalVariables.getArrayAdapter());
+
+
+
+        new MyTask().execute();
+
+
 
         //update runnable
         Runnable updateRunnable = new Runnable() {
@@ -70,15 +82,18 @@ public class Server extends AppCompatActivity {
                     while(!Thread.currentThread().isInterrupted()) {
 
                         Thread.sleep(1000);
-                        globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
+                        /*globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
 
                         if(!globalVariables.getConnectState() && checkIfIp(globalVariables.getMyIpAdress())) {
                             sendHostConnect();
+                            //Log.d(TAG, "sendHost: ");
                         } else if(!globalVariables.getSettingsState() && globalVariables.getConnectState()) {
                             sendSettings();
+                            //Log.d(TAG, "sendSettings: ");
                         } else if(globalVariables.getReadyState() && globalVariables.getSettingsState()) {
                             sendHostReady();
-                        }
+                            //Log.d(TAG, "sendHostReady: ");
+                        }*/
 
                         myIpTextView.post(new Runnable() {
                             @Override
@@ -88,11 +103,12 @@ public class Server extends AppCompatActivity {
                                     //IP Adresse wird in die Liste Hinzugefügt
                                     //globalVariables.addIpTolist(globalVariables.getMyIpAdress());
 
+
                                 } else {
                                     myIpTextView.setText("Unable to get Ip-Adress");
                                 }
                                 //globalVariables.updateListView();
-
+                                //addIPList(globalVariables.getRemoteIpAdress());
                             }
                         });
 
@@ -103,13 +119,15 @@ public class Server extends AppCompatActivity {
                 }
             }
 
+
         };
 
         globalVariables.setUpdateThread(updateRunnable);
         globalVariables.getUpdateThread().start();
 
 
-        //listview clickevent
+
+        /*//listview clickevent
         ServerLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Thread thread = new Thread(new Runnable() {
@@ -127,7 +145,7 @@ public class Server extends AppCompatActivity {
 
                 thread.start();
             }
-        });
+        });*/
 
 
     }
@@ -137,20 +155,31 @@ public class Server extends AppCompatActivity {
 
     void oscEvent(OscMessage theOscMessage) {
         final Globals globalVariables=(Globals) getApplication();
-        String TAG = "MyActivity";
+        String TAG = "Server";
         switch(theOscMessage.addrPattern()) {
             case "/clientconnect":
                 Log.d(Server.class.getSimpleName(),"oscP5 received clientconnect");
-                globalVariables.setConnectState(true);
+                //globalVariables.setConnectState(true);
                 String remoteIpAdress = theOscMessage.get(0).stringValue();
-                globalVariables.addIpTolist(remoteIpAdress);
+
+                //globalVariables.addIpTolist(remoteIpAdress);
                 globalVariables.setRemoteIpAdress(remoteIpAdress);
+                //addIPList(remoteIpAdress);
+                Log.d(TAG, "clientconnect: "+ remoteIpAdress);
+
                 break;
+
+            case "/clientTohost":
+                Log.d(Server.class.getSimpleName(),"oscP5 received client2host");
+                remoteIpAdress = theOscMessage.get(0).stringValue();
+                globalVariables.setRemoteIpAdress(remoteIpAdress);
+                Log.d(Server.class.getSimpleName(),"client2host: "+remoteIpAdress);
+                globalVariables.setConnectState(true);
 
             case "/clientready":
                 Log.d(Server.class.getSimpleName(),"oscP5 received clientready");
                 globalVariables.setSettingsState(true);
-                globalVariables.setReadyStateState(true);
+                //globalVariables.setReadyStateState(true);
                 globalVariables.addPlayerNameTolist(theOscMessage.get(0).stringValue());
                 //sendHostReady();
 
@@ -195,6 +224,8 @@ public class Server extends AppCompatActivity {
         settingsMessage.add(globalVariables.getPlayerNamesList().get(0));
         //settingsMessage.add(globalVariables.getGravity());
         globalVariables.getOscP5().send(settingsMessage, myRemoteLocation);
+        globalVariables.setReadyStateState(true);
+        sendHostReady();
 
     }
 
@@ -218,7 +249,7 @@ public class Server extends AppCompatActivity {
             startActivity(startGame);
             //globalVariables.myThread.stop();
 
-            //globalVariables.setGameLaunched(true);
+            globalVariables.setGameLaunched(true);
             finish();
         }
     }
@@ -272,4 +303,120 @@ public class Server extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+
+
+    /*public void addIPList(String remoteIpAdress){
+
+        Globals globalVariables = (Globals) getApplicationContext();
+        ListView ServerLV = (ListView) findViewById(R.id.serverListView);
+
+        String[] ListElements = new String[]{
+                remoteIpAdress
+        };
+
+        Log.d(TAG, "addIPList: Hallo ihr Pisse1 " + remoteIpAdress);
+        List<String> ipAdressList = new ArrayList<String>(Arrays.asList(ListElements));
+
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_list_item_1, ipAdressList);
+
+
+        ServerLV.setAdapter(adapter);
+
+        Log.d(TAG, "addIPList: Hallo ihr Pisser2 " + ipAdressList);
+
+        ipAdressList.add("Hallo");
+        //ipAdressList.add(globalVariables.getRemoteIpAdress());
+        Log.d(TAG, "addIPList: Hallo ihr Pisser3 " + ipAdressList);
+
+
+
+    }*/
+
+
+
+    //Zeigt die IP Adresse an während dem Suchen
+    class MyTask extends AsyncTask<Void,Void,Void>{
+
+        Globals globalVariables = (Globals) getApplicationContext();
+        String[] ListElements = new String[]{};
+        List<String> ipAdressList = new ArrayList<String>(Arrays.asList(ListElements));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (Server.this, R.layout.listview, ipAdressList);
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Log.d(TAG, "doInBackground: Anfang Suche");
+
+            globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
+
+            while(!globalVariables.getConnectState()){
+                sendHostConnect();
+                publishProgress();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            while(!globalVariables.getReadyState()){
+                Log.d(TAG, "doInBackground: Sende Settings");
+                sendSettings();
+            }
+
+
+            //sendHostReady();
+
+
+            /*while(globalVariables.getRemoteIpAdress()==null){
+                //Log.d(TAG, "doInBackground: "+ globalVariables.getRemoteIpAdress());
+            }*/
+            Log.d(TAG, "doInBackground: Ende Suche");
+
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            ListView ServerLV = (ListView) findViewById(R.id.serverListView);
+            ServerLV.setAdapter(adapter);
+        }
+
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+
+
+            if(globalVariables.getRemoteIpAdress()==null){
+
+            }
+            else{
+                if(!ipAdressList.contains(globalVariables.getRemoteIpAdress())){
+                    Log.d(TAG, "onProgressUpdate: Update" + globalVariables.getRemoteIpAdress());
+                    ipAdressList.add(globalVariables.getRemoteIpAdress());
+                    adapter.notifyDataSetChanged();
+                }
+
+            }
+
+
+        }
+
+        @Override
+        protected void onPostExecute(Void Void) {
+            Log.d(TAG, "onPostExecute:  MyTask Abgeschlossen");
+            //ipAdressList.add(globalVariables.getRemoteIpAdress());
+            //adapter.notifyDataSetChanged();
+
+            //MyTask().execute();
+        }
+
+    }
+
+
 }
