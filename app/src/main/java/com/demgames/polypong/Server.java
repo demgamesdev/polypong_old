@@ -32,6 +32,8 @@ import java.util.List;
 import oscP5.*;
 import netP5.*;
 
+
+
 public class Server extends AppCompatActivity {
 
     private static final String TAG = "Server";
@@ -67,12 +69,9 @@ public class Server extends AppCompatActivity {
 
         final ListView ServerLV = (ListView) findViewById(R.id.serverListView);
 
-
-
-
-        new MyTask().execute();
-
-
+        //IP Suche
+        MyTask IpSearch = new MyTask();
+        IpSearch.execute();
 
         //update runnable
         Runnable updateRunnable = new Runnable() {
@@ -82,73 +81,38 @@ public class Server extends AppCompatActivity {
                     while(!Thread.currentThread().isInterrupted()) {
 
                         Thread.sleep(1000);
-                        /*globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
-
-                        if(!globalVariables.getConnectState() && checkIfIp(globalVariables.getMyIpAdress())) {
-                            sendHostConnect();
-                            //Log.d(TAG, "sendHost: ");
-                        } else if(!globalVariables.getSettingsState() && globalVariables.getConnectState()) {
-                            sendSettings();
-                            //Log.d(TAG, "sendSettings: ");
-                        } else if(globalVariables.getReadyState() && globalVariables.getSettingsState()) {
-                            sendHostReady();
-                            //Log.d(TAG, "sendHostReady: ");
-                        }*/
-
                         myIpTextView.post(new Runnable() {
                             @Override
                             public void run() {
                                 if (checkIfIp(globalVariables.getMyIpAdress())) {
                                     myIpTextView.setText("Deine IP-Adresse lautet: " + globalVariables.getMyIpAdress());
-                                    //IP Adresse wird in die Liste Hinzugefügt
-                                    //globalVariables.addIpTolist(globalVariables.getMyIpAdress());
-
-
-                                } else {
+                                }
+                                else {
                                     myIpTextView.setText("Unable to get Ip-Adress");
                                 }
-                                //globalVariables.updateListView();
-                                //addIPList(globalVariables.getRemoteIpAdress());
                             }
                         });
 
                     }
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e) {
                     Log.d(Server.class.getSimpleName(),"myThread interrupted");
                     e.printStackTrace();
                 }
             }
-
-
         };
 
         globalVariables.setUpdateThread(updateRunnable);
         globalVariables.getUpdateThread().start();
 
-
-
-        /*//listview clickevent
-        ServerLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Thread thread = new Thread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        try  {
-                            sendSettings();
-                            //Your code goes here
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-                thread.start();
-            }
-        });*/
-
-
     }
+
+    /*@Override
+    protected void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
+        MyTask.cancel();
+        super.onDestroy();
+    }*/
 
     /********* OSCP5 EVENTHANDLER *********/
 
@@ -195,11 +159,10 @@ public class Server extends AppCompatActivity {
                 globalVariables.setPlayerNamesList(playerName);
                 Log.d(TAG, "oscEvent: Name" + playerName[1]);
                 //sendHostReady();
-
                 break;
-
         }
     }
+
 
     /********* SEND FUNCTIONS *********/
 
@@ -267,7 +230,6 @@ public class Server extends AppCompatActivity {
         }
 
         byte[] ipByteArray = BigInteger.valueOf(ipAddress).toByteArray();
-
         String ipAddressString;
         try {
             ipAddressString = InetAddress.getByAddress(ipByteArray).getHostAddress();
@@ -276,7 +238,6 @@ public class Server extends AppCompatActivity {
             //ipAddressString = null;
             ipAddressString = "192.168.43.1";
         }
-
         return ipAddressString;
     }
 
@@ -287,9 +248,7 @@ public class Server extends AppCompatActivity {
                 return (true);
             }
         }
-
         return (false);
-
     }
 
     @Override
@@ -299,45 +258,12 @@ public class Server extends AppCompatActivity {
             Globals globalVariables = (Globals) getApplicationContext();
             globalVariables.interruptUpdateThread();
             globalVariables.stopOscP5();
-
         }
         return super.onKeyDown(keyCode, event);
     }
 
 
-
-    /*public void addIPList(String remoteIpAdress){
-
-        Globals globalVariables = (Globals) getApplicationContext();
-        ListView ServerLV = (ListView) findViewById(R.id.serverListView);
-
-        String[] ListElements = new String[]{
-                remoteIpAdress
-        };
-
-        Log.d(TAG, "addIPList: Hallo ihr Pisse1 " + remoteIpAdress);
-        List<String> ipAdressList = new ArrayList<String>(Arrays.asList(ListElements));
-
-
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, ipAdressList);
-
-
-        ServerLV.setAdapter(adapter);
-
-        Log.d(TAG, "addIPList: Hallo ihr Pisser2 " + ipAdressList);
-
-        ipAdressList.add("Hallo");
-        //ipAdressList.add(globalVariables.getRemoteIpAdress());
-        Log.d(TAG, "addIPList: Hallo ihr Pisser3 " + ipAdressList);
-
-
-
-    }*/
-
-
-
+    /********* Thread Function - Searching IP and displaying *********/
     //Zeigt die IP Adresse an während dem Suchen
     class MyTask extends AsyncTask<Void,Void,Void>{
 
@@ -350,8 +276,8 @@ public class Server extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Log.d(TAG, "doInBackground: Anfang Suche");
 
+            Log.d(TAG, "doInBackground: Anfang Suche");
             globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
 
             while(!globalVariables.getConnectState()){
@@ -369,15 +295,7 @@ public class Server extends AppCompatActivity {
                 sendSettings();
             }
 
-
-            //sendHostReady();
-
-
-            /*while(globalVariables.getRemoteIpAdress()==null){
-                //Log.d(TAG, "doInBackground: "+ globalVariables.getRemoteIpAdress());
-            }*/
             Log.d(TAG, "doInBackground: Ende Suche");
-
             return null;
         }
 
@@ -387,35 +305,23 @@ public class Server extends AppCompatActivity {
             ServerLV.setAdapter(adapter);
         }
 
-
         @Override
         protected void onProgressUpdate(Void... values) {
-
-
-            if(globalVariables.getRemoteIpAdress()==null){
-
-            }
-            else{
+            if(globalVariables.getRemoteIpAdress()!=null){
                 if(!ipAdressList.contains(globalVariables.getRemoteIpAdress())){
                     Log.d(TAG, "onProgressUpdate: Update" + globalVariables.getRemoteIpAdress());
                     ipAdressList.add(globalVariables.getRemoteIpAdress());
                     adapter.notifyDataSetChanged();
                 }
-
             }
-
-
         }
 
         @Override
         protected void onPostExecute(Void Void) {
             Log.d(TAG, "onPostExecute:  MyTask Abgeschlossen");
-            //ipAdressList.add(globalVariables.getRemoteIpAdress());
-            //adapter.notifyDataSetChanged();
 
-            //MyTask().execute();
         }
-
+        Server m_activity = null;
     }
 
 

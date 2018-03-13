@@ -286,9 +286,11 @@ public class Client extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+
+
+    /********* Thread Function - Searching IP and displaying *********/
     //Todo Thread abbrechen bei beenden der Activity implementieren
     //Todo Bug bei Funktion sendClient2Host beheben (Tritt auf wenn auf die IP-Adresse in der Listview geklickt wird)
-    //Zeigt die IP Adresse an während dem Suchen
     class MyTaskClient extends AsyncTask<Void,Void,Void> {
 
         Globals globalVariables = (Globals) getApplicationContext();
@@ -362,10 +364,8 @@ public class Client extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void Void) {
             Log.d(TAG, "onPostExecute:  MyTask Abgeschlossen");
-            //ipAdressList.add(globalVariables.getRemoteIpAdress());
-            //adapter.notifyDataSetChanged();
 
-            //MyTask().execute();
+
         }
 
     }
