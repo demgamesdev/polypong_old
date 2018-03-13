@@ -58,6 +58,10 @@ public class SketchRaphael extends PApplet {
 
     int numberofballs;
 
+    int interval = 5;
+    int t;
+    String time = "5";
+
     //define pvector of last touch event
     PVector mouselast = new PVector(0, 0);
     PVector zoompoint;
@@ -138,32 +142,46 @@ public class SketchRaphael extends PApplet {
         enemySpeed = width / 150;
         ballSize = width / 20;
         rectMode(CENTER);
-        centerLine();
 
+        //Countdown
+        fill(255);
+        textSize(width/10);
+        textAlign(CENTER);
+        text("3", width/2, height/2);
 
     }
 
     public void draw() {
 
         //background is important for clearing the frame every frame, so that there is nothing remaining from the previous frame drawn
-        background(0);
 
-        //calling methods for drawing the ball, the player, the enemy, and the scores
-        if (mode.equals("host")){
-            drawBallHost();
-            drawPlayer();
-            drawEnemy();
-            scoreText();
-            sendBall();
-            centerLine();
-            //drawEnemy();
+        t = interval-(millis()/1000);
+        time = nf(t , 1);
+        background(0);
+        if(t <= 0) {
+            //calling methods for drawing the ball, the player, the enemy, and the scores
+
+            if (mode.equals("host")){
+                drawBallHost();
+                drawPlayer();
+                drawEnemy();
+                scoreText();
+                sendBall();
+                centerLine();
+                //drawEnemy();
+            }
+            else if (mode.equals("client")){
+                drawBallClient();
+                drawPlayer();
+                scoreText();
+                drawEnemy();
+                centerLine();
+            }
         }
-        else if (mode.equals("client")){
-            drawBallClient();
-            drawPlayer();
-            scoreText();
-            drawEnemy();
-            centerLine();
+
+        else if (t >= 0){
+            //Todo Countown zwischen Server und Client synchronisieren
+            text("Spiel beginnt in " + time, width/2, height/2);
         }
 
     }
@@ -188,7 +206,7 @@ public class SketchRaphael extends PApplet {
         noStroke();
         ellipse(0, 0, width / 20, width / 20);
         popMatrix();
-        Log.d(TAG, "drawBallClient: Ich stelle den Client ball dar");
+        //Log.d(TAG, "drawBallClient: Ich stelle den Client ball dar");
     }
 
     void ballBoundary()
@@ -316,7 +334,6 @@ public class SketchRaphael extends PApplet {
         nameList=globalVariables.getPlayerNamesList();
         String player = nameList.get(0) + ": "; //Eigener Name
         String enemy = nameList.get(1) + ": ";
-        textSize(width/10);
         if (mode.equals("host") ){
             fill(255);
             textSize(width/22);
