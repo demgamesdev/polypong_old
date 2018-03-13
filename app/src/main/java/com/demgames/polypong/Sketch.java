@@ -5,6 +5,10 @@ import android.content.Context;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.util.Log;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 
 //importing processing libraries
 import processing.core.*;
@@ -17,11 +21,12 @@ import processing.event.KeyEvent;
 
 public class Sketch extends PApplet {
 
-    private ScaleGestureDetector mScaleDetector;
-
     Activity myActivity;
     Context myContext;
-
+    SensorManager sensorManager;
+    Sensor sensor;
+    AccelerometerListener accelerometerListener;
+    PVector accelerometerVector=new PVector(0,0,0);
     //Globals globalVariables = (Globals) getApplicationContext;
 
     //declare oscp5 object for sending and receiving messages
@@ -67,7 +72,6 @@ public class Sketch extends PApplet {
     Bat otherbat;
     //declare array of balls and buttons
     Ball[] balls;
-    Button zoombutton;
     //test
 
     //constructor which is called in gamelaunch
@@ -102,6 +106,11 @@ public class Sketch extends PApplet {
 
         Globals globalVariables = (Globals) myContext;
 
+        sensorManager = (SensorManager)myContext.getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        accelerometerListener = new AccelerometerListener();
+        sensorManager.registerListener(accelerometerListener, sensor, SensorManager.SENSOR_DELAY_GAME);
+
         myipadress=globalVariables.getMyIpAdress();
         remoteipadress=globalVariables.getRemoteIpAdress();
 
@@ -123,9 +132,6 @@ public class Sketch extends PApplet {
         //initialize bat and balls objects
         mybat=new Bat(width/2,height,width/4,height/25,true,myplayerscreen);
         otherbat=new Bat(width/2,-height,width/4,height/25,true,(myplayerscreen+1)%2);
-
-        //initialize buttons
-        zoombutton=new Button("Zoom",width/2,height/4,width/3,height/15,false);
 
         //initialize zoompoint
         zoompoint=new PVector(width/2,height);
@@ -168,25 +174,18 @@ public class Sketch extends PApplet {
         //display and check buttons for pressing
         background(0);
 
-        /*if (zoombutton.pressed()) {
-            zoom=(float)0.5;
-        } else {
-            zoom=1;
-        }*/
-
-
         checkZoom("out");
         fill(255);
         rect(width/2,0,width,2*height);
         float linethickness=height/50;
         fill(0);
         rect(width/2,-linethickness/2,width,linethickness,linethickness/2);
-        textMode(CORNER);
-        fill(0);
-        text(str(parseInt(frameRate)),width*(float)0.9,height*(float)0.05);
-        //checkZoom("in");
 
-        //zoombutton.display();
+        textFont(createFont("SansSerif", (float) (height *0.03), true));
+        textMode(CENTER);
+        fill(0);
+        text(str(parseInt(frameRate)),width*(float)0.8,height*(float)0.1);
+        //checkZoom("in");
 
         //checkZoom("out");
 
@@ -286,13 +285,17 @@ public class Sketch extends PApplet {
     }
 
 
-
-    //check mouse for being released
-    @Override
-    public void mouseReleased(MouseEvent mouseEvent) {
-        super.mouseReleased(mouseEvent);
-        zoombutton.flip=true;
+    class AccelerometerListener implements SensorEventListener {
+        public void onSensorChanged(SensorEvent event) {
+            accelerometerVector.x=event.values[0];
+            accelerometerVector.y=event.values[1];
+            accelerometerVector.z=event.values[2];
+        }
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        }
     }
+
+
 
     /********* SENDING FUNCTIONS *********/
 
@@ -509,79 +512,134 @@ public class Sketch extends PApplet {
         //check for collision with Bat thebat and again behave like a spring
         void checkBatCollision(Bat thebat) {
             PVector relPosition=PVector.sub(position,thebat.position);
-            PVector relVelocity=PVector.sub(velocity,thebat.velocity);
-            float dist =relPosition.mag();
-            //distanceV.mult(1/dist);
+
             float positionparallel=PVector.dot(thebat.orparallel,relPosition);
             float positionnormal=PVector.dot(thebat.ornormal,relPosition);
-            //distanceV.mult(1/dist);
+
 
             //print("projections:", positionparallel,positionnormal);
-            float velocityparallel=PVector.dot(thebat.orparallel,relVelocity);
-            float velocitynormal=PVector.dot(thebat.ornormal,relVelocity);
+            float ballvelocityparallel=PVector.dot(thebat.orparallel,velocity);
+            float ballvelocitynormal=PVector.dot(thebat.ornormal,velocity);
+            float batvelocityparallel=PVector.dot(thebat.orparallel,thebat.velocity);
+            float batvelocitynormal=PVector.dot(thebat.ornormal,thebat.velocity);
 
-            float factor=(float)10;
+            float factor=(float)1;
             float part=(float)0.9;
 
+            //println("pos: ",positionparallel,positionnormal,", vel: ",velocityparallel,velocitynormal);
+            //println(positionnormal-(thebat.hei/2+radius)*part);
+            //println(positionnormal+velocitynormal-(thebat.hei/2+radius)*part);
             //print("------");
-            if(abs(positionparallel+velocityparallel)<(thebat.wid/2+radius) ) {
-                //println("parallel fit");
-                //upper side
-                if(positionnormal>0 && positionnormal+velocitynormal<=(thebat.hei/2+radius)*part) {
-                    //println("up");
 
-                    PVector normalforce = PVector.mult(thebat.ornormal, (thebat.hei / 2 + radius - positionnormal)*batspring/m*factor);
-                    velocity.add(normalforce);
-                    velocity.add(PVector.mult(thebat.ornormal,PVector.dot(thebat.ornormal,thebat.velocity)));
-
-                    //velocity=PVector.add(PVector.mult(thebat.orparallel,velocityparallel),PVector.mult(thebat.ornormal,-velocitynormal));
-                    velocity.mult(inelast/factor);
-
-                    //lower side
-                } else if(positionnormal<0 && positionnormal+velocitynormal>=-(thebat.hei/2+radius)*part) {
-
-                    //println("down");
-                    PVector normalforce = PVector.mult(thebat.ornormal, -(thebat.hei / 2 + radius + positionnormal) * batspring/m*factor);
-                    velocity.add(normalforce);
-                    velocity.add(PVector.mult(thebat.ornormal,PVector.dot(thebat.ornormal,thebat.velocity)));
-
-                    //velocity=PVector.add(PVector.mult(thebat.orparallel,velocityparallel),PVector.mult(thebat.ornormal,-velocitynormal));
-                    velocity.mult(inelast/factor);
-                }
-            } else if(abs(positionnormal+velocitynormal)<(thebat.hei/2+radius)) {
-                //println("normal fit");
-                //right side
-                if(positionparallel>0 && positionparallel+velocityparallel<=(thebat.wid/2+radius)*part) {
-                    //println("right");
-                    PVector parallelforce = PVector.mult(thebat.orparallel, (thebat.wid/2+radius-positionparallel) *batspring/m*factor);
-                    velocity.add(parallelforce);
-                    velocity.add(PVector.mult(thebat.orparallel,PVector.dot(thebat.orparallel,thebat.velocity)));
-
-                    //velocity=PVector.add(PVector.mult(thebat.orparallel,-velocityparallel),PVector.mult(thebat.ornormal,velocitynormal));
-                    velocity.mult(inelast/factor);
-                    //left side
-                } else if(positionparallel<0 && positionparallel+velocityparallel>=-(thebat.wid/2+radius)*part) {
-
-                    //println("left");
-                    PVector parallelforce = PVector.mult(thebat.orparallel, -(thebat.wid/2+radius+positionparallel) *batspring/m*factor);
-                    velocity.add(parallelforce);
-                    velocity.add(PVector.mult(thebat.orparallel,PVector.dot(thebat.orparallel,thebat.velocity)));
-
-                    //velocity=PVector.add(PVector.mult(thebat.orparallel,-velocityparallel),PVector.mult(thebat.ornormal,velocitynormal));
-                    velocity.mult(inelast/factor);
+            if(abs(positionparallel)<=(thebat.wid/2)) {
+                if(positionnormal>0) {
+                    if(positionnormal+ballvelocitynormal-batvelocitynormal<thebat.hei/2+radius) {
+                        velocity=PVector.add(PVector.mult(thebat.orparallel,ballvelocityparallel),PVector.mult(thebat.ornormal,abs(ballvelocitynormal)+abs(batvelocitynormal)));
+                        velocity.mult(inelast/factor);
+                        println("up in");
+                    } else {
+                        println("up");
+                    }
+                } else if(positionnormal<0) {
+                    if(positionnormal+ballvelocitynormal-batvelocitynormal>-(thebat.hei/2+radius)) {
+                        velocity=PVector.add(PVector.mult(thebat.orparallel,ballvelocityparallel),PVector.mult(thebat.ornormal,-abs(ballvelocitynormal)-abs(batvelocitynormal)));
+                        velocity.mult(inelast/factor);
+                        println("down in");
+                    } else {
+                        println("down");
+                    }
 
                 }
-            } /*else if(dist<sqrt(thebat.wid*thebat.wid+thebat.hei*thebat.hei)/2){
-                println("diagonal");
-                velocity.add(PVector.mult(distanceV, (sqrt(thebat.wid*thebat.wid+thebat.hei*thebat.hei)/2-dist)*batspring/m/dist));
-                velocity.add(PVector.mult(distanceV,PVector.dot(distanceV,thebat.velocity)/dist));
-                velocity.mult(inelast);
 
-            }*/
+            }else if (abs(positionnormal)<=(thebat.hei/2)){
+                if(positionparallel>0) {
+                    if(positionparallel+ballvelocityparallel-batvelocityparallel<thebat.wid/2+radius) {
+                        velocity=PVector.add(PVector.mult(thebat.orparallel,abs(ballvelocityparallel)+abs(batvelocityparallel)),PVector.mult(thebat.ornormal,ballvelocitynormal));
+                        velocity.mult(inelast/factor);
+                        println("right in");
+                    } else {
+                        println("right");
+                    }
+                } else if(positionparallel<0) {
+                    if(positionparallel+ballvelocityparallel-batvelocityparallel>-(thebat.wid/2+radius)) {
+                        velocity=PVector.add(PVector.mult(thebat.orparallel,-abs(ballvelocityparallel)-abs(batvelocityparallel)),PVector.mult(thebat.ornormal,ballvelocitynormal));
+                        velocity.mult(inelast/factor);
+                        println("left in");
+                    } else {
+                        println("left");
+                    }
 
+                }
 
+            }else if(positionparallel>0 && positionnormal>0) {
+                PVector vertex=PVector.add(thebat.position,PVector.add(PVector.mult(thebat.orparallel,thebat.wid/2),PVector.mult(thebat.ornormal,thebat.hei/2)));
+                PVector relVertexPos=PVector.sub(position,vertex);
+                float vertexDistance=relVertexPos.mag();
+                relVertexPos.mult(1/vertexDistance);
+                float ballVertexVelocity=PVector.dot(relVertexPos,velocity);
+                float batVertexVelocity=PVector.dot(relVertexPos,thebat.velocity);
 
-            //print("------");
+                print(vertexDistance-radius);
+                if(vertexDistance+ballVertexVelocity-batVertexVelocity<radius) {
+                    velocity=PVector.mult(relVertexPos,abs(ballVertexVelocity)+abs(batVertexVelocity));
+                    velocity.mult(inelast/factor);
+                    println("up right in");
+                } else {
+                    println("up right");
+                }
+
+            } else if(positionparallel<0 && positionnormal>0) {
+                PVector vertex=PVector.add(thebat.position,PVector.add(PVector.mult(thebat.orparallel,-thebat.wid/2),PVector.mult(thebat.ornormal,thebat.hei/2)));
+                PVector relVertexPos=PVector.sub(position,vertex);
+                float vertexDistance=relVertexPos.mag();
+                relVertexPos.mult(1/vertexDistance);
+                float ballVertexVelocity=PVector.dot(relVertexPos,velocity);
+                float batVertexVelocity=PVector.dot(relVertexPos,thebat.velocity);
+
+                print(vertexDistance-radius);
+                if(vertexDistance+ballVertexVelocity-batVertexVelocity<radius) {
+                    velocity=PVector.mult(relVertexPos,abs(ballVertexVelocity)+abs(batVertexVelocity));
+                    velocity.mult(inelast/factor);
+                    println("up left in");
+                } else {
+                    println("up left");
+                }
+
+            } else if(positionparallel>0 && positionnormal<0) {
+                PVector vertex=PVector.add(thebat.position,PVector.add(PVector.mult(thebat.orparallel,thebat.wid/2),PVector.mult(thebat.ornormal,-thebat.hei/2)));
+                PVector relVertexPos=PVector.sub(position,vertex);
+                float vertexDistance=relVertexPos.mag();
+                relVertexPos.mult(1/vertexDistance);
+                float ballVertexVelocity=PVector.dot(relVertexPos,velocity);
+                float batVertexVelocity=PVector.dot(relVertexPos,thebat.velocity);
+
+                print(vertexDistance-radius);
+                if(vertexDistance+ballVertexVelocity-batVertexVelocity<radius) {
+                    velocity=PVector.mult(relVertexPos,abs(ballVertexVelocity)+abs(batVertexVelocity));
+                    velocity.mult(inelast/factor);
+                    println("down right in");
+                } else {
+                    println("down right");
+                }
+
+            } else if(positionparallel<0 && positionnormal<0) {
+                PVector vertex=PVector.add(thebat.position,PVector.add(PVector.mult(thebat.orparallel,-thebat.wid/2),PVector.mult(thebat.ornormal,-thebat.hei/2)));
+                PVector relVertexPos=PVector.sub(position,vertex);
+                float vertexDistance=relVertexPos.mag();
+                relVertexPos.mult(1/vertexDistance);
+                float ballVertexVelocity=PVector.dot(relVertexPos,velocity);
+                float batVertexVelocity=PVector.dot(relVertexPos,thebat.velocity);
+
+                print(vertexDistance-radius);
+                if(vertexDistance+ballVertexVelocity-batVertexVelocity<radius) {
+                    velocity=PVector.mult(relVertexPos,abs(ballVertexVelocity)+abs(batVertexVelocity));
+                    velocity.mult(inelast/factor);
+                    println("down left in");
+                } else {
+                    println("down left");
+                }
+            }
+
 
         }
 
@@ -614,10 +672,10 @@ public class Sketch extends PApplet {
 
     //create class bat
     class Bat {
-        PVector origin,position,velocity,orparallel,ornormal;
+        PVector origin,position,lastposition,velocity,orparallel,ornormal;
 
         float orientation,moveradius,wid,hei;
-
+        float accelerometerSensitivity=(float)5.0;
         int[] batcolor=new int[3];
         boolean controlled;
 
@@ -628,9 +686,10 @@ public class Sketch extends PApplet {
             rotatePlayerScreen(playerScreen,"acw");
             origin= new PVector(x,y);
             position = PVector.add(origin,new PVector(0,-height/10));
+            lastposition=position;
             velocity = new PVector(0,0);
 
-            orientation=getangle(position.x,position.y);
+            orientation=getAccelerometerAngle(accelerometerVector.x,accelerometerSensitivity);
             setOrvectors();
 
             moveradius=width*(float)0.7;
@@ -638,8 +697,6 @@ public class Sketch extends PApplet {
             hei=hei_;
 
             playerScreen=playerScreen_;
-
-
 
             batcolor[0] =0;
             batcolor[1]=0;
@@ -660,27 +717,18 @@ public class Sketch extends PApplet {
         void move() {
             origin= new PVector(width/2,height);
             if(controlled) {
+                lastposition=position;
                 if (mousePressed) {
-                    if (PVector.sub(new PVector(mouseX,mouseY), origin).mag() <= moveradius*zoom) {
-                        if(abs(mouseX-origin.x)<=zoom*width/2) {
-                            position = new PVector((mouseX - (1 - zoom) * zoompoint.x) / zoom, (mouseY - (1 - zoom) * zoompoint.y) / zoom);
-                        } else {
-
-                        }
-                    } else if(PVector.sub(new PVector(mouseX,mouseY), origin).mag() <= moveradius*(float)1.1*zoom){
-                        if(abs(mouseX-origin.x)<=zoom*width/2) {
-                            float posangle = getangle(mouseX, mouseY);
-                            position = PVector.mult(PVector.add(origin, new PVector((cos(posangle) * moveradius * zoom - (1 - zoom) * zoompoint.x),
-                                    (sin(posangle) * moveradius * zoom - (1 - zoom) * zoompoint.y))), 1 / zoom);
-                        } else {
-
-                        }
+                    if(abs(mouseX-origin.x)<=zoom*width/2 && mouseY>=(1-zoom)*height) {
+                        position = new PVector((mouseX - (1 - zoom) * zoompoint.x) / zoom, (mouseY - (1 - zoom) * zoompoint.y) / zoom);
                     }
-                    velocity = PVector.sub(position, mouselast);
-                    velocity.mult(mousevelocity);
-                }
 
-                orientation=getangle(position.x,position.y);
+                }
+                velocity = PVector.sub(position, lastposition);
+                velocity.mult(mousevelocity);
+
+                orientation=getAccelerometerAngle(accelerometerVector.x,accelerometerSensitivity);
+                print(orientation);
                 setOrvectors();
             }
         }
@@ -690,8 +738,8 @@ public class Sketch extends PApplet {
             //pushMatrix();
             rotatePlayerScreen(playerScreen,"acw");
 
-            fill(batcolor[0],batcolor[1],batcolor[2],50);
-            ellipse(width/2,height,2*moveradius,2*moveradius);
+            /*fill(batcolor[0],batcolor[1],batcolor[2],50);
+            ellipse(width/2,height,2*moveradius,2*moveradius);*/
 
             rectMode(CORNERS);
             fill(0);
@@ -705,7 +753,7 @@ public class Sketch extends PApplet {
             fill(batcolor[0],batcolor[1],batcolor[2]);
             translate(position.x,position.y);
             rotate(orientation-PI/2);
-            rect(0,0,wid,hei,hei/2);
+            rect(0,0,wid,hei);
             rotate(-(orientation-PI/2));
             translate(-(position.x),-(position.y));
 
@@ -723,6 +771,15 @@ public class Sketch extends PApplet {
             float angle=-atan((-y + origin.y) / (x - origin.x))+PI;
             if (x>=origin.x) {
                 angle=-atan((-y + origin.y) / (x - origin.x));
+            }
+
+            return(angle);
+        }
+
+        float getAccelerometerAngle(float x, float y) {
+            float angle=-atan((-y) / (x))+PI;
+            if (x>=0) {
+                angle=-atan((-y) / (x));
             }
 
             return(angle);
