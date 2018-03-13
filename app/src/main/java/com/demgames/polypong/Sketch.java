@@ -59,9 +59,12 @@ public class Sketch extends PApplet {
 
     boolean gravityState;
     boolean attractionState;
+    boolean scoreState=true;
 
     int framecounter=0;
     int gameScreen=1;
+    int myScore=0;
+    int otherScore=0;
 
     int numberofballs;
 
@@ -182,9 +185,10 @@ public class Sketch extends PApplet {
         rect(width/2,-linethickness/2,width,linethickness,linethickness/2);
 
         textFont(createFont("SansSerif", (float) (height *0.03), true));
-        textMode(CENTER);
+        textAlign(CENTER);
         fill(0);
         text(str(parseInt(frameRate)),width*(float)0.8,height*(float)0.1);
+        text(str(myScore)+":"+str(otherScore),width*(float)0.5,height*(float)0.1);
         //checkZoom("in");
 
         //checkZoom("out");
@@ -217,6 +221,7 @@ public class Sketch extends PApplet {
                         +str(ball.velocity.x)+", "+str(ball.velocity.y));*/
                 if(ball.updateState) {
                     ball.update();
+                    ball.checkScore();
                     sendBall(ball);
                 }
                 ball.checkPlayerScreenChange();
@@ -244,44 +249,48 @@ public class Sketch extends PApplet {
 
     //check for incoming osc messages
     void oscEvent(OscMessage theOscMessage) {
-        for (int i=0;i<balls.length;i++) { //balls.length
-            if(theOscMessage.addrPattern().equals("/ball/"+str(i)+"/playerscreen")) {
-                if(balls[i].playerScreen!=myplayerscreen) {
-                    balls[i].playerScreen = myplayerscreen;
-                    balls[i].updateState=true;
-                    println("playerscreenchange received");
-                    balls[i].position.x = width * (1 - theOscMessage.get(0).floatValue());
-                    balls[i].position.y = -theOscMessage.get(1).floatValue() * height;
-                    balls[i].velocity.x = -theOscMessage.get(2).floatValue() * width;
-                    balls[i].velocity.y = -theOscMessage.get(3).floatValue() * height;
-                }
+        if(theOscMessage.addrPattern().equals("/score")) {
+            otherScore=theOscMessage.get(0).intValue();
+            myScore=theOscMessage.get(1).intValue();
+        } else {
+            for (int i = 0; i < balls.length; i++) { //balls.length
+                if (theOscMessage.addrPattern().equals("/ball/" + str(i) + "/playerscreen")) {
+                    if (balls[i].playerScreen != myplayerscreen) {
+                        balls[i].playerScreen = myplayerscreen;
+                        balls[i].updateState = true;
+                        println("playerscreenchange received");
+                        balls[i].position.x = width * (1 - theOscMessage.get(0).floatValue());
+                        balls[i].position.y = -theOscMessage.get(1).floatValue() * height;
+                        balls[i].velocity.x = -theOscMessage.get(2).floatValue() * width;
+                        balls[i].velocity.y = -theOscMessage.get(3).floatValue() * height;
+                    }
                 /*println("received playerscreenchange of ball "+str(i)+": "+str(balls[i].position.x)+", "+str(balls[i].position.y)
                 +str(balls[i].velocity.x)+", "+str(balls[i].velocity.y));*/
-                //println("radius: ",balls[i].radius," m: ",balls[i].m);
-            } else if(theOscMessage.addrPattern().equals("/ball/"+str(i)+"/position")) {
-                balls[i].position.x=width*(1-theOscMessage.get(0).floatValue());
-                balls[i].position.y=-theOscMessage.get(1).floatValue()*height;
-                balls[i].playerScreen=theOscMessage.get(2).intValue();
-                //println("ball received");
-                //println("position: ",balls[i].position.x,balls[i].position.y);
-            } else if(theOscMessage.addrPattern().equals("/ball/"+str(i)+"/attributes")) {
-                balls[i].radius=theOscMessage.get(0).floatValue()*width;
-                //println("radius: ",balls[i].radius," m: ",balls[i].m);
-            }
-        }
-        for (int i=0;i<2;i++) {
-            if(i!=myplayerscreen) {
-                if(theOscMessage.addrPattern().equals("/bat/"+str(i)+"/position")) {
-                    otherbat.position.x=theOscMessage.get(0).floatValue()*width;
-                    otherbat.position.y=theOscMessage.get(1).floatValue()*height;
-                    otherbat.orientation=theOscMessage.get(2).floatValue();
-                   //println("bat received");
+                    //println("radius: ",balls[i].radius," m: ",balls[i].m);
+                } else if (theOscMessage.addrPattern().equals("/ball/" + str(i) + "/position")) {
+                    balls[i].position.x = width * (1 - theOscMessage.get(0).floatValue());
+                    balls[i].position.y = -theOscMessage.get(1).floatValue() * height;
+                    balls[i].playerScreen = theOscMessage.get(2).intValue();
+                    //println("ball received");
                     //println("position: ",balls[i].position.x,balls[i].position.y);
+                } else if (theOscMessage.addrPattern().equals("/ball/" + str(i) + "/attributes")) {
+                    balls[i].radius = theOscMessage.get(0).floatValue() * width;
+                    //println("radius: ",balls[i].radius," m: ",balls[i].m);
                 }
             }
+            for (int i = 0; i < 2; i++) {
+                if (i != myplayerscreen) {
+                    if (theOscMessage.addrPattern().equals("/bat/" + str(i) + "/position")) {
+                        otherbat.position.x = theOscMessage.get(0).floatValue() * width;
+                        otherbat.position.y = theOscMessage.get(1).floatValue() * height;
+                        otherbat.orientation = theOscMessage.get(2).floatValue();
+                        //println("bat received");
+                        //println("position: ",balls[i].position.x,balls[i].position.y);
+                    }
+                }
+            }
+
         }
-
-
     }
 
 
@@ -333,6 +342,13 @@ public class Sketch extends PApplet {
         oscP5.send(batMessage,myRemoteLocation);
         //println("bat sent");
 
+    }
+
+    void sendScore() {
+        OscMessage pointMessage = new OscMessage("/score");
+        pointMessage.add(myScore);
+        pointMessage.add(otherScore);
+        oscP5.send(pointMessage,myRemoteLocation);
     }
 
     /********* OTHER FUNCTIONS *********/
@@ -473,7 +489,7 @@ public class Sketch extends PApplet {
             } else if (position.x-radius+velocity.x<0) {
                 position.x=radius;
                 velocity.x*=-inelast;
-            } if (position.y+radius+velocity.y>height) {
+            } if (position.y+radius+velocity.y>height && !scoreState) {
                 position.y=height-radius;
                 velocity.y*=-inelast;
             } /*else if (position.y-radius+velocity.y<0) {
@@ -484,6 +500,17 @@ public class Sketch extends PApplet {
                 position.y=-height+radius;
                 velocity.y*=-inelast;
             }
+        }
+
+
+        void checkScore() {
+            if (position.y-radius>height && scoreState) {
+                otherScore++;
+                updateState=false;
+                position.y=2*height;
+                sendScore();
+            }
+
         }
 
 
@@ -741,12 +768,12 @@ public class Sketch extends PApplet {
             /*fill(batcolor[0],batcolor[1],batcolor[2],50);
             ellipse(width/2,height,2*moveradius,2*moveradius);*/
 
-            rectMode(CORNERS);
+            /*rectMode(CORNERS);
             fill(0);
 
             rect(width, height - moveradius, width + moveradius, height + moveradius);
             rect(-moveradius, height - moveradius, 0, height + moveradius);
-            rect(0, height, width, height + moveradius);
+            rect(0, height, width, height + moveradius);*/
 
             rectMode(CENTER);
 
