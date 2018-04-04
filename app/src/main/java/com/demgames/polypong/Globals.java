@@ -170,7 +170,6 @@ public class Globals extends Application {
     }
 
 
-
     //----------------LISTVIEW------------------
 
     /*void setArrayAdapter(ArrayAdapter arrayAdapter_) {
