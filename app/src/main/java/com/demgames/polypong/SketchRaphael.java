@@ -93,7 +93,7 @@ public class SketchRaphael extends PApplet {
     SketchRaphael(String mode_, String myipadress_, String remoteipadress_, String numberofballs_, Float friction_) {
 
         mode = mode_;
-        Log.d(TAG, "SketchRaphael: mode" + mode);
+        //Log.d(TAG, "SketchRaphael: mode" + mode);
 
 
         if (mode.equals("client")) {
@@ -322,7 +322,7 @@ public class SketchRaphael extends PApplet {
         rect(0, 0, width/5,width/20); //Größe des Schlägers
         //box(width/20, width/5, width/50);
         popMatrix();
-        Log.d(TAG, "drawEnemy: zeichne");
+        //Log.d(TAG, "drawEnemy: zeichne");
     }
 
     void scoreText()
@@ -363,7 +363,7 @@ public class SketchRaphael extends PApplet {
         posMessage.add(ball.x/width);
         posMessage.add(ball.y/height);
         oscP5.send(posMessage, myRemoteLocation);
-        Log.d(TAG, "sendBall: " + Float.toString(ball.x) + " " + Float.toString(ball.y));
+        //Log.d(TAG, "sendBall: " + Float.toString(ball.x) + " " + Float.toString(ball.y));
         //OscMessage attrMessage = new OscMessage("/ball/"+str(theBall.ballnumber)+"/attributes");
         //attrMessage.add(theBall.radius/width);
         //attrMessage.add(theBall.m);
@@ -373,7 +373,7 @@ public class SketchRaphael extends PApplet {
     void centerLine()
     {
         int numberOfLines = 20;
-        Log.d(TAG, "centerLine: Ich maledie center line");
+        //Log.d(TAG, "centerLine: Ich maledie center line");
         strokeWeight(width/100);
         stroke(255);
         line(0, height/2, width, height/2);
@@ -394,7 +394,7 @@ public class SketchRaphael extends PApplet {
             if(theOscMessage.addrPattern().equals("/position")) {
                 ball.x=-((theOscMessage.get(0).floatValue()*width)-width);
                 ball.y=-((theOscMessage.get(1).floatValue()*height)-height);
-                Log.d(TAG, "receiveBall: " + Float.toString(ball.x) + " " + Float.toString(ball.y));
+                //Log.d(TAG, "receiveBall: " + Float.toString(ball.x) + " " + Float.toString(ball.y));
                 //Log.d(TAG, "oscEvent: Ich empfange den ball");
                 //println("position: ",balls[i].position.x,balls[i].position.y);
             }
@@ -405,7 +405,7 @@ public class SketchRaphael extends PApplet {
             }
 
             if(theOscMessage.addrPattern().equals("/bat")) {
-                Log.d(TAG, "Bat: Ich empfange den x Wert" + Float.toString(enemy.x));
+                //Log.d(TAG, "Bat: Ich empfange den x Wert" + Float.toString(enemy.x));
                 enemy.x = -((theOscMessage.get(0).floatValue()*width)-width);
             }
     }

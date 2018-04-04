@@ -9,6 +9,7 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import netP5.*;
 import oscP5.*;
@@ -49,6 +50,10 @@ public class Globals extends Application {
     private List<String> playerNamesList=new ArrayList<String>(Arrays.asList(new String[] {}));
 
     private Thread updateThread;
+
+    private float[] ballsXPositions;
+    private float[] ballsYPositions;
+    private float[] ballsSizes;
 
 
     //---------------NETWORKING-------------------
@@ -252,21 +257,21 @@ public class Globals extends Application {
 
     //----------------------------------
 
-    void setAttraction(Boolean attraction_) {
+    void setAttractionState(Boolean attraction_) {
         this.attraction=attraction_;
     }
 
-    Boolean getAttraction() {
+    Boolean getAttractionState() {
         return(this.attraction);
     }
 
     //----------------------------------
 
-    void setGravity(Boolean gravity_) {
+    void setGravityState(Boolean gravity_) {
         this.gravity=gravity_;
     }
 
-    Boolean getGravity() {
+    Boolean getGravityState() {
         return(this.gravity);
     }
 
@@ -288,6 +293,48 @@ public class Globals extends Application {
     int getGameMode() {
         return(this.gamemode);
     }
+
+    //----------------------------------
+
+    void setBalls(boolean randomPosition) {
+        Random rand=new Random();
+        this.ballsXPositions=new float[Integer.parseInt(this.getNumberOfBalls())];
+        this.ballsYPositions=new float[Integer.parseInt(this.getNumberOfBalls())];
+        this.ballsSizes=new float[Integer.parseInt(this.getNumberOfBalls())];
+        if(randomPosition) {
+            for (int i = 0; i < Integer.parseInt(this.getNumberOfBalls()); i++) {
+                this.ballsXPositions[i] = rand.nextFloat();
+                this.ballsYPositions[i] = rand.nextFloat();
+                this.ballsSizes[i] = rand.nextFloat();
+            }
+        }
+    }
+
+    void setBallsXPositions(int ballNumber_, float ballsXPosition_) {
+        this.ballsXPositions[ballNumber_]=ballsXPosition_;
+    }
+
+    void setBallsYPositions(int ballNumber_, float ballsYPosition_) {
+        this.ballsYPositions[ballNumber_]=ballsYPosition_;
+    }
+
+    void setBallsSizes(int ballNumber_, float ballsSize_) {
+        this.ballsSizes[ballNumber_]=ballsSize_;
+    }
+
+
+    float[] getBallsXPositions() {
+        return(this.ballsXPositions);
+    }
+
+    float[] getBallsYPositions() {
+        return(this.ballsYPositions);
+    }
+
+    float[] getBallsSizes() {
+        return(this.ballsSizes);
+    }
+
 
 }
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +44,17 @@ public class Server extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Todo proper network handling in asynctask or thread
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            //your codes here
+
+        }
+
         //Vollbildmodus
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -72,8 +84,10 @@ public class Server extends AppCompatActivity {
         final ListView ServerLV = (ListView) findViewById(R.id.serverListView);
 
         //IP Suche
-       MyTaskServer= new MyTask();
+        MyTaskServer= new MyTask();
         MyTaskServer.execute();
+
+        globalVariables.setBalls(true);
 
         //update runnable
         Runnable updateRunnable = new Runnable() {
@@ -111,8 +125,16 @@ public class Server extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+
         MyTaskServer.cancel(true);
-        Log.d(TAG, "onDestroy: ");
+        Log.d(TAG, "onDestroy: MyTask beendet");
+        final Globals globalVariables=(Globals) getApplication();
+        globalVariables.stopOscP5();
+        Log.d(TAG, "onDestroy: OscP5 beendet");
+        globalVariables.interruptUpdateThread();
+        //globalVariables.setSearchConnecState(false);
+        //Toast.makeText(Client.this, "Suche wird beendet", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onDestroy: Activity geschlossen");
 
         super.onDestroy();
     }
@@ -134,6 +156,7 @@ public class Server extends AppCompatActivity {
                 //addIPList(remoteIpAdress);
                 Log.d(TAG, "clientconnect: "+ remoteIpAdress);
 
+                globalVariables.setConnectState(true);
                 break;
 
             case "/clientTohost":
@@ -160,7 +183,7 @@ public class Server extends AppCompatActivity {
                 playerName[0] = nameList.get(0); //Eigener Name
                 playerName[1] = (theOscMessage.get(0).stringValue());
                 globalVariables.setPlayerNamesList(playerName);
-                Log.d(TAG, "oscEvent: Name" + playerName[1]);
+                Log.d(TAG, "oscEvent: Name " + playerName[1]);
                 //sendHostReady();
                 break;
         }
@@ -184,10 +207,28 @@ public class Server extends AppCompatActivity {
         Globals globalVariables = (Globals) getApplicationContext();
         NetAddress myRemoteLocation=new NetAddress(globalVariables.getRemoteIpAdress(),globalVariables.getMyPort());
         OscMessage settingsMessage = new OscMessage("/settings");
+
         settingsMessage.add(globalVariables.getNumberOfBalls());
         settingsMessage.add(globalVariables.getFriction());
         settingsMessage.add(globalVariables.getGameMode());
         settingsMessage.add(globalVariables.getPlayerNamesList().get(0));
+
+        if(globalVariables.getGravityState()) {
+            settingsMessage.add(1);
+        } else {
+            settingsMessage.add(0);
+        }
+        if(globalVariables.getAttractionState()) {
+            settingsMessage.add(1);
+        } else {
+            settingsMessage.add(0);
+        }
+
+        Log.d(Server.class.getSimpleName(),"oscP5 send ballsX[0] "+Float.toString(globalVariables.getBallsXPositions()[0]));
+        settingsMessage.add(globalVariables.getBallsXPositions());
+        settingsMessage.add(globalVariables.getBallsYPositions());
+        settingsMessage.add(globalVariables.getBallsSizes());
+
         //settingsMessage.add(globalVariables.getGravity());
         globalVariables.getOscP5().send(settingsMessage, myRemoteLocation);
         globalVariables.setReadyStateState(true);
@@ -208,9 +249,6 @@ public class Server extends AppCompatActivity {
             globalVariables.stopOscP5();
 
             Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
-            startGame.putExtra("myipadress", globalVariables.getMyIpAdress());
-            startGame.putExtra("remoteipadress", globalVariables.getRemoteIpAdress());
-            startGame.putExtra("numberofballs", globalVariables.getNumberOfBalls());
             startGame.putExtra("mode", "host");
             startActivity(startGame);
             //globalVariables.myThread.stop();
@@ -254,16 +292,16 @@ public class Server extends AppCompatActivity {
         return (false);
     }
 
-    @Override
+    /*@Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             Log.d(this.getClass().getName(), "back button pressed");
             Globals globalVariables = (Globals) getApplicationContext();
-            globalVariables.interruptUpdateThread();
-            globalVariables.stopOscP5();
+            //globalVariables.interruptUpdateThread();
+            //globalVariables.stopOscP5();
         }
         return super.onKeyDown(keyCode, event);
-    }
+    }*/
 
 
     /********* Thread Function - Searching IP and displaying *********/
@@ -287,7 +325,7 @@ public class Server extends AppCompatActivity {
                 sendHostConnect();
                 publishProgress();
                 try {
-                    Thread.sleep(1000);
+                    Thread.currentThread().sleep(30);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

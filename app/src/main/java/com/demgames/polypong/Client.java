@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.net.wifi.WifiManager;
 import android.content.Intent;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.view.View;
 import android.view.Window;
@@ -48,6 +49,17 @@ public class Client extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Todo proper network handling in asynctask or thread
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            //your codes here
+
+        }
 
 
 
@@ -141,7 +153,7 @@ public class Client extends AppCompatActivity {
 
 
 
-    /*@Override
+    @Override
     protected void onDestroy() {
 
         MyTaskClient1.cancel(true);
@@ -149,19 +161,11 @@ public class Client extends AppCompatActivity {
         final Globals globalVariables=(Globals) getApplication();
         globalVariables.stopOscP5();
         Log.d(TAG, "onDestroy: OscP5 beendet");
-        globalVariables.getUpdateThread().stop();
-        //globalVariables.setSearchConnecState(false);
-        //Toast.makeText(Client.this, "Suche wird beendet", Toast.LENGTH_SHORT).show();
+        globalVariables.interruptUpdateThread();
         Log.d(TAG, "onDestroy: Activity geschlossen");
 
-
-        /*try {
-            wait(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         super.onDestroy();
-    }*/
+    }
 
     /********* OSCP5 EVENTHANDLER *********/
 
@@ -181,9 +185,9 @@ public class Client extends AppCompatActivity {
                 break;
 
             case "/settings":
-                globalVariables.setSettingsState(true);
                 Log.d(Client.class.getSimpleName(),"oscP5 received settings");
                 //value=theOscMessage.get(0).intValue();
+
                 globalVariables.setNumberOfBalls(theOscMessage.get(0).stringValue());
                 globalVariables.setFriction(theOscMessage.get(1).floatValue());
                 globalVariables.setGameMode(theOscMessage.get(2).intValue());
@@ -200,22 +204,43 @@ public class Client extends AppCompatActivity {
                 globalVariables.setPlayerNamesList(playerName);
 
 
+
+                if(theOscMessage.get(4).intValue()==1) {
+                    globalVariables.setGravityState(true);
+                }
+                if(theOscMessage.get(5).intValue()==1) {
+                    globalVariables.setAttractionState(true);
+                }
+
+                globalVariables.setBalls(false);
+                int offset=6;
+                for (int i=0; i<Integer.parseInt(globalVariables.getNumberOfBalls());i++) {
+                    globalVariables.setBallsXPositions(i,theOscMessage.get(offset+i).floatValue());
+                    globalVariables.setBallsYPositions(i,theOscMessage.get(offset+Integer.parseInt(globalVariables.getNumberOfBalls())+i).floatValue());
+                    globalVariables.setBallsSizes(i,theOscMessage.get(offset+2*Integer.parseInt(globalVariables.getNumberOfBalls())+i).floatValue());
+
+                }
+
+                //Log.d(Client.class.getSimpleName(),"+++++++++++++oscP5 received ball settings ++++++++++++"+Boolean.toString(theOscMessage.get(3).booleanValue()));
+                for (int i=0; i<Integer.parseInt(globalVariables.getNumberOfBalls());i++) {
+                    //Log.d(Client.class.getSimpleName(),"oscP5 received ball settings "+Boolean.toString(theOscMessage.get(3).booleanValue()));
+                }
+
+
                 Log.d(TAG, "oscEvent: Client Gamemode" + theOscMessage.get(2).stringValue());
                 //globalVariables.setGravity(theOscMessage.get(3).booleanValue());
                 Log.d(Client.class.getSimpleName(),"+++++++++++++Friction="+Float.toString(globalVariables.getFriction()));
+
+                globalVariables.setSettingsState(true);
                 break;
 
             case "/hostready":
                 Log.d(Client.class.getSimpleName(),"oscP5 received hostready");
-                globalVariables.setReadyStateState(true);
                 Log.d(TAG, "oscEvent: hostready - spiel wird gestartet");
                 if(!globalVariables.getGameLaunched()) {
                     globalVariables.stopOscP5();
                     Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
                     //Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
-                    startGame.putExtra("myipadress", globalVariables.getMyIpAdress());
-                    startGame.putExtra("remoteipadress", globalVariables.getRemoteIpAdress());
-                    startGame.putExtra("numberofballs", globalVariables.getNumberOfBalls());
                     startGame.putExtra("mode", "client");
                     startActivity(startGame);
                     //globalVariables.myThread.stop();
@@ -225,6 +250,8 @@ public class Client extends AppCompatActivity {
                     MyTaskClient1.cancel(true);
                     finish();
                 }
+
+                globalVariables.setReadyStateState(true);
                 break;
         }
     }
@@ -269,7 +296,7 @@ public class Client extends AppCompatActivity {
     }
 
     void sendSettings() {
-        Log.d(Client.class.getSimpleName(),"oscP5 send clientready");
+        Log.d(Client.class.getSimpleName(),"oscP5 send settings");
         Globals globalVariables = (Globals) getApplicationContext();
         NetAddress myRemoteLocation=new NetAddress(globalVariables.getRemoteIpAdress(),globalVariables.getMyPort());
         OscMessage settingsMessage = new OscMessage("/settings");
@@ -277,6 +304,7 @@ public class Client extends AppCompatActivity {
         List<String> playerName = new ArrayList<String>();
         playerName = globalVariables.getPlayerNamesList();
 
+        Log.d(Client.class.getSimpleName(),"oscP5 send "+playerName.get(0));
         settingsMessage.add(playerName.get(0));
         globalVariables.getOscP5().send(settingsMessage, myRemoteLocation);
     }
@@ -318,23 +346,21 @@ public class Client extends AppCompatActivity {
 
     }
 
-    @Override
+    /*@Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             Log.d(this.getClass().getName(), "back button pressed");
             Globals globalVariables = (Globals) getApplicationContext();
-            globalVariables.interruptUpdateThread();
-            globalVariables.stopOscP5();
+            //globalVariables.interruptUpdateThread();
+            //globalVariables.stopOscP5();
 
         }
         return super.onKeyDown(keyCode, event);
-    }
+    }*/
 
 
 
     /********* Thread Function - Searching IP and displaying *********/
-    //Todo Thread abbrechen bei beenden der Activity implementieren
-    //Todo Bug bei Funktion sendClient2Host beheben (Tritt auf wenn auf die IP-Adresse in der Listview geklickt wird)
     class MyTaskClient extends AsyncTask<Void,Void,Void> {
 
         Globals globalVariables = (Globals) getApplicationContext();
@@ -349,21 +375,26 @@ public class Client extends AppCompatActivity {
 
             Log.d(TAG, "doInBackground: Anfang Suche");
             globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
-                while(!Thread.currentThread().isInterrupted()) {
-                    while (globalVariables.getConnectState() == false && globalVariables.getSearchConnectionState() == true) {
-                        sendClientConnect();
-                        publishProgress();
-                    }
+
+            while (!globalVariables.getConnectState()) {
+                //sendClientConnect();
+                try {
+                    Thread.currentThread().sleep(30);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+                publishProgress();
+            }
 
 
             Log.d(TAG, "doInBackground: Ende Suche");
 
             Log.d(TAG, "onPostExecute: Anfang Settings Senden");
-            if(!globalVariables.getSettingsState()) {
+            sendSettings();
+            /*if(globalVariables.getSettingsState()) {
                 sendSettings();
                 Log.d(TAG, "onPostExecute: Sending Settings");
-            }
+            }*/
             Log.d(TAG, "onPostExecute: Ende Settings Senden");
             sendClientReady();
 
@@ -378,7 +409,7 @@ public class Client extends AppCompatActivity {
                 //Vor dem Thread Initialisierung
                 ListView ServerLV = (ListView) findViewById(R.id.ClientListView);
                 ServerLV.setAdapter(adapter);
-                globalVariables.setSearchConnecState(true);
+                //globalVariables.setSearchConnecState(true);
                 ServerLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -388,7 +419,7 @@ public class Client extends AppCompatActivity {
                         Toast.makeText(Client.this, "Zu \"" + ipAdressList.get(i) + "\" wird verbunden", Toast.LENGTH_SHORT).show();
                         globalVariables.setConnectState(true);
                         globalVariables.setRemoteIpAdress(ipAdressList.get(i));
-                        sendClient2Host();
+                        sendClientConnect();
                     }
                 });
 

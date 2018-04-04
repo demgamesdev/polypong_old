@@ -34,9 +34,7 @@ public class gamelaunch extends AppCompatActivity {
 
         if (globalVariables.getGameMode()==1){
             Log.d(TAG, "onCreate: Patys sketch gestartet");
-            sketch = new Sketch(getIntent().getExtras().getString("mode"),
-                    getIntent().getExtras().getString("myipadress"),getIntent().getExtras().getString("remoteipadress"),
-                    getIntent().getExtras().getString("numberofballs"), globalVariables.getFriction());
+            sketch = new Sketch(getIntent().getExtras().getString("mode"));
             PFragment fragment = new PFragment(sketch);
             fragment.setView(frame, this);
 

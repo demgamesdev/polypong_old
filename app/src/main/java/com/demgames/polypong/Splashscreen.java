@@ -33,14 +33,14 @@ public class Splashscreen extends AppCompatActivity {
         Logo.startAnimation(transition);
 
         final MediaPlayer splashSound = MediaPlayer.create(this, R.raw.splash_sound);
-        splashSound.start();
+        //splashSound.start();
         final Intent startmain = new Intent(getApplicationContext(), MainActivity.class);
 
 
         Thread timer = new Thread(){
             public void  run(){
                 try {
-                    sleep(3000);
+                    sleep(0);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
