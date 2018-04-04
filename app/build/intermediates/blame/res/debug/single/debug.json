@@ -1680,6 +1680,10 @@
         "source": "/home/paty/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/41f2f2f9d3eb0b99c73b5fd76637c44f/res/drawable-mdpi-v4/design_ic_visibility.png"
     },
     {
+        "merged": "/home/paty/DEV/Android/Apps/polypong/app/build/intermediates/res/merged/debug/drawable_ic_launcher_background.xml.flat",
+        "source": "/home/paty/DEV/Android/Apps/polypong/app/src/main/res/drawable/ic_launcher_background.xml"
+    },
+    {
         "merged": "/home/paty/DEV/Android/Apps/polypong/app/build/intermediates/res/merged/debug/drawable-mdpi-v4_abc_btn_switch_to_on_mtrl_00012.9.png.flat",
         "source": "/home/paty/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/7a00dfecbb14092577dfb777f2ee8aed/res/drawable-mdpi-v4/abc_btn_switch_to_on_mtrl_00012.9.png"
     },
