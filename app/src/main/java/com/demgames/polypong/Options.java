@@ -47,7 +47,8 @@ public class Options extends AppCompatActivity implements AdapterView.OnItemSele
         final CheckBox gravity = (CheckBox) findViewById(R.id.gravitycheckBox);
         final CheckBox attraction = (CheckBox) findViewById(R.id.attractcheckBox);
 
-        //Spielm
+
+        //Spielmodus Spinner
         final Spinner gamemode = (Spinner) findViewById(R.id.gamemodeSpinner);
         gamemode.setOnItemSelectedListener(this);
         ArrayAdapter<CharSequence> spinneradapter = ArrayAdapter.createFromResource(this,

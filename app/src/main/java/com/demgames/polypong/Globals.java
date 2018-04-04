@@ -35,6 +35,7 @@ public class Globals extends Application {
     private boolean gameLaunched=false;
     private boolean attraction=false;
     private boolean gravity=false;
+    private boolean searchConnectionState=false;
 
     private static final String TAG = "Globals";
 
@@ -113,12 +114,12 @@ public class Globals extends Application {
 
     //----------------------------------
 
-    void setGameLaunched(boolean gameLaunched_) {
-        this.gameLaunched=gameLaunched_;
+    void setSearchConnecState(boolean searchConnectionState_) {
+        this.searchConnectionState=searchConnectionState_;
     }
 
-    boolean getGameLaunched() {
-        return(this.gameLaunched);
+    boolean getSearchConnectionState() {
+        return(this.searchConnectionState);
     }
 
     //----------------------------------
@@ -156,6 +157,16 @@ public class Globals extends Application {
 
     void stopOscP5() {
         this.oscP5.stop();
+    }
+
+    //----------------------------------
+
+    void setGameLaunched(boolean gameLaunched_) {
+        this.gameLaunched=gameLaunched_;
+    }
+
+    boolean getGameLaunched() {
+        return(this.gameLaunched);
     }
 
 

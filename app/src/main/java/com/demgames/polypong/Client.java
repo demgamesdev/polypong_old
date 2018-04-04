@@ -1,7 +1,9 @@
 package com.demgames.polypong;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +24,9 @@ import android.widget.TextView;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import java.io.IOError;
+import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.net.InetAddress;
 import java.nio.ByteOrder;
 import java.math.BigInteger;
@@ -29,13 +34,17 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import oscP5.*;
 import netP5.*;
 
+
 public class Client extends AppCompatActivity {
 
     private static final String TAG = "Client";
+    private MyTaskClient MyTaskClient1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +63,7 @@ public class Client extends AppCompatActivity {
         globalVariables.setReadyStateState(false);
         globalVariables.setSettingsState(false);
         globalVariables.setGameLaunched(false);
+        globalVariables.setRemoteIpAdress(null);
 
         globalVariables.setMyIpList(new String[] {});
         //globalVariables.setArrayAdapter(new ArrayAdapter<String>
@@ -69,7 +79,9 @@ public class Client extends AppCompatActivity {
 
 
         //Thread für den Verbindungsaufbau
-        new MyTaskClient().execute();
+        MyTaskClient1 = new MyTaskClient();
+        MyTaskClient1.execute();
+
 
         //automatically detect ip if available, create new thread for searching ip
         Runnable updateRunnable = new Runnable() {
@@ -100,7 +112,7 @@ public class Client extends AppCompatActivity {
                     }
 
                 } catch (InterruptedException e) {
-                    Log.d(Client.class.getSimpleName(),"myThread interrupted");
+                    Log.d(Client.class.getSimpleName(),"Eigene Ip-Adresse Thread interrupted");
                     e.printStackTrace();
                 }
 
@@ -127,6 +139,29 @@ public class Client extends AppCompatActivity {
 
     }
 
+
+
+    /*@Override
+    protected void onDestroy() {
+
+        MyTaskClient1.cancel(true);
+        Log.d(TAG, "onDestroy: MyTask beendet");
+        final Globals globalVariables=(Globals) getApplication();
+        globalVariables.stopOscP5();
+        Log.d(TAG, "onDestroy: OscP5 beendet");
+        globalVariables.getUpdateThread().stop();
+        //globalVariables.setSearchConnecState(false);
+        //Toast.makeText(Client.this, "Suche wird beendet", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onDestroy: Activity geschlossen");
+
+
+        /*try {
+            wait(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        super.onDestroy();
+    }*/
 
     /********* OSCP5 EVENTHANDLER *********/
 
@@ -187,6 +222,7 @@ public class Client extends AppCompatActivity {
                     globalVariables.interruptUpdateThread();
                     globalVariables.stopOscP5();
                     globalVariables.setGameLaunched(true);
+                    MyTaskClient1.cancel(true);
                     finish();
                 }
                 break;
@@ -197,13 +233,22 @@ public class Client extends AppCompatActivity {
 
     void sendClientConnect() {
         Globals globalVariables = (Globals) getApplicationContext();
-        NetAddress myRemoteLocation=new NetAddress(globalVariables.getRemoteIpAdress(),globalVariables.getMyPort());
-        //Log.d(Client.class.getSimpleName(),"oscP5 send clientconnect");
-        OscMessage connectMessage = new OscMessage("/clientconnect");
-        connectMessage.add(globalVariables.getMyIpAdress());
-        globalVariables.getOscP5().send(connectMessage, myRemoteLocation);
+        if ( globalVariables.getMyIpAdress()==null){
+            Log.e(TAG, "sendClientConnect: myIP == null ");
+        }
+        else{
+            NetAddress myRemoteLocation=new NetAddress(globalVariables.getRemoteIpAdress(),globalVariables.getMyPort());
+            //Log.d(Client.class.getSimpleName(),"oscP5 send clientconnect");
+            OscMessage connectMessage = new OscMessage("/clientconnect");
+            connectMessage.add(globalVariables.getMyIpAdress());
+            //Log.e(TAG, "sendClientConnect: Message " + connectMessage );
+            globalVariables.getOscP5().send(connectMessage, myRemoteLocation);
+        }
+
+
     }
     void sendClient2Host() {
+
         Globals globalVariables = (Globals) getApplicationContext();
         NetAddress myRemoteLocation=new NetAddress(globalVariables.getRemoteIpAdress(),globalVariables.getMyPort());
         Log.d(Client.class.getSimpleName(),"oscP5 send client2host");
@@ -211,7 +256,6 @@ public class Client extends AppCompatActivity {
         connectMessage.add(globalVariables.getMyIpAdress());
         Log.d(Client.class.getSimpleName(),"oscP5 send client2host 3 " + connectMessage);
         globalVariables.getOscP5().send(connectMessage, myRemoteLocation);
-        Log.d(Client.class.getSimpleName(),"oscP5 send client2host 4");
     }
 
 
@@ -302,47 +346,59 @@ public class Client extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             //Background Thread
+
             Log.d(TAG, "doInBackground: Anfang Suche");
             globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
-
-            while(!globalVariables.getConnectState()) {
-                sendClientConnect();
-                publishProgress();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                while(!Thread.currentThread().isInterrupted()) {
+                    while (globalVariables.getConnectState() == false && globalVariables.getSearchConnectionState() == true) {
+                        sendClientConnect();
+                        publishProgress();
+                    }
                 }
-            }
-            Log.d(TAG, "doInBackground: Anfang Settings Senden");
+
+
+            Log.d(TAG, "doInBackground: Ende Suche");
+
+            Log.d(TAG, "onPostExecute: Anfang Settings Senden");
             if(!globalVariables.getSettingsState()) {
                 sendSettings();
-                Log.d(TAG, "doInBackground: Sending Settings");
+                Log.d(TAG, "onPostExecute: Sending Settings");
             }
-            Log.d(TAG, "doInBackground: Ende Settings Senden");
+            Log.d(TAG, "onPostExecute: Ende Settings Senden");
             sendClientReady();
-            Log.d(TAG, "doInBackground: Ende Suche");
+
+            Log.d(TAG, "onPostExecute:  MyTask Abgeschlossen");
+
             return null;
         }
 
         @Override
         protected void onPreExecute() {
 
-            //Vor dem Thread Initialisierung
-            ListView ServerLV = (ListView) findViewById(R.id.ClientListView);
-            ServerLV.setAdapter(adapter);
-            ServerLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    //Toast.makeText(Client.this, globalVariables.getMyIpList().get(i), Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "onItemClick: " + Integer.toString(i));
-                    Log.d(TAG, "onItemClick: " + ipAdressList.get(i));
-                    Toast.makeText(Client.this, "Zu \"" + ipAdressList.get(i) + "\" wird verbunden", Toast.LENGTH_SHORT).show();
-                    globalVariables.setConnectState(true);
-                    globalVariables.setRemoteIpAdress(ipAdressList.get(i));
-                    sendClient2Host();
-                }
-            });
+                //Vor dem Thread Initialisierung
+                ListView ServerLV = (ListView) findViewById(R.id.ClientListView);
+                ServerLV.setAdapter(adapter);
+                globalVariables.setSearchConnecState(true);
+                ServerLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        //Toast.makeText(Client.this, globalVariables.getMyIpList().get(i), Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onItemClick: " + Integer.toString(i));
+                        Log.d(TAG, "onItemClick: " + ipAdressList.get(i));
+                        Toast.makeText(Client.this, "Zu \"" + ipAdressList.get(i) + "\" wird verbunden", Toast.LENGTH_SHORT).show();
+                        globalVariables.setConnectState(true);
+                        globalVariables.setRemoteIpAdress(ipAdressList.get(i));
+                        sendClient2Host();
+                    }
+                });
+
+
+        }
+
+        @Override
+        protected void onCancelled() {
+            Log.d(TAG, "onCancelled: Asynctask canceled");
+            super.onCancelled();
         }
 
         @Override
@@ -351,25 +407,22 @@ public class Client extends AppCompatActivity {
             //Neue IP Adresse wird in die Listview geschrieben
             if(globalVariables.getRemoteIpAdress()!=null){
                 if(!ipAdressList.contains(globalVariables.getRemoteIpAdress())){
-                    Log.d(TAG, "onProgressUpdate: Update" + globalVariables.getRemoteIpAdress());
+                    Log.d(TAG, "onProgressUpdate: Update neue IP: " + globalVariables.getRemoteIpAdress());
                     ipAdressList.add(globalVariables.getRemoteIpAdress());
                     adapter.notifyDataSetChanged();
                     globalVariables.setMyIpList(ListElements);
-                    Log.d(TAG, "onProgressUpdate: " + ipAdressList);
+                    Log.d(TAG, "onProgressUpdate: IP-Liste: " + ipAdressList);
                 }
             }
 
         }
 
-        @Override
+        //@Override
         protected void onPostExecute(Void Void) {
-            Log.d(TAG, "onPostExecute:  MyTask Abgeschlossen");
-
-
+            Client m_activity = null;
         }
 
     }
 
+
 }
-
-

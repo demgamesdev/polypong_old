@@ -37,6 +37,7 @@ import netP5.*;
 public class Server extends AppCompatActivity {
 
     private static final String TAG = "Server";
+    private MyTask MyTaskServer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class Server extends AppCompatActivity {
         globalVariables.setGameLaunched(false);
         //globalVariables.setNumberOfBalls(getIntent().getExtras().getString("numberofballs"));  Wird bereits in Options Activity in Globals gespeichert
         globalVariables.setMyIpList(new String[] {});
+        globalVariables.setRemoteIpAdress(null);
 
         //globalVariables.setArrayAdapter(new ArrayAdapter<String>
                 //(this, R.layout.listview, globalVariables.getMyIpList()));
@@ -70,8 +72,8 @@ public class Server extends AppCompatActivity {
         final ListView ServerLV = (ListView) findViewById(R.id.serverListView);
 
         //IP Suche
-        MyTask IpSearch = new MyTask();
-        IpSearch.execute();
+       MyTaskServer= new MyTask();
+        MyTaskServer.execute();
 
         //update runnable
         Runnable updateRunnable = new Runnable() {
@@ -107,12 +109,13 @@ public class Server extends AppCompatActivity {
 
     }
 
-    /*@Override
+    @Override
     protected void onDestroy() {
+        MyTaskServer.cancel(true);
         Log.d(TAG, "onDestroy: ");
-        MyTask.cancel();
+
         super.onDestroy();
-    }*/
+    }
 
     /********* OSCP5 EVENTHANDLER *********/
 
@@ -317,7 +320,15 @@ public class Server extends AppCompatActivity {
         }
 
         @Override
+        protected void onCancelled() {
+            Log.d(TAG, "onCancelled: canceld");
+            super.onCancelled();
+        }
+
+        @Override
         protected void onPostExecute(Void Void) {
+
+
             Log.d(TAG, "onPostExecute:  MyTask Abgeschlossen");
 
         }

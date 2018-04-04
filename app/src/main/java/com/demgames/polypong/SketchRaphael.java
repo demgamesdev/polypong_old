@@ -181,6 +181,7 @@ public class SketchRaphael extends PApplet {
 
         else if (t >= 0){
             //Todo Countown zwischen Server und Client synchronisieren
+            //Todo Client start mit Serverstart abgleichen bei Countdown
             text("Spiel beginnt in " + time, width/2, height/2);
         }
 
