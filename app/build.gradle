@@ -29,5 +29,6 @@ dependencies {
     //Add Processing library
     compile files('libs/processing-core.jar')
     compile files('libs/oscP5.jar')
+    compile files('libs/kryonet-2.21-all.jar')
     //compile 'com.github.SilenceDut:AsyncTaskScheduler:1.0.0-alpha1'
 }

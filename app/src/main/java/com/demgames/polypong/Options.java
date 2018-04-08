@@ -64,14 +64,14 @@ public class Options extends AppCompatActivity implements AdapterView.OnItemSele
             @Override
             public void onClick(View view) {
                 /***Optionen an Global Übergeben'**/
-                globalVariables.setNumberOfBalls(Integer.toString(ballnum));
+                globalVariables.setNumberOfBalls(ballnum);
                 Log.d(TAG, "Anzahl der bälle: "+ globalVariables.getNumberOfBalls());
                 globalVariables.setGravityState(gravity.isChecked());
                 globalVariables.setAttractionState(attraction.isChecked());
                 globalVariables.setFriction(fric);
 
                 /***Server Activity starten***/
-                Intent startServer = new Intent(getApplicationContext(), Server.class);
+                Intent startServer = new Intent(getApplicationContext(), ServerActivity.class);
                 startActivity(startServer);
             }
         });

@@ -41,11 +41,11 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.demgames.polypong.Client"
+            android:name="com.demgames.polypong.ClientActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.demgames.polypong.Server"
+            android:name="com.demgames.polypong.ServerActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity

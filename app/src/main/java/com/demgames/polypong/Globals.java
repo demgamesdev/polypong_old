@@ -2,10 +2,12 @@ package com.demgames.polypong;
 
 import android.app.Application;
 import android.nfc.Tag;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.content.Context;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,20 +15,45 @@ import java.util.Random;
 
 import netP5.*;
 import oscP5.*;
+import processing.core.PVector;
+
+import com.demgames.polypong.network.ClientListener;
+import com.demgames.polypong.network.GameListener;
+import com.demgames.polypong.network.ServerListener;
+import com.demgames.polypong.network.sendclasses.SendBallKinetics;
+import com.demgames.polypong.network.sendclasses.SendBallScreenChange;
+import com.demgames.polypong.network.sendclasses.SendBat;
+import com.demgames.polypong.network.sendclasses.SendScore;
+import com.demgames.polypong.network.sendclasses.SendSettings;
+import com.demgames.polypong.packages.request.PingRequest;
+import com.demgames.polypong.packages.response.PingResponse;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Server;
 
 public class Globals extends Application {
 
     //Variablen
     private String myIpAdress;
     private String remoteIpAdress;
-    private String numberOfBalls=null;
+    private int numberOfBalls;
     private String remoteName;
     private int gamemode;
     private int myPort=12000;
     private int length=0;
     private float friction=(float)0.0;
+    private int myPlayerScreen;
 
-    private OscP5 oscP5;
+    private Server server = new Server();
+    private Client client = new Client();
+
+    private ClientListener clientListener;
+    private ServerListener serverListener;
+    private GameListener gameListener;
+
+    private List<Connection> connectionList = new ArrayList<Connection>(Arrays.asList(new Connection[]{}));
+    List<InetAddress> hostsList;
 
     private String ServerList[] =new String[]{};
 
@@ -37,6 +64,7 @@ public class Globals extends Application {
     private boolean attraction=false;
     private boolean gravity=false;
     private boolean searchConnectionState=false;
+    private boolean updateListViewState=false;
 
     private static final String TAG = "Globals";
 
@@ -45,16 +73,37 @@ public class Globals extends Application {
     //private ArrayAdapter<String> arrayAdapter;
 
     //LIST OF ARRAY STRINGS WHICH WILL SERVE AS LIST ITEMS
-    private List<String> ipAdressList = new ArrayList<String>(Arrays.asList(ServerList));
+    private List<String> ipAdressList = new ArrayList<String>(Arrays.asList(new String[] {}));
 
     private List<String> playerNamesList=new ArrayList<String>(Arrays.asList(new String[] {}));
 
     private Thread updateThread;
 
-    private float[] ballsXPositions;
-    private float[] ballsYPositions;
+    private PVector[] ballsPositions;
+    private PVector[] ballsVelocities;
+    private int[] ballsPlayerScreens;
     private float[] ballsSizes;
 
+    private PVector batPosition;
+    private float batOrientation;
+
+    private int myScore;
+    private int otherScore;
+
+    private class GameVariables {
+        PVector[] ballsPositions;
+        PVector[] ballsVelocities;
+        int[] ballsPlayerScreens;
+        float[] ballsSizes;
+
+        PVector batPosition;
+        float batOrientation;
+
+        int myScore;
+        int otherScore;
+    }
+
+    GameVariables gameVariables=new GameVariables();
 
     //---------------NETWORKING-------------------
 
@@ -109,11 +158,11 @@ public class Globals extends Application {
     //----------------------------------
 
 
-    void setReadyStateState(boolean readyState_) {
+    public void setReadyStateState(boolean readyState_) {
         this.readyState=readyState_;
     }
 
-    boolean getReadyState() {
+    public boolean getReadyState() {
         return(this.readyState);
     }
 
@@ -129,11 +178,21 @@ public class Globals extends Application {
 
     //----------------------------------
 
-    void setMyIpList(String[] IpAdresses_) {
+    public void setUpdateListViewState(boolean newState) {
+        this.updateListViewState=newState;
+    }
+
+    public boolean getUpdateListViewState() {
+        return(this.updateListViewState);
+    }
+
+    //----------------------------------
+
+    void setIpAdressList(String[] IpAdresses_) {
         this.ipAdressList=new ArrayList<String>(Arrays.asList(IpAdresses_));
     }
 
-    List<String> getMyIpList(int i) {
+    List<String> getIpAdressList() {
         return(this.ipAdressList);
     }
 
@@ -152,17 +211,78 @@ public class Globals extends Application {
 
     //----------------------------------
 
-    void setOscP5(OscP5 oscP5_) {
-        this.oscP5=oscP5_;
+    Server getServer() {
+        return(this.server);
     }
 
-    OscP5 getOscP5() {
-        return(this.oscP5);
+    Client getClient() {
+        return(this.client);
     }
 
-    void stopOscP5() {
-        this.oscP5.stop();
+    void registerKryoClasses(Kryo myKryo) {
+        myKryo.register(PingRequest.class);
+        myKryo.register(PingResponse.class);
+        myKryo.register(SendBallKinetics.class);
+        myKryo.register(processing.core.PVector.class);
+        myKryo.register(processing.core.PVector[].class);
+        myKryo.register(float.class);
+        myKryo.register(float[].class);
+        myKryo.register(SendSettings.class);
+        myKryo.register(Connection.class);
+        myKryo.register(Connection[].class);
+        myKryo.register(SendBallScreenChange.class);
+        myKryo.register(SendBat.class);
+        myKryo.register(SendScore.class);
     }
+
+    public void setClientListener(Context context_){
+        this.clientListener=new ClientListener(context_);
+    }
+
+    public ClientListener getClientListener() {
+        return (this.clientListener);
+    }
+
+    public void setServerListener(Context context_){
+        this.serverListener=new ServerListener(context_);
+    }
+
+    public ServerListener getServerListener() {
+        return (this.serverListener);
+    }
+
+    public void setGameListener(Context context_){
+        this.gameListener=new GameListener(context_);
+    }
+
+    public GameListener getGameListener() {
+        return (this.gameListener);
+    }
+
+
+    //Todo make private or so
+    public void addToConnectionList(Connection newConnection){
+        if(!this.connectionList.contains(newConnection)){
+            this.connectionList.add(newConnection);
+        }
+    }
+
+    Connection [] getConnectionList() {
+        return(this.connectionList.toArray(new Connection[0]));
+    }
+
+    void setConnectionList(Connection[] newConnectionList) {
+        this.connectionList=new ArrayList<Connection>(Arrays.asList(newConnectionList));
+    }
+
+    void setHostsList(List <InetAddress> newHostsList) {
+        this.hostsList=newHostsList;
+    }
+
+    List <InetAddress> getHostsList() {
+        return(this.hostsList);
+    }
+
 
     //----------------------------------
 
@@ -189,21 +309,23 @@ public class Globals extends Application {
 
     //---------------LIST MANIPULATION-------------------
 
-    /*void addIpTolist(String IpAdress){
+    public boolean addIpTolist(String IpAdress){
         if(!this.ipAdressList.contains(IpAdress)){
             this.ipAdressList.add(IpAdress);
+            Log.d("addiptolist",IpAdress +" added");
+            return(true);
         }
-        updateList();
-        //Updatet die Liesview wenn eine neue IP Adresse gefunden wird
-
-    }*/
+        return(false);
+    }
 
     //----------------------------------
 
-    void addPlayerNameTolist(String newPlayerName){
+    boolean addPlayerNameTolist(String newPlayerName){
         if(!this.playerNamesList.contains(newPlayerName)){
             this.playerNamesList.add(newPlayerName);
+            return(true);
         }
+        return(false);
     }
 
     void setIPListLength(int _length){
@@ -236,14 +358,24 @@ public class Globals extends Application {
 
     //----------------GAMEVARIABLES------------------
 
-    void setNumberOfBalls(String numberOfBalls_) {
+    public void setNumberOfBalls(int numberOfBalls_) {
         this.numberOfBalls=numberOfBalls_;
     }
 
-    String getNumberOfBalls() {
+    public int getNumberOfBalls() {
         return(this.numberOfBalls);
     }
 
+
+    //----------------------------------
+
+    public void setMyPlayerScreen(int newPlayerScreen_) {
+        this.myPlayerScreen=newPlayerScreen_;
+    }
+
+    public int getMyPlayerScreen() {
+        return(this.myPlayerScreen);
+    }
 
     //----------------------------------
 
@@ -286,55 +418,96 @@ public class Globals extends Application {
 
     //----------------------------------
 
-    void setGameMode(int gamemode_) {
+    public void setGameMode(int gamemode_) {
         this.gamemode=gamemode_;
     }
 
-    int getGameMode() {
+    public int getGameMode() {
         return(this.gamemode);
     }
 
-    //----------------------------------
+    //----------------BALLSFUNCTIONS------------------
 
-    void setBalls(boolean randomPosition) {
+    public void setBalls(boolean randomPosition) {
         Random rand=new Random();
-        this.ballsXPositions=new float[Integer.parseInt(this.getNumberOfBalls())];
-        this.ballsYPositions=new float[Integer.parseInt(this.getNumberOfBalls())];
-        this.ballsSizes=new float[Integer.parseInt(this.getNumberOfBalls())];
+        this.ballsPositions=new PVector[this.numberOfBalls];
+        this.ballsVelocities=new PVector[this.numberOfBalls];
+        this.ballsPlayerScreens=new int[this.numberOfBalls];
+        this.ballsSizes=new float[this.numberOfBalls];
         if(randomPosition) {
-            for (int i = 0; i < Integer.parseInt(this.getNumberOfBalls()); i++) {
-                this.ballsXPositions[i] = rand.nextFloat();
-                this.ballsYPositions[i] = rand.nextFloat();
+            for (int i = 0; i < this.numberOfBalls; i++) {
+                this.ballsPositions[i] = new PVector(rand.nextFloat(),rand.nextFloat());
+                this.ballsVelocities[i] = new PVector(0,0);
+                this.ballsPlayerScreens[i]=0;
                 this.ballsSizes[i] = rand.nextFloat();
             }
         }
     }
 
-    void setBallsXPositions(int ballNumber_, float ballsXPosition_) {
-        this.ballsXPositions[ballNumber_]=ballsXPosition_;
+    public void setBallPosition(int ballNumber_, PVector ballPosition_) {
+        this.ballsPositions[ballNumber_]=ballPosition_;
     }
 
-    void setBallsYPositions(int ballNumber_, float ballsYPosition_) {
-        this.ballsYPositions[ballNumber_]=ballsYPosition_;
+    public void setBallVelocity(int ballNumber_, PVector ballVelocity_) {
+        this.ballsVelocities[ballNumber_]=ballVelocity_;
     }
 
-    void setBallsSizes(int ballNumber_, float ballsSize_) {
-        this.ballsSizes[ballNumber_]=ballsSize_;
+    public void setBallSize(int ballNumber_, float ballSize_) {
+        this.ballsSizes[ballNumber_]=ballSize_;
     }
 
 
-    float[] getBallsXPositions() {
-        return(this.ballsXPositions);
+    public PVector[] getBallsPositions() {
+        return(this.ballsPositions);
     }
 
-    float[] getBallsYPositions() {
-        return(this.ballsYPositions);
+    public PVector[] getBallsVelocities() {
+        return(this.ballsVelocities);
     }
 
-    float[] getBallsSizes() {
+    public float[] getBallsSizes() {
         return(this.ballsSizes);
     }
 
+    public void setBallPlayerScreen(int ballNumber_,int playerScreen_) {
+        this.ballsPlayerScreens[ballNumber_]=playerScreen_;
+    }
+
+    public int[] getBallsPlayerScreens() {
+        return(this.ballsPlayerScreens);
+    }
+
+    public void setBatPosition(PVector batPosition_) {
+        this.batPosition=batPosition_;
+    }
+
+    public PVector getBatPosition() {
+        return(this.batPosition);
+    }
+
+    public void setBatOrientation(float batOrientation_) {
+        this.batOrientation=batOrientation_;
+    }
+
+    public float getBatOrientation() {
+        return (this.batOrientation);
+    }
+
+    public void setMyScore(int myScore_) {
+        this.myScore=myScore_;
+    }
+
+    public int getMyScore() {
+        return (this.myScore);
+    }
+
+    public void setOtherScore(int otherScore_) {
+        this.otherScore=otherScore_;
+    }
+
+    public int getOtherScore() {
+        return (this.otherScore);
+    }
 
 }
 

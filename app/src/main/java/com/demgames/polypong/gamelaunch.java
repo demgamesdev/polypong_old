@@ -1,8 +1,10 @@
 package com.demgames.polypong;
 
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.content.Intent;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.view.View;
@@ -11,15 +13,21 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.support.v7.app.AppCompatActivity;
 
+import com.demgames.polypong.network.ClientListener;
+import com.demgames.polypong.network.GameListener;
+
 import processing.android.PFragment;
 import processing.android.CompatUtils;
 import processing.core.PApplet;
 
 public class gamelaunch extends AppCompatActivity {
+    public static Activity GLA;
+
     private PApplet sketch;
     private static final String TAG = "MyActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        GLA=this;
         super.onCreate(savedInstanceState);
         final Globals globalVariables = (Globals) getApplicationContext();
 
@@ -30,6 +38,14 @@ public class gamelaunch extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: Entscheide welches spiel gestartet wird");
         Log.d(TAG, "onCreate: Spiel: " + globalVariables.getGameMode());
+
+        globalVariables.setGameListener(getApplicationContext());
+
+        if(getIntent().getExtras().getString("mode").equals("host")) {
+            globalVariables.getServer().addListener(globalVariables.getGameListener());
+        } else if(getIntent().getExtras().getString("mode").equals("client")) {
+            globalVariables.getClient().addListener(globalVariables.getGameListener());
+        }
 
 
         if (globalVariables.getGameMode()==1){
@@ -54,9 +70,6 @@ public class gamelaunch extends AppCompatActivity {
         else{
             Log.e(TAG, "onCreate: Spiel nicht definiert");
         }
-
-
-
     }
 
     @Override
@@ -72,6 +85,22 @@ public class gamelaunch extends AppCompatActivity {
         if (sketch != null) {
             sketch.onNewIntent(intent);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        Log.d(TAG, "onDestroy: Activity destroyed");
+
+        Globals globalVariables=(Globals)getApplicationContext();
+
+        if(getIntent().getExtras().getString("mode").equals("host")) {
+            globalVariables.getServer().stop();
+        } else if(getIntent().getExtras().getString("mode").equals("client")) {
+            globalVariables.getClient().stop();
+        }
+
+        super.onDestroy();
     }
 
     @Override

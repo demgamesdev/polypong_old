@@ -127,22 +127,22 @@ ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml
 		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:39:13-48
 	android:name
 		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:38:13-39
-activity#com.demgames.polypong.Client
+activity#com.demgames.polypong.ClientActivity
 ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:41:9-44:52
 	android:screenOrientation
 		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:44:13-49
 	android:configChanges
 		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:43:13-48
 	android:name
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:42:13-35
-activity#com.demgames.polypong.Server
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:42:13-43
+activity#com.demgames.polypong.ServerActivity
 ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:45:9-48:52
 	android:screenOrientation
 		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:48:13-49
 	android:configChanges
 		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:47:13-48
 	android:name
-		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:46:13-35
+		ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:46:13-43
 activity#com.demgames.polypong.Options
 ADDED from /home/paty/DEV/Android/Apps/polypong/app/src/main/AndroidManifest.xml:49:9-52:52
 	android:screenOrientation

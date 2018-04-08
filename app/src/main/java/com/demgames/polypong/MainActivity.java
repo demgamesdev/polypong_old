@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (getName()) {
-                    Intent startClient = new Intent(getApplicationContext(), Client.class);
+                    Intent startClient = new Intent(getApplicationContext(), ClientActivity.class);
                     startActivity(startClient);
                     //myThread.stop();
                 }
