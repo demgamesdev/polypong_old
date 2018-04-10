@@ -1,16 +1,11 @@
 package com.demgames.polypong;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.net.wifi.WifiManager;
 import android.content.Intent;
 import android.os.StrictMode;
-import android.provider.Settings;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,34 +13,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.EditText;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
-import com.demgames.polypong.network.ClientListener;
-import com.demgames.polypong.network.ServerListener;
-import com.demgames.polypong.network.sendclasses.SendBallKinetics;
 import com.demgames.polypong.packages.request.PingRequest;
-import com.demgames.polypong.packages.response.PingResponse;
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Server;
 
-import java.io.IOError;
+
 import java.io.IOException;
-import java.io.InterruptedIOException;
 import java.net.InetAddress;
 import java.nio.ByteOrder;
 import java.math.BigInteger;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 
 public class ClientActivity extends AppCompatActivity {
@@ -79,103 +61,18 @@ public class ClientActivity extends AppCompatActivity {
         final Globals globalVariables = (Globals) getApplicationContext();
         globalVariables.setConnectState(false);
         globalVariables.setReadyStateState(false);
-        globalVariables.setSettingsState(false);
         globalVariables.setGameLaunched(false);
-        globalVariables.setRemoteIpAdress(null);
         globalVariables.setConnectionList(new Connection[]{});
         globalVariables.setIpAdressList(new String[] {});
 
         globalVariables.setMyPlayerScreen(1);
 
-
-        //globalVariables.setArrayAdapter(new ArrayAdapter<String>
-                //(this, R.layout.listview, globalVariables.getMyIpList()));
-
-        //kryostuff--------------------------------------
-        globalVariables.getClient().start();
-
-        globalVariables.setClientListener(getApplicationContext());
-        globalVariables.getClient().addListener(globalVariables.getClientListener());
-
-        globalVariables.registerKryoClasses(globalVariables.getClient().getKryo());
-
         //--------------------------------------------------
-        final TextView myIpTextView = (TextView) findViewById(R.id.IpAdressTextView);
-        final Button devBtn = (Button) findViewById(R.id.devButton);
-        final ListView ClientLV = (ListView) findViewById(R.id.ClientListView);
-
-        //ClientLV.setAdapter(globalVariables.getArrayAdapter());
 
 
         //Thread für den Verbindungsaufbau
         MyTaskClient = new MyTaskClient();
         MyTaskClient.execute();
-
-        //automatically detect ip if available, create new thread for searching ip
-        Runnable updateRunnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while(!Thread.currentThread().isInterrupted()) {
-                        Thread.sleep(1000);
-
-                        globalVariables.setHostsList(globalVariables.getClient().discoverHosts(11000,2000));
-                        if(globalVariables.getHostsList().toArray().length!=0) {
-                            for (int i = 0; i < globalVariables.getHostsList().toArray().length; i++) {
-                                String tempIPAdress = globalVariables.getHostsList().toArray()[i].toString();
-                                tempIPAdress = tempIPAdress.substring(1, tempIPAdress.length());
-                                Log.d("discovery", tempIPAdress);
-                                if (globalVariables.addIpTolist(tempIPAdress)) {
-                                    globalVariables.setUpdateListViewState(true);
-                                }
-                            }
-                        }
-
-                        //Eigene IP-Adresse
-                        myIpTextView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (checkIfIp(globalVariables.getMyIpAdress())) {
-                                    myIpTextView.setText("Deine IP-Adresse lautet: " + globalVariables.getMyIpAdress());
-                                    //IP Adresse wird in die Liste Hinzugefügt
-                                    //globalVariables.addIpTolist(globalVariables.getMyIpAdress());
-
-                                } else {
-                                    myIpTextView.setText("Unable to get Ip-Adress");
-                                }
-                                //globalVariables.updateListView();
-
-                            }
-                        });
-
-
-                    }
-
-                } catch (InterruptedException e) {
-                    Log.d(ClientActivity.class.getSimpleName(),"Eigene Ip-Adresse Thread interrupted");
-                    e.printStackTrace();
-                }
-
-            }
-        };
-
-        globalVariables.setUpdateThread(updateRunnable);
-        globalVariables.getUpdateThread().start();
-
-
-        /***Developer Button Listener***/
-        /*devBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String balls = "20";
-                Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
-                //Intent startGame = new Intent(getApplicationContext(), gamelaunch.class);
-                startGame.putExtra("myipadress", globalVariables.getMyIpAdress());
-                startGame.putExtra("ballnumber", balls);
-                startGame.putExtra("mode", "client");
-                startActivity(startGame);
-            }
-        });*/
 
     }
 
@@ -189,7 +86,6 @@ public class ClientActivity extends AppCompatActivity {
         final Globals globalVariables=(Globals) getApplication();
         //globalVariables.getClient().stop();
         //Log.d(TAG, "onDestroy: Kryoclient stopped");
-        globalVariables.interruptUpdateThread();
         Log.d(TAG, "onDestroy: Activity geschlossen");
 
         super.onDestroy();
@@ -208,15 +104,14 @@ public class ClientActivity extends AppCompatActivity {
         }
 
         byte[] ipByteArray = BigInteger.valueOf(ipAddress).toByteArray();
-
         String ipAddressString;
         try {
             ipAddressString = InetAddress.getByAddress(ipByteArray).getHostAddress();
         } catch (UnknownHostException ex) {
             Log.e("WIFIIP", "Unable to get host address.");
-            ipAddressString = null;
+            //ipAddressString = null;
+            ipAddressString = "192.168.43.1";
         }
-
         return ipAddressString;
     }
 
@@ -250,10 +145,20 @@ public class ClientActivity extends AppCompatActivity {
         Globals globalVariables = (Globals) getApplicationContext();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (ClientActivity.this, R.layout.listview, globalVariables.getIpAdressList());
+        TextView myIpTextView = (TextView) findViewById(R.id.IpAdressTextView);
+
 
         @Override
         protected Void doInBackground(Void... voids) {
             //Background Thread
+
+            //kryostuff--------------------------------------
+            globalVariables.getClient().start();
+
+            globalVariables.setClientListener(getApplicationContext());
+            globalVariables.getClient().addListener(globalVariables.getClientListener());
+
+            globalVariables.registerKryoClasses(globalVariables.getClient().getKryo());
 
             Log.d(TAG, "doInBackground: Anfang Suche");
 
@@ -261,11 +166,39 @@ public class ClientActivity extends AppCompatActivity {
             while (!globalVariables.getConnectState()&& !isCancelled()) {
                 //sendClientConnect();
                 try {
-                    Thread.currentThread().sleep(30);
+                    Thread.currentThread().sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                globalVariables.setHostsList(globalVariables.getClient().discoverHosts(globalVariables.getMyPort(),1000));
+                if(globalVariables.getHostsList().toArray().length!=0) {
+                    for (int i = 0; i < globalVariables.getHostsList().toArray().length; i++) {
+                        String tempIPAdress = globalVariables.getHostsList().toArray()[i].toString();
+                        tempIPAdress = tempIPAdress.substring(1, tempIPAdress.length());
+                        Log.d("discovery", tempIPAdress);
+                        if (globalVariables.addIpTolist(tempIPAdress)) {
+                            globalVariables.setUpdateListViewState(true);
+                        }
+                    }
+                }
                 globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
+
+                myIpTextView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (checkIfIp(globalVariables.getMyIpAdress())) {
+                            myIpTextView.setText("Deine IP-Adresse lautet: " + globalVariables.getMyIpAdress());
+                            //IP Adresse wird in die Liste Hinzugefügt
+                            //globalVariables.addIpTolist(globalVariables.getMyIpAdress());
+
+                        } else {
+                            myIpTextView.setText("Unable to get Ip-Adress");
+                        }
+                        //globalVariables.updateListView();
+
+                    }
+                });
+
                 publishProgress();
             }
 
@@ -285,7 +218,6 @@ public class ClientActivity extends AppCompatActivity {
                 startGame.putExtra("mode", "client");
                 startActivity(startGame);
                 //globalVariables.myThread.stop();
-                globalVariables.interruptUpdateThread();
                 globalVariables.setGameLaunched(true);
                 MyTaskClient.cancel(true);
                 finish();
@@ -317,7 +249,7 @@ public class ClientActivity extends AppCompatActivity {
                         globalVariables.setRemoteIpAdress(globalVariables.getIpAdressList().get(i));
 
                         try {
-                            globalVariables.getClient().connect(5000,globalVariables.getRemoteIpAdress(),11000,11000);
+                            globalVariables.getClient().connect(5000,globalVariables.getRemoteIpAdress(),globalVariables.getMyPort(),globalVariables.getMyPort());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

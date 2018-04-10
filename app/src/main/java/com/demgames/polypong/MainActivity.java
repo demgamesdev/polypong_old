@@ -1,10 +1,7 @@
 package com.demgames.polypong;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.net.wifi.WifiManager;
 import android.content.Intent;
 import android.os.PowerManager;
 import android.view.View;
@@ -14,19 +11,12 @@ import android.widget.Button;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.util.Log;
-import android.widget.TextView;
 
-import java.net.InetAddress;
-import java.nio.ByteOrder;
-import java.math.BigInteger;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.os.PowerManager;
 import android.widget.Toast;
 
-import processing.data.StringList;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MyActivity";

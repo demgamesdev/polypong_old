@@ -13,4 +13,6 @@ public class SendSettings {
     public PVector[] ballsVelocities;
     public float[] ballsSizes;
     public int gameMode;
+    public boolean gravityState;
+    public boolean attractionState;
 }

@@ -1,10 +1,7 @@
 package com.demgames.polypong;
 
 import android.app.Application;
-import android.nfc.Tag;
-import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.content.Context;
 
 import java.net.InetAddress;
@@ -13,8 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import netP5.*;
-import oscP5.*;
 import processing.core.PVector;
 
 import com.demgames.polypong.network.ClientListener;
@@ -38,10 +33,8 @@ public class Globals extends Application {
     private String myIpAdress;
     private String remoteIpAdress;
     private int numberOfBalls;
-    private String remoteName;
     private int gamemode;
     private int myPort=12000;
-    private int length=0;
     private float friction=(float)0.0;
     private int myPlayerScreen;
 
@@ -59,11 +52,9 @@ public class Globals extends Application {
 
     private boolean connectState=false;
     private boolean readyState=false;
-    private boolean settingsState=false;
     private boolean gameLaunched=false;
     private boolean attraction=false;
     private boolean gravity=false;
-    private boolean searchConnectionState=false;
     private boolean updateListViewState=false;
 
     private static final String TAG = "Globals";
@@ -77,8 +68,6 @@ public class Globals extends Application {
 
     private List<String> playerNamesList=new ArrayList<String>(Arrays.asList(new String[] {}));
 
-    private Thread updateThread;
-
     private PVector[] ballsPositions;
     private PVector[] ballsVelocities;
     private int[] ballsPlayerScreens;
@@ -90,7 +79,7 @@ public class Globals extends Application {
     private int myScore;
     private int otherScore;
 
-    private class GameVariables {
+    public class GameVariables {
         PVector[] ballsPositions;
         PVector[] ballsVelocities;
         int[] ballsPlayerScreens;
@@ -99,61 +88,56 @@ public class Globals extends Application {
         PVector batPosition;
         float batOrientation;
 
-        int myScore;
+        protected int myScore;
         int otherScore;
     }
 
-    GameVariables gameVariables=new GameVariables();
+    private GameVariables gameVariables=new GameVariables();
+
+    public GameVariables getGameVariables() {
+        return(this.gameVariables);
+    }
 
     //---------------NETWORKING-------------------
 
-    void setMyIpAdress(String myIpAdress_) {
+    public void setMyIpAdress(String myIpAdress_) {
         this.myIpAdress=myIpAdress_;
     }
 
-    String getMyIpAdress() {
+    public String getMyIpAdress() {
         return(this.myIpAdress);
     }
 
     //----------------------------------
 
-    void setRemoteIpAdress(String remoteIpAdress_) {
+    public void setRemoteIpAdress(String remoteIpAdress_) {
         this.remoteIpAdress=remoteIpAdress_;
     }
 
-    String getRemoteIpAdress() {
+    public String getRemoteIpAdress() {
         return(this.remoteIpAdress);
     }
 
     //----------------------------------
 
-    void setMyPort(int myPort_) {
+    public void setMyPort(int myPort_) {
         this.myPort=myPort_;
     }
 
-    int getMyPort() {
+    public int getMyPort() {
         return(this.myPort);
     }
 
     //----------------------------------
 
-    void setConnectState(boolean connectState_) {
+    public void setConnectState(boolean connectState_) {
         this.connectState=connectState_;
     }
 
-    boolean getConnectState() {
+    public boolean getConnectState() {
         return(this.connectState);
     }
 
-
-
-    void setSettingsState(boolean settingsState_) {
-        this.settingsState=settingsState_;
-    }
-
-    boolean getSettingsState() {
-        return(this.settingsState);
-    }
 
     //----------------------------------
 
@@ -166,15 +150,6 @@ public class Globals extends Application {
         return(this.readyState);
     }
 
-    //----------------------------------
-
-    void setSearchConnecState(boolean searchConnectionState_) {
-        this.searchConnectionState=searchConnectionState_;
-    }
-
-    boolean getSearchConnectionState() {
-        return(this.searchConnectionState);
-    }
 
     //----------------------------------
 
@@ -188,38 +163,26 @@ public class Globals extends Application {
 
     //----------------------------------
 
-    void setIpAdressList(String[] IpAdresses_) {
+    public void setIpAdressList(String[] IpAdresses_) {
         this.ipAdressList=new ArrayList<String>(Arrays.asList(IpAdresses_));
     }
 
-    List<String> getIpAdressList() {
+    public List<String> getIpAdressList() {
         return(this.ipAdressList);
     }
 
-    String getMyIpListItem(int i){
-        return(this.ServerList[i]);
-    }
-
-
-    void setremoteName(String _remoteName){
-        this.remoteName=_remoteName;
-    }
-
-    String getremoteName(){
-        return remoteName;
-    }
 
     //----------------------------------
 
-    Server getServer() {
+    public Server getServer() {
         return(this.server);
     }
 
-    Client getClient() {
+    public Client getClient() {
         return(this.client);
     }
 
-    void registerKryoClasses(Kryo myKryo) {
+    public void registerKryoClasses(Kryo myKryo) {
         myKryo.register(PingRequest.class);
         myKryo.register(PingResponse.class);
         myKryo.register(SendBallKinetics.class);
@@ -267,43 +230,33 @@ public class Globals extends Application {
         }
     }
 
-    Connection [] getConnectionList() {
+    public Connection [] getConnectionList() {
         return(this.connectionList.toArray(new Connection[0]));
     }
 
-    void setConnectionList(Connection[] newConnectionList) {
+    public void setConnectionList(Connection[] newConnectionList) {
         this.connectionList=new ArrayList<Connection>(Arrays.asList(newConnectionList));
     }
 
-    void setHostsList(List <InetAddress> newHostsList) {
+    public void setHostsList(List <InetAddress> newHostsList) {
         this.hostsList=newHostsList;
     }
 
-    List <InetAddress> getHostsList() {
+    public List <InetAddress> getHostsList() {
         return(this.hostsList);
     }
 
 
     //----------------------------------
 
-    void setGameLaunched(boolean gameLaunched_) {
+    public void setGameLaunched(boolean gameLaunched_) {
         this.gameLaunched=gameLaunched_;
     }
 
-    boolean getGameLaunched() {
+    public boolean getGameLaunched() {
         return(this.gameLaunched);
     }
 
-
-    //----------------LISTVIEW------------------
-
-    /*void setArrayAdapter(ArrayAdapter arrayAdapter_) {
-        this.arrayAdapter=arrayAdapter_;
-    }
-
-    ArrayAdapter getArrayAdapter() {
-        return(this.arrayAdapter);
-    }*/
 
 
 
@@ -320,7 +273,7 @@ public class Globals extends Application {
 
     //----------------------------------
 
-    boolean addPlayerNameTolist(String newPlayerName){
+    public boolean addPlayerNameTolist(String newPlayerName){
         if(!this.playerNamesList.contains(newPlayerName)){
             this.playerNamesList.add(newPlayerName);
             return(true);
@@ -328,33 +281,6 @@ public class Globals extends Application {
         return(false);
     }
 
-    void setIPListLength(int _length){
-        length=_length;
-    }
-
-    int getIPListLength(){
-        return length;
-    }
-
-    /*void updateList(){
-        this.arrayAdapter.notifyDataSetChanged();
-        Log.d(TAG, "addIpTolist: IP wurde hinzugefügt++++++++++++++++++++++++++++++++++++++++++++");
-    }*/
-
-
-    //----------------THREAD------------------
-
-    void setUpdateThread(Runnable myRunnable) {
-        updateThread = new Thread(myRunnable);
-    }
-
-    Thread getUpdateThread() {
-        return(this.updateThread);
-    }
-
-    void interruptUpdateThread() {
-        this.updateThread.interrupt();
-    }
 
     //----------------GAMEVARIABLES------------------
 
@@ -379,39 +305,39 @@ public class Globals extends Application {
 
     //----------------------------------
 
-    void setPlayerNamesList(String[] playerNames_) {
+    public void setPlayerNamesList(String[] playerNames_) {
         this.playerNamesList=new ArrayList<String>(Arrays.asList(playerNames_));
     }
 
-    List<String> getPlayerNamesList() {
+    public List<String> getPlayerNamesList() {
         return(this.playerNamesList);
     }
 
     //----------------------------------
 
-    void setAttractionState(Boolean attraction_) {
+    public void setAttractionState(Boolean attraction_) {
         this.attraction=attraction_;
     }
 
-    Boolean getAttractionState() {
+    public Boolean getAttractionState() {
         return(this.attraction);
     }
 
     //----------------------------------
 
-    void setGravityState(Boolean gravity_) {
+    public void setGravityState(Boolean gravity_) {
         this.gravity=gravity_;
     }
 
-    Boolean getGravityState() {
+    public Boolean getGravityState() {
         return(this.gravity);
     }
 
-    void setFriction(Float friction_) {
+    public void setFriction(Float friction_) {
         this.friction=friction_;
     }
 
-    Float getFriction() {
+    public Float getFriction() {
         return(this.friction);
     }
 

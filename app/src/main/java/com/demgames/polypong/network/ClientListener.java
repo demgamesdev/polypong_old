@@ -2,13 +2,10 @@ package com.demgames.polypong.network;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.demgames.polypong.ClientActivity;
 import com.demgames.polypong.Globals;
-import com.demgames.polypong.network.sendclasses.SendBallKinetics;
+import com.demgames.polypong.Globals.*;
 import com.demgames.polypong.network.sendclasses.SendSettings;
-import com.demgames.polypong.packages.request.PingRequest;
 import com.demgames.polypong.packages.response.PingResponse;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -52,10 +49,14 @@ public class ClientListener extends Listener{
             PVector[] ballsVelocities=mySettings.ballsVelocities;
             float[] ballsSizes=mySettings.ballsSizes;
             int gameMode=mySettings.gameMode;
+            boolean gravityState=mySettings.gravityState;
+            boolean attractionState=mySettings.attractionState;
 
             globalVariables.setNumberOfBalls(ballsPositions.length);
             globalVariables.setBalls(false);
             globalVariables.setGameMode(gameMode);
+            globalVariables.setGravityState(gravityState);
+            globalVariables.setAttractionState(attractionState);
 
             for (int i=0; i<ballsPositions.length;i++) {
                 globalVariables.setBallPosition(i,ballsPositions[i]);

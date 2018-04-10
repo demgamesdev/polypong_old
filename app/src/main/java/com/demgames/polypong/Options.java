@@ -1,9 +1,6 @@
 package com.demgames.polypong;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +14,6 @@ import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Options extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 

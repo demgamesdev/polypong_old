@@ -2,28 +2,18 @@ package com.demgames.polypong;
 
 import android.app.Activity;
 import android.content.Context;
-import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
-import android.util.Log;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 
-//importing processing libraries
-import com.demgames.polypong.network.GameListener;
 import com.demgames.polypong.network.sendclasses.SendBallKinetics;
 import com.demgames.polypong.network.sendclasses.SendBallScreenChange;
 import com.demgames.polypong.network.sendclasses.SendBat;
 import com.demgames.polypong.network.sendclasses.SendScore;
 
-import java.net.ConnectException;
 
 import processing.core.*;
-import processing.data.IntList;
-import processing.event.MouseEvent;
-import processing.event.KeyEvent;
-//test
 
 public class Sketch extends PApplet {
 
@@ -38,7 +28,6 @@ public class Sketch extends PApplet {
 
     //listening port of application
     String myipadress;
-    String remoteipadress;
     String mode;
     float zoom=1;
     float maxZoom=(float)0.5;
@@ -122,7 +111,6 @@ public class Sketch extends PApplet {
         sensorManager.registerListener(accelerometerListener, sensor, SensorManager.SENSOR_DELAY_GAME);
 
         myipadress=globalVariables.getMyIpAdress();
-        remoteipadress=globalVariables.getRemoteIpAdress();
 
         numberofballs=globalVariables.getNumberOfBalls();
         //println(remoteipadress);
@@ -135,12 +123,12 @@ public class Sketch extends PApplet {
         rectMode(CENTER);
 
         newMousePos=new PVector(width/2,height*(float)0.9);
-        lastMousePos=newMousePos;
+        lastMousePos=new PVector(newMousePos.x,newMousePos.y);
 
 
         //initialize bat and balls objects
         mybat=new Bat(width/2,height,width/4,height/25,true,myplayerscreen);
-        otherbat=new Bat(width/2,-height,width/4,height/25,true,(myplayerscreen+1)%2);
+        otherbat=new Bat(width/2,-height,width/4,height/25,false,(myplayerscreen+1)%2);
 
         globalVariables.setBatPosition(otherbat.position);
 
@@ -256,7 +244,7 @@ public class Sketch extends PApplet {
 
 
         //update lastMousePos
-        lastMousePos=newMousePos;
+        lastMousePos=new PVector(newMousePos.x,newMousePos.y);
     }
 
     void showGameOverScreen() {
@@ -439,7 +427,7 @@ public class Sketch extends PApplet {
         //update position of ball with velocity
         void update() {
 
-            position.add(velocity);
+            position.add(PVector.mult(velocity,60/frameRate));
         }
 
         void writeGlobal() {
@@ -660,10 +648,9 @@ public class Sketch extends PApplet {
             if(attractionState) {
                 if (mousePressed) {
                     //println("pressed");
-                    PVector mousepos = new PVector(mouseX, mouseY);
-                    PVector distanceV = PVector.sub(mousepos, position);
-                    float dist = distanceV.mag();
-                    velocity.add(PVector.mult(distanceV, attractionMag / pow(dist, 2)));
+                    PVector relPos = PVector.sub(newMousePos, position);
+                    float dist = relPos.mag();
+                    velocity.add(PVector.mult(relPos, attractionMag / pow(dist, 2)));
                 }
             }
             velocity.add(PVector.mult(velocity,-frict/m));
@@ -692,8 +679,7 @@ public class Sketch extends PApplet {
         Bat(float x, float y, float wid_,float hei_, boolean controlled_,int playerScreen_) {
             rotatePlayerScreen(playerScreen,"acw");
             origin= new PVector(x,y);
-            position = newMousePos;
-            lastposition=position;
+            position = new PVector(newMousePos.x,newMousePos.y);
             velocity = new PVector(0,0);
 
             orientation=getAccelerometerAngle(accelerometerVector.x,accelerometerSensitivity);
@@ -804,73 +790,12 @@ public class Sketch extends PApplet {
 
     }
 
-    //create class button
-    class Button {
-        PVector position;
-        boolean value = false;
-        boolean holdbutton;
-        boolean flip = true;
-
-        float wid, hei;
-        String name;
-        PFont font;
-
-        //constructor for button
-        Button(String name_, float x, float y, float wid_, float hei_, boolean holdbutton_) {
-            position = new PVector(x, y);
-            name = name_;
-            wid = wid_;
-            hei = hei_;
-            holdbutton = holdbutton_;
-        }
-
-        //check for being pressed, if holdbutton=false flip is released in mouseReleased()
-        boolean pressed() {
-            if (holdbutton) {
-                if (mousePressed) {
-                    if (mouseX >= (position.x - wid / 2)*zoom+(1-zoom)*zoompoint.x && mouseX <= (position.x + wid / 2)*zoom+(1-zoom)*zoompoint.x &&
-                            mouseY >= (position.y - hei / 2)*zoom+(1-zoom)*zoompoint.y && mouseY <= (position.y + hei / 2)*zoom+(1-zoom)*zoompoint.y) {
-                        value = true;
-                    }
-                } else {
-                    value = false;
-                }
-
-            } else {
-                if (mousePressed) {
-                    if (flip && mouseX >= (position.x - wid / 2)*zoom+(1-zoom)*zoompoint.x && mouseX <= (position.x + wid / 2)*zoom+(1-zoom)*zoompoint.x &&
-                            mouseY >= (position.y - hei / 2)*zoom +(1-zoom)*zoompoint.y && mouseY <= (position.y + hei / 2)*zoom+(1-zoom)*zoompoint.y) {
-                        value = !value;
-                        flip = false;
-                    }
-                }
-            }
-            return (value);
-        }
-
-
-        //display button
-        void display() {
-            if (this.pressed()) {
-                fill(128, 0, 0);
-            } else {
-                fill(0, 128, 0, 128);
-            }
-            rect(position.x, position.y, wid, hei, 0);
-            fill(255);
-            font = createFont("SansSerif", (float) (hei / 1.5), true);
-            textFont(font);
-            textAlign(CENTER, CENTER);
-
-            text(name, position.x, position.y);
-        }
-    }
-
     public void touchStarted() {
         println(touches.length);
 
         if(touches.length==1) {
             newMousePos=new PVector(touches[0].x,touches[0].y);
+            lastMousePos=new PVector(newMousePos.x,newMousePos.y);
             println(touches[0].x,touches[0].y);
         } else if(touches.length==2) {
             float xPinch=touches[0].x-touches[1].x;
