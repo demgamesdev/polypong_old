@@ -1,6 +1,7 @@
 package com.demgames.polypong.network;
 
 import com.demgames.polypong.Globals;
+import com.demgames.polypong.network.sendclasses.SendPlayerName;
 import com.demgames.polypong.packages.request.PingRequest;
 import com.demgames.polypong.packages.response.PingResponse;
 import com.esotericsoftware.kryonet.Connection;
@@ -45,6 +46,17 @@ public class ServerListener extends Listener{
             PingResponse pingResponse= new PingResponse();
             connection.sendTCP(pingResponse);
             Log.e(TAG, "Send PingResponse.");
+        }
+        else if(object instanceof SendPlayerName) {
+            Log.d(TAG,"received PlayerName");
+            SendPlayerName PlayerName=(SendPlayerName) object;
+            String enemyName = PlayerName.PlayerName;
+            Log.d(TAG, "received: EnemyName: " + enemyName);
+            globalVariables.addPlayerNameTolist(enemyName);
+
+            Log.d(TAG, "received: Name: " + globalVariables.getPlayerNamesList().get(0));
+            Log.d(TAG, "received: Name: " + globalVariables.getPlayerNamesList());
+
         }
     }
 }

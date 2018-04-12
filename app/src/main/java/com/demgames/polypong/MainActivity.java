@@ -95,9 +95,10 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             //Name in Globals Speichern
-            String[] name = new String[2];
-            name[0]=YourName.getText().toString();
-            globalVariables.setPlayerNamesList(name);
+            //String[] name = new String[2];
+            globalVariables.addPlayerNameTolist(YourName.getText().toString());
+            //name[0]=YourName.getText().toString();
+            //globalVariables.setPlayerNamesList(name);
             List<String> supplierNames1 = new ArrayList<String>();
             supplierNames1 = globalVariables.getPlayerNamesList();
             Log.d(TAG, "MainActivity getName: "+ supplierNames1.get(0));

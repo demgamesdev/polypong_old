@@ -18,6 +18,7 @@ import com.demgames.polypong.network.ServerListener;
 import com.demgames.polypong.network.sendclasses.SendBallKinetics;
 import com.demgames.polypong.network.sendclasses.SendBallScreenChange;
 import com.demgames.polypong.network.sendclasses.SendBat;
+import com.demgames.polypong.network.sendclasses.SendPlayerName;
 import com.demgames.polypong.network.sendclasses.SendScore;
 import com.demgames.polypong.network.sendclasses.SendSettings;
 import com.demgames.polypong.packages.request.PingRequest;
@@ -196,6 +197,7 @@ public class Globals extends Application {
         myKryo.register(SendBallScreenChange.class);
         myKryo.register(SendBat.class);
         myKryo.register(SendScore.class);
+        myKryo.register(SendPlayerName.class);
     }
 
     public void setClientListener(Context context_){
@@ -274,8 +276,9 @@ public class Globals extends Application {
     //----------------------------------
 
     public boolean addPlayerNameTolist(String newPlayerName){
-        if(!this.playerNamesList.contains(newPlayerName)){
+        if(!this.playerNamesList.contains(newPlayerName) && !newPlayerName.equals(null)){
             this.playerNamesList.add(newPlayerName);
+            Log.d("addPlayerNameTolist",newPlayerName +" added");
             return(true);
         }
         return(false);

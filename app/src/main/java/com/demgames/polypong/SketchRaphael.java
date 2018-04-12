@@ -412,4 +412,3 @@ public class SketchRaphael extends PApplet {
 
 
 }
-

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.demgames.polypong.Globals;
 import com.demgames.polypong.Globals.*;
+import com.demgames.polypong.network.sendclasses.SendPlayerName;
 import com.demgames.polypong.network.sendclasses.SendSettings;
 import com.demgames.polypong.packages.response.PingResponse;
 import com.esotericsoftware.kryonet.Connection;
@@ -67,8 +68,22 @@ public class ClientListener extends Listener{
                 /*tempIpAdress=tempIpAdress.substring(1,tempIpAdress.length()).split(":")[0];
                 Log.e(TAG, "Connection: "+ tempIpAdress);*/
             }
+            Log.d(TAG, "received: Name: " + globalVariables.getPlayerNamesList().get(0));
+            Log.d(TAG, "received: Name: " + globalVariables.getPlayerNamesList().get(1));
 
             globalVariables.setReadyStateState(true);
         }
+        else if(object instanceof SendPlayerName) {
+            Log.d(TAG,"received PlayerName");
+            SendPlayerName PlayerName=(SendPlayerName) object;
+            String enemyName = PlayerName.PlayerName;
+            Log.d(TAG, "received: EnemyName: " + enemyName);
+            globalVariables.addPlayerNameTolist(enemyName);
+
+            Log.d(TAG, "received: Name: " + globalVariables.getPlayerNamesList().get(0));
+            Log.d(TAG, "received: Name: " + globalVariables.getPlayerNamesList().get(1));
+
+        }
+
     }
 }

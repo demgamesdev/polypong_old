@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.demgames.polypong.network.sendclasses.SendPlayerName;
 import com.demgames.polypong.packages.request.PingRequest;
 import com.esotericsoftware.kryonet.Connection;
 
@@ -207,6 +208,13 @@ public class ClientActivity extends AppCompatActivity {
 
             Log.d(TAG, "onPostExecute: Anfang Settings Senden");
 
+            SendPlayerName myName = new SendPlayerName();
+            myName.PlayerName=globalVariables.getPlayerNamesList().get(0);
+            Log.d(TAG, "doInBackground: " + globalVariables.getPlayerNamesList().get(0));
+            globalVariables.getClient().sendTCP(myName);
+
+
+
             while(!globalVariables.getReadyState() && !isCancelled()) {
 
             }
@@ -237,6 +245,8 @@ public class ClientActivity extends AppCompatActivity {
                 //Vor dem Thread Initialisierung
                 ListView ClientLV = (ListView) findViewById(R.id.ClientListView);
                 ClientLV.setAdapter(adapter);
+
+
                 //globalVariables.setSearchConnecState(true);
                 ClientLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.demgames.polypong.network.sendclasses.SendPlayerName;
 import com.demgames.polypong.network.sendclasses.SendSettings;
 import com.esotericsoftware.kryonet.Connection;
 
@@ -176,11 +177,11 @@ public class ServerActivity extends AppCompatActivity {
                 }
                 globalVariables.setMyIpAdress(wifiIpAddress(getApplicationContext()));
 
-                if(globalVariables.getConnectionList().length!=0 ) {
+                /*if(globalVariables.getConnectionList().length!=0 ) {
                     Log.d(TAG,"Connectionlist not empty");
                 } else {
                     Log.d(TAG,"Connectionlist empty");
-                }
+                }*/
 
                 myIpTextView.post(new Runnable() {
                     @Override
@@ -250,6 +251,10 @@ public class ServerActivity extends AppCompatActivity {
                     mySettings.gravityState=globalVariables.getGravityState();
                     mySettings.attractionState=globalVariables.getAttractionState();
                     globalVariables.getConnectionList()[0].sendTCP(mySettings);
+
+                    SendPlayerName myName = new SendPlayerName();
+                    myName.PlayerName=globalVariables.getPlayerNamesList().get(0);
+                    globalVariables.getConnectionList()[0].sendTCP(myName);
 
                     /*SendBallsKinetics ballPacket= new SendBallsKinetics();
                     ballPacket.ballsPositions=new PVector[]{new PVector(-1,100),new PVector(2,-10009)};
