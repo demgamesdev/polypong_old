@@ -1,6 +1,7 @@
 package com.demgames.polypong.network;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -55,10 +56,8 @@ public class GameListener extends Listener{
             int ballNumber=ballKinetics.ballNumber;
             PVector ballPosition=ballKinetics.ballPosition;
             PVector ballVelocity=ballKinetics.ballVelocity;
-
             //Log.d(TAG, "ball "+Integer.toString(ballNumber)+" updated to x "+Float.toString(ballPosition.x));
-
-
+            //Log.d(TAG, "received: Ball" + ballPosition);
             globalVariables.setBallPosition(ballNumber,ballPosition);
             globalVariables.setBallVelocity(ballNumber,ballVelocity);
 
@@ -77,24 +76,22 @@ public class GameListener extends Listener{
             Log.d(TAG, "ball "+Integer.toString(ballNumber)+" screenchange");
 
         } else if(object instanceof SendBat) {
-            //Log.d(TAG,"received Bat");
             SendBat bat=(SendBat)object;
             PVector batPosition=bat.batPosition;
             float batOrientation=bat.batOrientation;
 
             globalVariables.setBatPosition(batPosition);
             globalVariables.setBatOrientation(batOrientation);
+            //Log.d(TAG, "received: SendBat");
 
         } else if(object instanceof SendScore) {
-            Log.d(TAG,"received Score");
+            //Log.d(TAG,"received Score");
             SendScore score=(SendScore)object;
             int myScore = score.myScore;
             int otherScore=score.otherScore;
 
             globalVariables.setMyScore(myScore);
-            globalVariables.setOtherScore(myScore);
-
-
+            globalVariables.setOtherScore(otherScore);
         }
     }
 }

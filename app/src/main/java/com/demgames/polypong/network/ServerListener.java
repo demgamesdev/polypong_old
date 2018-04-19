@@ -48,14 +48,15 @@ public class ServerListener extends Listener{
             Log.e(TAG, "Send PingResponse.");
         }
         else if(object instanceof SendPlayerName) {
-            Log.d(TAG,"received PlayerName");
             SendPlayerName PlayerName=(SendPlayerName) object;
             String enemyName = PlayerName.PlayerName;
-            Log.d(TAG, "received: EnemyName: " + enemyName);
+            Log.d(TAG, "received Playername: " + enemyName);
             globalVariables.addPlayerNameTolist(enemyName);
 
-            Log.d(TAG, "received: Name: " + globalVariables.getPlayerNamesList().get(0));
-            Log.d(TAG, "received: Name: " + globalVariables.getPlayerNamesList());
+            SendPlayerName myName = new SendPlayerName();
+            myName.PlayerName=globalVariables.getPlayerNamesList().get(0);
+            globalVariables.getConnectionList()[0].sendTCP(myName);
+            Log.d(TAG, "onItemClick: Name übermittelt");
 
         }
     }

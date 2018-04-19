@@ -8,6 +8,10 @@ import android.media.MediaPlayer;
 import android.util.Log;
 
 //importing processing libraries
+import com.demgames.polypong.network.sendclasses.SendBallKinetics;
+import com.demgames.polypong.network.sendclasses.SendBat;
+import com.demgames.polypong.network.sendclasses.SendScore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +43,8 @@ public class SketchRaphael extends PApplet {
 
     /********* VARIABLES *********/
 
+    Globals globalVariables;
+
     //declare game variables
     float batfrict = (float) 0.05;
     float gravityMag = (float) 0.6;
@@ -67,6 +73,9 @@ public class SketchRaphael extends PApplet {
     PVector zoompoint;
 
 
+    SendBallKinetics sendBallKinetics=new SendBallKinetics();
+    SendBat sendBat=new SendBat();
+    SendScore sendScore=new SendScore();
 
 
 
@@ -93,13 +102,10 @@ public class SketchRaphael extends PApplet {
     SketchRaphael(String mode_, String myipadress_, String remoteipadress_, String numberofballs_, Float friction_) {
 
         mode = mode_;
-        //Log.d(TAG, "SketchRaphael: mode" + mode);
-
 
         if (mode.equals("client")) {
             myplayerscreen = 1;
         }
-
     }
 
 
@@ -108,7 +114,6 @@ public class SketchRaphael extends PApplet {
         fullScreen();
         smooth();
         //frameRate(60);
-
     }
 
 
@@ -116,7 +121,8 @@ public class SketchRaphael extends PApplet {
 
         myActivity=this.getActivity();
         myContext = myActivity.getApplicationContext();
-        Globals globalVariables = (Globals) myContext;
+        globalVariables=(Globals)myContext;
+        //Globals globalVariables = (Globals) myContext;
 
         myipadress=globalVariables.getMyIpAdress();
         remoteipadress=globalVariables.getRemoteIpAdress();
@@ -129,14 +135,7 @@ public class SketchRaphael extends PApplet {
         ball = new PVector(width / 2, height / 2);
         player = new PVector(width, height);
         enemy = new PVector(0, height / 2);
-         /*
-    Instead of using actual numbers, we're using ratios of width and height for different objects here.
-    This is to ensure that visual elements retain their relative sizes when running on multiple resolutions.
-    */
 
-         /*
-    Same idea as using ratios for sizes. We want the ball to move at relatively same speed across multiple resolutions, so we're using ratios.
-    */
         ballSpeedX = width / 100;
         ballSpeedY = width / 100;
         enemySpeed = width / 150;
@@ -148,19 +147,13 @@ public class SketchRaphael extends PApplet {
         textSize(width/10);
         textAlign(CENTER);
         text("3", width/2, height/2);
-
     }
 
     public void draw() {
-
-        //background is important for clearing the frame every frame, so that there is nothing remaining from the previous frame drawn
-
         t = interval-(millis()/1000);
         time = nf(t , 1);
         background(0);
         if(t <= 0) {
-            //calling methods for drawing the ball, the player, the enemy, and the scores
-
             if (mode.equals("host")){
                 drawBallHost();
                 drawPlayer();
@@ -168,7 +161,6 @@ public class SketchRaphael extends PApplet {
                 scoreText();
                 sendBall();
                 centerLine();
-                //drawEnemy();
             }
             else if (mode.equals("client")){
                 drawBallClient();
@@ -202,18 +194,18 @@ public class SketchRaphael extends PApplet {
 
     void drawBallClient() {
         pushMatrix();
+        ball.x = -((globalVariables.getBallsPositions()[0].x)*width-width);
+        ball.y = -((globalVariables.getBallsPositions()[0].y*height)-height);
+
         translate(ball.x, ball.y);
         fill(255);
         noStroke();
         ellipse(0, 0, width / 20, width / 20);
         popMatrix();
-        //Log.d(TAG, "drawBallClient: Ich stelle den Client ball dar");
     }
 
     void ballBoundary()
     {
-
-
 
     //left
     if (ball.x < 0) {
@@ -233,6 +225,7 @@ public class SketchRaphael extends PApplet {
 
     if (ball.y > height) {  //Ball ist unten
         enemyScore ++;
+        sendScore();
         ball.y = height/2;
         ballSpeedY = 0;
         Thread timer = new Thread(){
@@ -254,6 +247,7 @@ public class SketchRaphael extends PApplet {
 
     if (ball.y < 0) {
         playerScore ++;
+        sendScore();
         ball.y = height/2;
         ballSpeedY = 0;
         Thread timer = new Thread(){
@@ -267,26 +261,24 @@ public class SketchRaphael extends PApplet {
                     ball.y = height/2;
                     ballSpeedY = width / 100;
                     ballSpeedY *= 1;
-
                 }
             }
         };
         timer.start();
-
     }
 
     //Schläger kollision
         if (ball.y > height - height/40 - ballSize && ball.y < height && Math.abs(ball.x - player.x) < width/10) {
-            MediaPlayer pongSound = MediaPlayer.create(getContext(), R.raw.pong_bat);
-            pongSound.start();
+            //MediaPlayer pongSound = MediaPlayer.create(getContext(), R.raw.pong_bat);
+            //pongSound.start();
             ball.y = height - height/40 - ballSize;
             ballSpeedY *= 1.1;
             ballSpeedY *= -1;
         }
 
         if (ball.y < height/40 + ballSize && ball.y > 0 && Math.abs(ball.x - enemy.x) < width/10) {
-            MediaPlayer pongSound = MediaPlayer.create(getContext(), R.raw.pong_bat);
-            pongSound.start();
+            //MediaPlayer pongSound = MediaPlayer.create(getContext(), R.raw.pong_bat);
+            //pongSound.start();
             ball.y = height/40 + ballSize;
             ballSpeedY *= 1.1;
             ballSpeedY *= -1;
@@ -297,40 +289,33 @@ public class SketchRaphael extends PApplet {
     void drawPlayer()
     {
         player.x = mouseX;
-
-        OscMessage posMessage = new OscMessage("/bat");
-        posMessage.add(player.x/width);
-        oscP5.send(posMessage, myRemoteLocation);
-
+        sendBat();
         pushMatrix();
         translate(player.x , height -width/20);
         stroke(0);
         fill(255);
         rect(0, 0, width/5,width/20); //Größe des Schlägers
-        //box(width/20, width/5, width/50);
         popMatrix();
     }
 
     void drawEnemy()
     {
-        //player.x = mouseX;
-
         pushMatrix();
+        if (globalVariables.getBatPosition()!=null){
+            enemy.x=-(width*globalVariables.getBatPosition().x-width);
+        }
+        else{
+            enemy.x=width/2;
+        }
         translate(enemy.x ,  width/20);
         stroke(0);
         fill(255);
         rect(0, 0, width/5,width/20); //Größe des Schlägers
-        //box(width/20, width/5, width/50);
         popMatrix();
-        //Log.d(TAG, "drawEnemy: zeichne");
     }
 
     void scoreText()
     {
-        myActivity=this.getActivity();
-        myContext = myActivity.getApplicationContext();
-        Globals globalVariables = (Globals) myContext;
-
         List<String> nameList = new ArrayList<String>();
         nameList=globalVariables.getPlayerNamesList();
         String player = nameList.get(0) + ": "; //Eigener Name
@@ -341,39 +326,56 @@ public class SketchRaphael extends PApplet {
             textAlign(CENTER);
             text(player + playerScore, width/2, height - width /2);
             text( enemy +enemyScore, width/2, height/5);
-            OscMessage scoreMessage = new OscMessage("/score");
-            scoreMessage.add(playerScore);
-            scoreMessage.add(enemyScore);
-            oscP5.send(scoreMessage, myRemoteLocation);
-            //Log.d(TAG, "scoreText: Ich sende den Score");
         }
         if (mode.equals("client") ){
             textSize(width/22);
             textAlign(CENTER);
-            text(player + enemyScore, width/2, height - width /2);
-            text(enemy +playerScore, width/2, width /2);
-            //Log.d(TAG, "oscEvent: Ich stelle den score dar");
+            text(player + globalVariables.getOtherScore(), width/2, height - width /2);
+            text(enemy + globalVariables.getMyScore(), width/2, width /2);
         }
-
     }
 
     //send ball data to remotelocation
     void sendBall() {
-        OscMessage posMessage = new OscMessage("/position");
-        posMessage.add(ball.x/width);
-        posMessage.add(ball.y/height);
-        oscP5.send(posMessage, myRemoteLocation);
-        //Log.d(TAG, "sendBall: " + Float.toString(ball.x) + " " + Float.toString(ball.y));
-        //OscMessage attrMessage = new OscMessage("/ball/"+str(theBall.ballnumber)+"/attributes");
-        //attrMessage.add(theBall.radius/width);
-        //attrMessage.add(theBall.m);
-        //oscP5.send(attrMessage,myRemoteLocation);
+        //Globals globalVariables = (Globals) myContext;
+        sendBallKinetics.ballNumber=0;
+        sendBallKinetics.ballPosition=new PVector(ball.x/width,ball.y/height);
+        sendBallKinetics.ballVelocity=new PVector(0,0);
+        if(mode.equals("host")) {
+            globalVariables.getConnectionList()[0].sendTCP(sendBallKinetics);
+        }
+        else if(mode.equals("client")) {
+            globalVariables.getClient().sendUDP(sendBallKinetics);
+        }
+    }
+
+    void sendBat() {
+        //Globals globalVariables = (Globals) myContext;
+        sendBat.batPosition=new PVector(player.x/width,player.y/height);
+        sendBat.batOrientation=0;
+        if(mode.equals("host")) {
+            globalVariables.getConnectionList()[0].sendTCP(sendBat);
+        } else if(mode.equals("client")) {
+            globalVariables.getClient().sendUDP(sendBat);
+        }
+    }
+
+
+    void sendScore() {
+        //Globals globalVariables = (Globals) myContext;
+        sendScore.myScore=playerScore;
+        sendScore.otherScore=enemyScore;
+
+        if(mode.equals("host")) {
+            globalVariables.getConnectionList()[0].sendTCP(sendScore);
+        } else if(mode.equals("client")) {
+            globalVariables.getClient().sendTCP(sendScore);
+        }
     }
 
     void centerLine()
     {
         int numberOfLines = 20;
-        //Log.d(TAG, "centerLine: Ich maledie center line");
         strokeWeight(width/100);
         stroke(255);
         line(0, height/2, width, height/2);
@@ -387,28 +389,6 @@ public class SketchRaphael extends PApplet {
         }*/
     }
 
-
-    //check for incoming osc messages
-    void oscEvent(OscMessage theOscMessage) {
-
-            if(theOscMessage.addrPattern().equals("/position")) {
-                ball.x=-((theOscMessage.get(0).floatValue()*width)-width);
-                ball.y=-((theOscMessage.get(1).floatValue()*height)-height);
-                //Log.d(TAG, "receiveBall: " + Float.toString(ball.x) + " " + Float.toString(ball.y));
-                //Log.d(TAG, "oscEvent: Ich empfange den ball");
-                //println("position: ",balls[i].position.x,balls[i].position.y);
-            }
-            if(theOscMessage.addrPattern().equals("/score")) {
-                playerScore=theOscMessage.get(0).intValue();
-                enemyScore=theOscMessage.get(1).intValue();
-                //Log.d(TAG, "oscEvent: Ich empfange den score");
-            }
-
-            if(theOscMessage.addrPattern().equals("/bat")) {
-                //Log.d(TAG, "Bat: Ich empfange den x Wert" + Float.toString(enemy.x));
-                enemy.x = -((theOscMessage.get(0).floatValue()*width)-width);
-            }
-    }
 
 
 }

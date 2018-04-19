@@ -1,5 +1,6 @@
 package com.demgames.polypong;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
@@ -251,10 +252,12 @@ public class ServerActivity extends AppCompatActivity {
                     mySettings.gravityState=globalVariables.getGravityState();
                     mySettings.attractionState=globalVariables.getAttractionState();
                     globalVariables.getConnectionList()[0].sendTCP(mySettings);
+                    Log.d(TAG, "onItemClick: Settings übermittelt");
 
-                    SendPlayerName myName = new SendPlayerName();
+                    /*SendPlayerName myName = new SendPlayerName();
                     myName.PlayerName=globalVariables.getPlayerNamesList().get(0);
                     globalVariables.getConnectionList()[0].sendTCP(myName);
+                    Log.d(TAG, "onItemClick: Name übermittelt");*/
 
                     /*SendBallsKinetics ballPacket= new SendBallsKinetics();
                     ballPacket.ballsPositions=new PVector[]{new PVector(-1,100),new PVector(2,-10009)};

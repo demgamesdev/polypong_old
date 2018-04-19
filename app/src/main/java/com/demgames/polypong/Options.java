@@ -21,6 +21,9 @@ public class Options extends AppCompatActivity implements AdapterView.OnItemSele
     int ballnum = 1;
     float fric;
 
+    //Todo Zeitmodus einbauen / Punktelimitmodus
+    //Todo Powerup modus
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

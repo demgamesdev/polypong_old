@@ -68,8 +68,6 @@ public class ClientListener extends Listener{
                 /*tempIpAdress=tempIpAdress.substring(1,tempIpAdress.length()).split(":")[0];
                 Log.e(TAG, "Connection: "+ tempIpAdress);*/
             }
-            Log.d(TAG, "received: Name: " + globalVariables.getPlayerNamesList().get(0));
-            Log.d(TAG, "received: Name: " + globalVariables.getPlayerNamesList().get(1));
 
             globalVariables.setReadyStateState(true);
         }
@@ -80,8 +78,7 @@ public class ClientListener extends Listener{
             Log.d(TAG, "received: EnemyName: " + enemyName);
             globalVariables.addPlayerNameTolist(enemyName);
 
-            Log.d(TAG, "received: Name: " + globalVariables.getPlayerNamesList().get(0));
-            Log.d(TAG, "received: Name: " + globalVariables.getPlayerNamesList().get(1));
+            Log.d(TAG, "received: Name: " + globalVariables.getPlayerNamesList());
 
         }
 
